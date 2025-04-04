@@ -5,8 +5,11 @@
 ## Group Members
 
 Cameron Hart
+
 Jordy Kappella
+
 Nick Nasiri
+
 Harry Chan
 
 ## Setup and Installation
