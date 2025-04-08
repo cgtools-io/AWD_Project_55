@@ -4,12 +4,12 @@
 
 ## Group Members
 
-Cameron Hart
+| **UWA ID** | **Name**   | **GitHub Username** |
+|------------|------------|---------------------|
+| 23390625      | Cameron Hart    | camhart21       |
+| 23214051      | Harry Chan      | TBD         |
+| 23245495      | Jordy Kappella      | OgmaLogic         |
+| 22957489      | Nick Nasiri       | TBD          |
 
-Jordy Kappella
-
-Nick Nasiri
-
-Harry Chan
 
 ## Setup and Installation
