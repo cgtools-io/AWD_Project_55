@@ -6,10 +6,10 @@
 
 | **UWA ID** | **Name**   | **GitHub Username** |
 |------------|------------|---------------------|
-| 23390625      | Cameron Hart    | camhart21       |
-| 23214051      | Harry Chan      | Crypteemo         |
-| 23245495      | Jordy Kappella      | OgmaLogic         |
-| 22957489      | Nick Nasiri       | TBD          |
+| 23390625      | Cameron Hart    | camhart21  |
+| 23214051      | Harry Chan      | Crypteemo  |
+| 23245495      | Jordy Kappella  | OgmaLogic  |
+| 22957489      | Nick Nasiri     | schain-dev |
 
 
 ## Setup and Installation
