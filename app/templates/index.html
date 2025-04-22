@@ -1,22 +1,8 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Crypto Tax Calculator</title>
-  <link rel="stylesheet" href="../static/css/style.css" /> 
-</head>
-<body>
-  <nav class="navbar">
-    <div class="nav-logo">[We'll insert app name here]</div>
-    <ul class="nav-links">
-      <li><a href="#">Home</a></li>
-      <li><a href="#">About</a></li>
-      <li><a href="#">Help</a></li>
-      <li><a href="#" class="login-btn">Login</a></li>
-    </ul>
-  </nav>
+{% extends "base.html" %}
 
+{% block title %}CGTools{% endblock %}
+
+{% block content %}
   <div class="background">
     <!-- Animated coinfall layer -->
     <div class="coin" style="left: 10%;"></div>
@@ -38,5 +24,4 @@
   </main>
 
   <a href="#" class="floating-register">Register here!</a>
-</body>
-</html>
+{% endblock %}
