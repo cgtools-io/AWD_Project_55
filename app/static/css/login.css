@@ -1,0 +1,23 @@
+#login-box {
+    border: 1px solid #FFD700;
+    background-color: #4A0F84;
+    color: white;
+    padding: 10px;
+    border-radius: 10px;
+}
+
+.btn {
+    background-color: #FFD700;
+    color: #4A0F84;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+#bg-container {
+    background-image: url('/static/images/login_bg.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}

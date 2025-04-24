@@ -7,21 +7,31 @@
 {% endblock %}
 
 {% block content %}
-    <div class="container">
-        <h1>Upload .csv file:</h1>
-
-        <div class="upload-area" id="uploadfile">
-            <div class="upload-text">Drag and drop file here</div>
-            <img src="" alt="Upload Icon" width="80" height="80" alt="Upload Icon">
-            <div class="upload-text">
-                <a class="browse-link">Browse local files</a>
+    <div class="container-fluid">
+        <div class="row px-4 mt-3">
+            <h1 class="p-0">Upload .csv file:</h1>
+        </div>
+        
+        <div class="row px-4 mt-3 mb-3">
+            <div class="col upload-area" id="uploadfile">
+                <div class="upload-text">Drag and drop file here</div>
+                <img src="/static/images/upload-icon-white.png" alt="Upload Icon" width="80" height="80" alt="Upload Icon">
+                <div class="upload-text">
+                    <a class="browse-link">Browse local files</a>
+                </div>
             </div>
         </div>
 
-        <div class="button-row">
-            <button class="button-secondary" id="cancel">Back</button>
-            <button class="button-calculate" id="calculate">Calculate</button>
-            <button class="button-secondary" id="upload">No file?</button>
+        <div class="row px-4 mb-3">
+            <div class="col-3 ps-0">
+                <button type='button' class="button-secondary btn w-100" id="cancel">Back</button>
+            </div>
+            <div class="col-6 p-0">
+                <button type='button' class="button-calculate btn w-100" id="calculate">Calculate</button>
+            </div>
+            <div class="col-3 pe-0">
+                <button type='button' class="button-secondary btn w-100" id="upload">No file?</button>
+            </div>
         </div>
     </div>
 {% endblock %}
