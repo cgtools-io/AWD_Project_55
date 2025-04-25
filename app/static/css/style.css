@@ -22,29 +22,15 @@ App Layout Wrapper
   z-index: 10;
 }
 
-.nav-logo {
-  font-weight: bold;
-  font-size: 1.2rem;
-  color: #FFD700;
-}
 
-.nav-links {
-  list-style: none;
-  display: flex;
-  gap: 1.5rem;
-}
-
-.nav-links li a {
-  text-decoration: none;
+.nav-hover {
   color: #FFFFFF;
-  font-weight: 500;
-  border-bottom: 2px solid transparent;
-  transition: border-color 0.3s ease, color 0.3s ease;
+  transition: color 0.3s ease;
 }
 
-.nav-links li a:hover {
-  border-color: #D4AF37;
+.nav-hover:hover {
   color: #FFD700;
+  text-decoration: underline;
 }
 
 .login-btn {
@@ -52,6 +38,10 @@ App Layout Wrapper
   padding: 0.4rem 0.8rem;
   border-radius: 6px;
   background-color: transparent;
+}
+.login-btn:hover {
+  background-color: #FFD700 !important;
+  color: #1A1333 !important;
 }
 
 /* === Coinfall Animation === */
