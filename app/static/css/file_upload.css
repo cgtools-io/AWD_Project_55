@@ -12,7 +12,7 @@ h1 {
 
 /* === File Upload Section === */
 .upload-area {
-    height: 300px;
+    height: 100%;
     border: 5px dashed #B084CC;
     border-radius: 10px;
     padding: 40px;

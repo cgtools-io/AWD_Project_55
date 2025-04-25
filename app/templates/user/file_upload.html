@@ -7,31 +7,29 @@
 {% endblock %}
 
 {% block content %}
-    <div class="container-fluid">
-        <div class="row px-4 mt-3">
-            <h1 class="p-0">Upload .csv file:</h1>
-        </div>
-        
-        <div class="row px-4 mt-3 mb-3">
-            <div class="col upload-area" id="uploadfile">
-                <div class="upload-text">Drag and drop file here</div>
-                <img src="/static/images/upload-icon-white.png" alt="Upload Icon" width="80" height="80" alt="Upload Icon">
-                <div class="upload-text">
-                    <a class="browse-link">Browse local files</a>
-                </div>
-            </div>
-        </div>
-
-        <div class="row px-4 mb-3">
-            <div class="col-3 ps-0">
-                <button type='button' class="button-secondary btn w-100" id="cancel">Back</button>
-            </div>
-            <div class="col-6 p-0">
-                <button type='button' class="button-calculate btn w-100" id="calculate">Calculate</button>
-            </div>
-            <div class="col-3 pe-0">
-                <button type='button' class="button-secondary btn w-100" id="upload">No file?</button>
+<div id="page-body" class="container-fluid mt-0" style="min-height: calc(100vh - 73px);">
+    <div class="row px-4 pt-4">
+        <h1 class="p-0">Upload .csv file:</h1>
+    </div>
+    <div class="row px-4 mt-3 mb-3">
+        <div class="col upload-area" id="uploadfile">
+            <div class="upload-text">Drag and drop file here</div>
+            <img src="/static/images/upload-icon-white.png" alt="Upload Icon" width="80" height="80" alt="Upload Icon">
+            <div class="upload-text">
+                <a class="browse-link">Browse local files</a>
             </div>
         </div>
     </div>
+    <div class="row px-4 mb-3 align-items-bottom">
+        <div class="col-3 ps-0">
+            <button type='button' class="button-secondary btn w-100" id="cancel">Back</button>
+        </div>
+        <div class="col-6 p-0">
+            <button type='button' class="button-calculate btn w-100" id="calculate">Calculate</button>
+        </div>
+        <div class="col-3 pe-0">
+            <button type='button' class="button-secondary btn w-100" id="upload">No file?</button>
+        </div>
+    </div>
+</div>
 {% endblock %}

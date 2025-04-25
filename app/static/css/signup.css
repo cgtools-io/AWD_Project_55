@@ -10,14 +10,14 @@
 /* === Signup Area === */
 #signup-box {
     border: 1px solid #FFD700;
-    background-color: #4A0F84;
+    background-color: #1A1333;
     color: white;
     padding: 10px;
     border-radius: 10px;
 }
 .btn {
     background-color: #FFD700;
-    color: #4A0F84;
+    color: #1A1333;
     border: none;
     padding: 10px 20px;
     border-radius: 5px;
