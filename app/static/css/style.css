@@ -9,7 +9,9 @@ App Layout Wrapper
   min-height: 100vh; 
 }
 
-/* === Navbar === */
+/* ---------------
+Navbar
+--------------- */
 .navbar {
   display: flex;
   justify-content: space-between;
@@ -43,7 +45,9 @@ App Layout Wrapper
   color: #1A1333 !important;
 }
 
-/* === Coinfall Animation === */
+/* ---------------
+Coinfall Animation
+--------------- */
 .background .coin {
   position: absolute;
   top: -50px;
@@ -61,11 +65,12 @@ App Layout Wrapper
   100% { transform: translateY(110vh); opacity: 0.2; }
 }
 
-/* === Hero Section === */
+/* ---------------
+Hero Section
+--------------- */
 .hero {
   text-align: center;
   padding: 10vh 2rem 5vh;
-  background: linear-gradient(to bottom, #1A1333, #100B2B);
   border-top: 2px solid #CBA135;
 }
 
@@ -90,42 +95,16 @@ App Layout Wrapper
   border-radius: 8px;
   border: 1px solid #D4AF37;
   transition: background 0.3s ease, box-shadow 0.3s ease;
+  display: in-line block;
 }
 
 .cta-button:hover {
   background-color: #6A1FB0;
   box-shadow: 0 0 10px #FFD70055;
-}
-
-.features {
-  display: flex;
-  justify-content: center;
-  gap: 1.5rem;
-  margin-top: 3rem;
-  flex-wrap: wrap;
-}
-
-
-/* === Floating Register Button === */
-.floating-register {
-  position: fixed;
-  bottom: 20px;
-  right: 20px;
-  background-color: #FFD700;
-  color: #1A1333;
-  padding: 0.75rem 1.25rem;
-  font-weight: bold;
+  color: #fff;
   text-decoration: none;
-  border-radius: 30px;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-  transition: all 0.3s ease;
-  z-index: 100;
 }
 
-.floating-register:hover {
-  background-color: #F5C542;
-  box-shadow: 0 6px 12px rgba(0,0,0,0.4);
-}
 
 @media (max-width: 600px) {
   .hero h1 {
