@@ -14,16 +14,20 @@
   <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
   {% block extra_css %}{% endblock %}
 </head>
-<body>
-    <nav class="navbar">
-        <div class="nav-logo">CGTools</div>
-        <ul class="nav-links">
-            <li><a href="{{ url_for('index') }}">Home</a></li>
-            <li><a href="{{ url_for('file_upload') }}">Calculate CGT</a></li>
-            <li><a href="#">History</a></li>
-            <li><a href="{{ url_for('login') }}" class="login-btn">Login</a></li>
-        </ul>
-    </nav>
+<body class="app-root">
+    <nav class="navbar navbar-expand-lg sticky-top px-4" style="background-color: rgba(26, 19, 51, 0.85); border-bottom: 1px solid #CBA135;">
+        <div class="container-fluid d-flex justify-content-between align-items-center">
+          <span class="navbar-brand fw-bold text-warning">[App Name]</span>
+    
+          <!-- All nav links including Login are here -->
+          <div class="d-flex gap-4 align-items-center">
+            <a class="nav-link nav-hover" href="{{ url_for('index') }}">Home</a>
+            <a class="nav-link nav-hover" href="#">About</a>
+            <a class="nav-link nav-hover" href="#">Help</a>
+            <a href="{{ url_for('login') }}" class="btn btn-outline-warning text-white fw-medium login-btn">Login</a>
+          </div>
+        </div>
+      </nav>
     
     {% block content %}{% endblock %}
     

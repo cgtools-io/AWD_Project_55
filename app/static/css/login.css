@@ -4,6 +4,7 @@
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
+    min-height: calc(100vh - 77px); /* Adjust for navbar height */
 }
 
 /* === Login Area === */
