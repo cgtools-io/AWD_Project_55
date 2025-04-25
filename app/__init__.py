@@ -25,6 +25,10 @@ def create_app(config_name="development"):
     def login():
         return render_template('auth/login.html')
     
+    @app.route('/signup')
+    def signup():
+        return render_template('auth/signup.html')
+    
     # login_manager = LoginManager()
     # login_manager.init_app(app)
     # login_manager.login_view = 'auth.login'
