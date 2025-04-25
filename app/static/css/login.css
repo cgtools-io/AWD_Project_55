@@ -1,3 +1,12 @@
+/* === Page Background === */
+#bg-container {
+    background-image: url('/static/images/login_bg.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+/* === Login Area === */
 #login-box {
     border: 1px solid #FFD700;
     background-color: #4A0F84;
@@ -5,7 +14,14 @@
     padding: 10px;
     border-radius: 10px;
 }
-
+h1 {
+    font-size: 50px;
+    color: white;
+}
+.col-form-label {
+    font-size: 20px;
+    color: white;
+}
 .btn {
     background-color: #FFD700;
     color: #4A0F84;
@@ -13,11 +29,4 @@
     padding: 10px 20px;
     border-radius: 5px;
     cursor: pointer;
-}
-
-#bg-container {
-    background-image: url('/static/images/login_bg.jpg');
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
 }
