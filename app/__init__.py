@@ -32,6 +32,10 @@ def create_app(config_name="development"):
     @app.route('/about')
     def about():
         return render_template('about.html')
+
+    @app.route('/contact')
+    def contact():
+        return render_template('contact.html')
     
     # login_manager = LoginManager()
     # login_manager.init_app(app)
