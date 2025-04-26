@@ -28,6 +28,10 @@ def create_app(config_name="development"):
     @app.route('/signup')
     def signup():
         return render_template('auth/signup.html')
+
+    @app.route('/visual')
+    def visual():
+        return render_template('user/visual_v02.html')
     
     # login_manager = LoginManager()
     # login_manager.init_app(app)
