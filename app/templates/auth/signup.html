@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% block title %}Sign Up{% endblock %}
+
+{% block extra_css %}
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/signup.css') }}" />
+{% endblock %}
+{% block content %}
+<div id="bg-container" class="container-fluid d-flex justify-content-center align-items-center">
+  <div class="row w-100 justify-content-center align-items-center">
+    <div class="col-5" id="signup-box">
+      <h1 class="text-center">Sign Up</h1>
+      <form class="form row" id="signup-form" method="POST" action="{{ url_for('signup') }}">
+        <div class="col-12 mb-2">
+          <label for="username" class="col-form-label">Username:</label>
+          <input type="text" class="form-control" id="username" placeholder="Enter username" required>
+        </div>
+        <div class="col-12 mb-2">
+          <label for="email" class="col-form-label">Email:</label>
+          <input type="text" class="form-control" id="email" placeholder="Enter email" required>
+        </div>
+        <div class="col-6 mb-2 pe-1">
+          <label for="password" class="col-form-label">Password:</label>
+          <input type="password" class="form-control" id="password" placeholder="Enter password" required>
+        </div>
+        <div class="col-6 mb-2 ps-1">
+          <label for="password2" class="col-form-label">Confirm password:</label>
+          <input type="password" class="form-control" id="password2" placeholder="Confirm password" required>
+        </div>
+        <div class="d-grid mt-2">
+          <button type="submit" class="btn disabled" id="submit">Register account</button>
+        </div>
+        <div class="row mt-3">
+          <div class="col text-center">
+            <p>Already have an account? <a href="{{ url_for('login') }}">Login here</a></p>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}

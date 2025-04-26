@@ -1,31 +1,43 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>CGTools Login</title>
-</head>
-<body>
-  <nav class="navbar">
-    <div class="nav-logo">[We'll insert app name here]</div>
-    <ul class="nav-links">
-      <li><a href="#">Home</a></li>
-      <li><a href="#">About</a></li>
-      <li><a href="#">Help</a></li>
-      <li><a href="#" class="login-btn">Login</a></li>
-    </ul>
-  </nav>
+{% extends "base.html" %}
+{% block title %}Login{% endblock %}
 
-  <main class="login-form">
-    <h1>Login to Your Account</h1>
-    <form action="/login" method="POST">
-      <label for="email">Email:</label>
-      <input type="email" id="email" name="email" required />
-      <label for="password">Password:</label>
-      <input type="password" id="password" name="password" required />
-      <button type="submit">Login</button>
-    </form>
-    <p>Don't have an account? <a href="/register">Register here!</a></p>
-  </main>
-</body>
-</html>
+{% block extra_css %}
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/login.css') }}" />
+{% endblock %}
+{% block content %}
+<div id="bg-container" class="container-fluid d-flex justify-content-center align-items-center">
+  <div class="row w-100 justify-content-center align-items-center">
+    <div class="col-5" id="login-box">
+      <h1 class="text-center mb-3">Login</h1>
+      <form class="form w-100" id="login-form" method="POST" action="{{ url_for('login') }}">
+        <div class="row mb-3 align-items-center">
+          <label for="username" class="col-sm-2 col-form-label">Username:</label>
+          <div class="col-sm-10">
+            <input type="text" class="form-control" id="username" placeholder="Enter username" required>
+          </div>
+        </div>
+        <div class="row mb-3 align-items-center">
+          <label for="password" class="col-sm-2 col-form-label">Password:</label>
+          <div class="col-sm-10">
+            <input type="password" class="form-control" id="password" placeholder="Enter password" required>
+          </div>
+        </div>
+        <div class="row mb-3">
+          <div class="col-sm-10 offset-sm-2">
+            <input type="checkbox" class="form-check-input" id="remember" name="remember" value="true">
+            <label for="remember" class="form-check-label">Remember me</label>
+          </div>
+        </div>
+        <div class="d-grid">
+          <button type="submit" class="btn disabled" id="submit">Sign in</button>
+        </div>
+      </form>
+      <div class="row mt-3">
+        <div class="col text-center">
+          <p>Dont have an account? <a href="{{ url_for('signup') }}">Sign up here</a></p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
