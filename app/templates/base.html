@@ -21,9 +21,9 @@
     
         <!-- All nav links including Login are here -->
         <div class="d-flex gap-4 align-items-center">
-          <a class="nav-link nav-hover" href="{{ url_for('index') }}">Home</a>
-          <a class="nav-link nav-hover" href="#">About</a>
-          <a class="nav-link nav-hover" href="#">Help</a>
+          <a href="{{ url_for('index') }}" class="nav-link nav-hover">Home</a>
+          <a href="{{ url_for('about') }}" class="nav-link nav-hover">About</a>
+          <a href="#" class="nav-link nav-hover">Contact</a>
           <a href="{{ url_for('login') }}" class="btn btn-outline-warning text-white fw-medium login-btn">Login</a>
         </div>
       </div>
