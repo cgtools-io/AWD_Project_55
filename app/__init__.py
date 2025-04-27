@@ -29,9 +29,18 @@ def create_app(config_name="development"):
     def signup():
         return render_template('auth/signup.html')
 
+    @app.route('/about')
+    def about():
+        return render_template('about.html')
+
+    @app.route('/contact')
+    def contact():
+        return render_template('contact.html')
+
     @app.route('/visual')
     def visual():
         return render_template('user/visual_v02.html')
+
     
     # login_manager = LoginManager()
     # login_manager.init_app(app)
