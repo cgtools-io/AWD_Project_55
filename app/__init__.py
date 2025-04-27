@@ -36,6 +36,11 @@ def create_app(config_name="development"):
     @app.route('/contact')
     def contact():
         return render_template('contact.html')
+
+    @app.route('/visual')
+    def visual():
+        return render_template('user/visual_v02.html')
+
     
     # login_manager = LoginManager()
     # login_manager.init_app(app)
