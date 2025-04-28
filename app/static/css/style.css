@@ -105,9 +105,100 @@ Hero Section
   text-decoration: none;
 }
 
-
 @media (max-width: 600px) {
   .hero h1 {
     font-size: 2rem;
   }
+}
+
+/* ---------------
+Login and Signup Page
+--------------- */
+#bg-container {
+  background-image: url('/static/images/login_bg.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  min-height: calc(100vh - 77px); /* Adjust for navbar height */
+}
+#form-box {
+  border: 1px solid #FFD700;
+  background-color: #1A1333;
+  color: white;
+  padding: 10px;
+  border-radius: 10px;
+}
+#submit-btn {
+  background-color: #FFD700;
+  color: #1A1333;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+.col-form-label {
+  font-size: 20px;
+  color: white;
+}
+
+/* ---------------
+Login Form
+--------------- */
+#login-header {
+  font-size: 50px;
+  color: white;
+}
+
+/* ---------------
+File Upload Page
+--------------- */
+#upload-header {
+  text-align: left;
+  margin-top: 20px;
+  font-size: 50px;
+  color: white;
+}
+.upload-area {
+  height: 100%;
+  border: 5px dashed #B084CC;
+  border-radius: 10px;
+  padding: 40px;
+  background-color: transparent;
+  justify-content: center;
+  align-content: center;
+}
+.upload-text {
+  font-size: 20px;
+  color: #B084CC;
+  text-align: center;
+  display: block;
+}
+#upload-arrow {
+  display: block;
+  margin: 30px auto;
+  align-content: center;
+  text-align: center;
+}
+.button-secondary {
+  background-color: #B084CC;
+  color: #1A1333;
+  border: solid #B084CC;
+  border-radius: 5px;
+  font-weight: bold;
+  font-size: 25px;
+}
+.button-calculate {
+  background-color: #FFD700;
+  color: #1A1333;
+  border: solid #FFD700;
+  border-radius: 5px;
+  font-weight: bold;
+  font-size: 25px;
+}
+.button-calculate:hover {
+  background-color: #1A1333;
+  color: #FFD700;
+}
+.button-secondary:hover {
+  background-color: gray;
 }

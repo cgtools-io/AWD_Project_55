@@ -2,19 +2,15 @@
 
 {% block title %}CGTools File Upload{% endblock %}
 
-{% block extra_css %}
-<link rel="stylesheet" href="{{ url_for('static', filename='css/file_upload.css') }}">
-{% endblock %}
-
 {% block content %}
 <div id="page-body" class="container-fluid mt-0" style="min-height: calc(100vh - 73px);">
-    <div class="row px-4 pt-4">
-        <h1 class="p-0">Upload .csv file:</h1>
+    <div class="row px-4">
+        <h1 id="upload-header" class="p-0">Upload .csv file:</h1>
     </div>
     <div class="row px-4 mt-3 mb-3">
         <div class="col upload-area" id="uploadfile">
             <div class="upload-text">Drag and drop file here</div>
-            <img src="/static/images/upload-icon-white.png" alt="Upload Icon" width="80" height="80" alt="Upload Icon">
+            <img id="upload-arrow" src="/static/images/upload-icon-white.png" alt="Upload Icon" width="80" height="80" alt="Upload Icon">
             <div class="upload-text">
                 <a class="browse-link">Browse local files</a>
             </div>
