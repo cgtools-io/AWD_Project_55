@@ -39,7 +39,7 @@ def create_app(config_name="development"):
 
     @app.route('/visual')
     def visual():
-        return render_template('user/visual_v02.html')
+        return render_template('user/visual_v03.html')
 
     
     # login_manager = LoginManager()
