@@ -4,23 +4,23 @@
 {% block content %}
 <div id="bg-container" class="container-fluid d-flex justify-content-center align-items-center">
   <div class="row w-100 justify-content-center align-items-center">
-    <div class="col-5" id="form-box">
+    <div class="col-sm-8 col-md-6" id="form-box">
       <h1 id="login-header" class="text-center mb-3">Login</h1>
       <form class="form w-100" id="login-form" method="POST" action="{{ url_for('login') }}">
         <div class="row mb-3 align-items-center">
-          <label for="username" class="col-sm-2 col-form-label">Username:</label>
-          <div class="col-sm-10">
+          <label for="username" class="col-3 col-xl-2 col-form-label text-end">Username:</label>
+          <div class="col">
             <input type="text" class="form-control" id="username" placeholder="Enter username" required>
           </div>
         </div>
         <div class="row mb-3 align-items-center">
-          <label for="password" class="col-sm-2 col-form-label">Password:</label>
-          <div class="col-sm-10">
+          <label for="password" class="col-3 col-xl-2 col-form-label text-end">Password:</label>
+          <div class="col">
             <input type="password" class="form-control" id="password" placeholder="Enter password" required>
           </div>
         </div>
         <div class="row mb-3">
-          <div class="col-sm-10 offset-sm-2">
+          <div class="col-9 offset-3 col-xl-10 offset-xl-2">
             <input type="checkbox" class="form-check-input" id="remember" name="remember" value="true">
             <label for="remember" class="form-check-label">Remember me</label>
           </div>

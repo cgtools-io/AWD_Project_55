@@ -4,9 +4,9 @@
 {% block content %}
 <div id="bg-container" class="container-fluid d-flex justify-content-center align-items-center">
   <div class="row w-100 justify-content-center align-items-center">
-    <div class="col-5" id="form-box">
+    <div class="col-lg-5 col-md-6" id="form-box">
       <h1 class="text-center">Sign Up</h1>
-      <form class="form row" id="signup-form" method="POST" action="{{ url_for('signup') }}">
+      <form class="form row align-items-end" id="signup-form" method="POST" action="{{ url_for('signup') }}">
         <div class="col-12 mb-2">
           <label for="username" class="col-form-label">Username:</label>
           <input type="text" class="form-control" id="username" placeholder="Enter username" required>
