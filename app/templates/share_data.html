@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Share Data - CGTools</title>
-  <link rel="stylesheet" href="../static/css/style.css" />
+  <link rel="stylesheet" href="share_data_layout.css" />
 </head>
 <body>
   <header class="navbar">
@@ -27,8 +27,8 @@
 
       <label for="dataset">Select Data to Share</label>
       <select id="dataset">
-        <option>2024 CGT Summary</option>
-        <option>Transaction History</option>
+        <option>Binance CSV</option>
+        <option>Bybit CSV</option>
       </select>
 
       <label for="permissions">Permissions</label>
@@ -47,26 +47,54 @@
           <tr>
             <th>Recipient</th>
             <th>Data Shared</th>
+            <th>CGT Amount</th>
             <th>Permissions</th>
             <th>Date</th>
           </tr>
         </thead>
         <tbody>
           <tr>
-            <td>accountant@email.com</td>
-            <td>2024 CGT Summary</td>
+            <td>user_001</td>
+            <td>Binance CSV</td>
+            <td>$500</td>
             <td>View Only</td>
             <td>2025-04-13</td>
           </tr>
           <tr>
-            <td>user123</td>
-            <td>Transaction History</td>
+            <td>user_002</td>
+            <td>Bybit CSV</td>
+            <td>$1200</td>
             <td>View + Download</td>
             <td>2025-04-10</td>
           </tr>
         </tbody>
       </table>
     </section>
+
+    <section class="history">
+      <h2>Data Shared With You</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Sender</th>
+            <th>Data Shared</th>
+            <th>CGT Amount</th>
+            <th>Permissions</th>
+            <th>Date</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>admin_001</td>
+            <td>Binance CSV</td>
+            <td>$320</td>
+            <td>View Only</td>
+            <td>2025-04-12</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
   </main>
 </body>
 </html>
