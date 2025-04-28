@@ -155,11 +155,10 @@ File Upload Page
 #upload-header {
   text-align: left;
   margin-top: 20px;
-  font-size: 50px;
+  font-size: 45px;
   color: white;
 }
 .upload-area {
-  height: 100%;
   border: 5px dashed #B084CC;
   border-radius: 10px;
   padding: 40px;

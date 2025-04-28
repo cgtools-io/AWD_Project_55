@@ -3,12 +3,14 @@
 {% block title %}CGTools File Upload{% endblock %}
 
 {% block content %}
-<div id="page-body" class="container-fluid mt-0" style="min-height: calc(100vh - 73px);">
+<div id="page-body" class="container-fluid mt-0 d-flex flex-column" style="min-height: calc(100vh - 73px);">
     <div class="row px-4">
-        <h1 id="upload-header" class="p-0">Upload .csv file:</h1>
+        <div class="col ps-0">
+            <h1 id="upload-header" class="p-0">Upload .csv file:</h1>
+        </div>
     </div>
-    <div class="row px-4 mt-3 mb-3">
-        <div class="col upload-area" id="uploadfile">
+    <div class="row px-4 mt-3 mb-3 flex-grow-1 d-flex">
+        <div class="col upload-area flex-column" id="uploadfile">
             <div class="upload-text">Drag and drop file here</div>
             <img id="upload-arrow" src="/static/images/upload-icon-white.png" alt="Upload Icon" width="80" height="80" alt="Upload Icon">
             <div class="upload-text">
@@ -16,14 +18,14 @@
             </div>
         </div>
     </div>
-    <div class="row px-4 mb-3 align-items-bottom">
-        <div class="col-3 ps-0">
+    <div class="row px-4 mb-3 mt-auto">
+        <div class="col-sm-3 px-0 ps-sm-0 pb-2 pb-sm-0">
             <button type='button' class="button-secondary btn w-100" id="cancel">Back</button>
         </div>
-        <div class="col-6 p-0">
+        <div class="col-sm-6 px-0 px-sm-3 pb-2 pb-sm-0">
             <button type='button' class="button-calculate btn w-100" id="calculate">Calculate</button>
         </div>
-        <div class="col-3 pe-0">
+        <div class="col-sm-3 px-0 pe-sm-0">
             <button type='button' class="button-secondary btn w-100" id="upload">No file?</button>
         </div>
     </div>
