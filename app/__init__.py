@@ -1,15 +1,24 @@
-from flask import Flask, render_template, url_for
-from flask_login import LoginManager, current_user
+from flask import Flask, render_template
 import logging
+from app.config import Config
 
-def create_app(config_name="development"):
+def create_app(config_class=Config):
     app = Flask(__name__, static_folder='static', template_folder='templates')
+    app.config.from_object(config_class)
+
+    # Import and initialize extensions here
+    from app.extensions import db, migrate, login_manager, csrf
+    db.init_app(app)
+    migrate.init_app(app, db)
+    #login_manager.init_app(app)
+    csrf.init_app(app)
+
+    # Register blueprints here
+    # from app.routes.user import user
+    # app.register_blueprint(user)
 
     logging.basicConfig(level=logging.DEBUG)
     app.logger.setLevel(logging.DEBUG)
-
-    # from .routes.user import user
-    # app.register_blueprint(user)
 
     app.logger.debug(f"Registered blueprints: {app.blueprints}")
 
@@ -39,17 +48,6 @@ def create_app(config_name="development"):
 
     @app.route('/visual')
     def visual():
-        return render_template('user/visual_v03.html')
-
-    
-    # login_manager = LoginManager()
-    # login_manager.init_app(app)
-    # login_manager.login_view = 'auth.login'
-
-    # @login_manager.user_loader
-    # def load_user(user_id):
-    #     from .models import User
-    #     return User.query.get(int(user_id))
-    
+        return render_template('user/visual_v03.html')    
     
     return app
