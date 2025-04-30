@@ -1,100 +1,88 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Share Data - CGTools</title>
-  <link rel="stylesheet" href="../static/css/share_data_layout.css" />
-</head>
-<body>
-  <header class="navbar">
-    <div class="navbar-left">CGTools</div>
-    <nav class="navbar-right">
-      <a href="#">Home</a>
-      <a href="#">About</a>
-      <a href="#">Help</a>
-      <a href="#">Login</a>
-    </nav>
-  </header>
+{% extends "base.html" %}
 
-  <main class="container">
-    <h1>Share Data</h1>
-    <p>Select the data you want to share and who you want to share it with.</p>
+{% block title %}Share Data - CGTools{% endblock %}
 
-    <form class="share-form">
-      <label for="recipient">User ID / Recipient Email</label>
-      <input type="email" id="recipient" placeholder="e.g. user123 or user@email.com" required />
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/share_data_layout.css') }}">
+{% endblock %}
 
-      <label for="dataset">Select Data to Share</label>
-      <select id="dataset">
-        <option>Binance CSV</option>
-        <option>Bybit CSV</option>
-      </select>
+{% block content %}
+<main class="container">
+  <h1>Share Data</h1>
+  <p>Select the data you want to share and who you want to share it with.</p>
 
-      <label for="permissions">Permissions</label>
-      <select id="permissions">
-        <option>View Only</option>
-        <option>View + Download</option>
-      </select>
+  <form class="share-form">
+    <label for="recipient">User ID / Recipient</label>
+    <input type="text" id="recipient" placeholder="e.g. user123" required />
 
-      <button type="submit">Share</button>
-    </form>
+    <label for="dataset">Select Data to Share</label>
+    <select id="dataset">
+      <option>Binance CSV</option>
+      <option>Bybit CSV</option>
+    </select>
 
-    <section class="history">
-      <h2>Sharing History</h2>
-      <table>
-        <thead>
-          <tr>
-            <th>Recipient</th>
-            <th>Data Shared</th>
-            <th>CGT Amount</th>
-            <th>Permissions</th>
-            <th>Date</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>user_001</td>
-            <td>Binance CSV</td>
-            <td>$500</td>
-            <td>View Only</td>
-            <td>2025-04-13</td>
-          </tr>
-          <tr>
-            <td>user_002</td>
-            <td>Bybit CSV</td>
-            <td>$1200</td>
-            <td>View + Download</td>
-            <td>2025-04-10</td>
-          </tr>
-        </tbody>
-      </table>
-    </section>
+    <label for="permissions">Permissions</label>
+    <select id="permissions">
+      <option>View Only</option>
+      <option>View + Download</option>
+    </select>
 
-    <section class="history">
-      <h2>Data Shared With You</h2>
-      <table>
-        <thead>
-          <tr>
-            <th>Sender</th>
-            <th>Data Shared</th>
-            <th>CGT Amount</th>
-            <th>Permissions</th>
-            <th>Date</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>admin_001</td>
-            <td>Binance CSV</td>
-            <td>$320</td>
-            <td>View Only</td>
-            <td>2025-04-12</td>
-          </tr>
-        </tbody>
-      </table>
-    </section>
+    <button type="submit">Share</button>
+  </form>
 
-  </main>
-</body>
-</html>
+  <section class="history">
+    <h2>Sharing History</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Recipient</th>
+          <th>Data Shared</th>
+          <th>CGT Amount</th>
+          <th>Permissions</th>
+          <th>Date</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>user_001</td>
+          <td>Binance CSV</td>
+          <td>$500</td>
+          <td>View Only</td>
+          <td>2025-04-13</td>
+        </tr>
+        <tr>
+          <td>user_002</td>
+          <td>Bybit CSV</td>
+          <td>$1200</td>
+          <td>View + Download</td>
+          <td>2025-04-10</td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section class="history">
+    <h2>Data Shared With You</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Sender</th>
+          <th>Data Shared</th>
+          <th>CGT Amount</th>
+          <th>Permissions</th>
+          <th>Date</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>admin_001</td>
+          <td>Binance CSV</td>
+          <td>$320</td>
+          <td>View Only</td>
+          <td>2025-04-12</td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+</main>
+{% endblock %}
