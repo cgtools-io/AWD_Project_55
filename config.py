@@ -1,4 +1,7 @@
 import os
+from dotenv import load_dotenv
+
+load_dotenv() # Load environment variables from .env file
 
 basedir = os.path.abspath(os.path.dirname(__file__))
 default_db_path = 'sqlite:///' + os.path.join(basedir, 'app.db')
