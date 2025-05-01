@@ -14,8 +14,8 @@ def create_app(config_class=Config):
     csrf.init_app(app)
 
     # Register blueprints here
-    # from app.routes.user import user
-    # app.register_blueprint(user)
+    from app.routes.user import user
+    app.register_blueprint(user)
 
     logging.basicConfig(level=logging.DEBUG)
     app.logger.setLevel(logging.DEBUG)
@@ -33,10 +33,6 @@ def create_app(config_class=Config):
     @app.route('/login')
     def login():
         return render_template('auth/login.html')
-    
-    @app.route('/signup')
-    def signup():
-        return render_template('auth/signup.html')
 
     @app.route('/about')
     def about():
