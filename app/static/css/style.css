@@ -203,83 +203,66 @@ File Upload Page
 }
 
 /* ---------------
-  visual Section
+  resposive scoped visual Section
   --------------- */
-
- .visual {
+.visual {
     margin: 0;
     font-family: Arial, sans-serif;
     background: #1e1a2e;
     color: #e0e0e0;
+    font-size: 14px;
+    overflow-x: hidden;
   }
   
-  
-  
-  /* Navbar */
   .visual .navbar {
-    background-color:#2c234d;
+    background-color: #2c234d;
     padding: 1rem 2rem;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-
   }
   
-  .visual .navbar .brand {
+  .visual .brand {
     color: #f1c40f;
     font-size: 1.5rem;
     font-weight: bold;
-    
   }
   
-  .visual .navbar .nav-links {
+  .visual .nav-links {
     display: flex;
     gap: 1.5rem;
+    flex-wrap: wrap;
     list-style: none;
-    padding: 0;
+    padding-left: 0;
     margin: 0;
   }
   
-  .visual .navbar .nav-links a {
+  .visual .nav-links a {
     color: #ccc;
     text-decoration: none;
+    font-size: 1rem;
     transition: color 0.3s;
   }
   
-  .visual .navbar .nav-links a:hover {
+  .visual .nav-links a:hover {
     color: #f1c40f;
   }
   
-  /* Header */
-  .visual .header {
-    text-align: center;
-    margin-bottom: 2.5rem;
-  }
-  
   .visual .header h1 {
+    padding:1rem;
     font-size: 3rem;
     color: #f1c40f;
   }
   
   .visual .header p {
     color: #e0e0e0;
-    font-size: 2rem;
+    font-size: 1.5rem;
   }
-  
-  /* Stats */
-  .visual .stats {
-    margin: 0 5rem 2.5rem;
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 1rem;
-    text-align: center;
-  }
-  
+
   .visual .stat-box {
     padding: 1rem;
     border-radius: 1.5rem;
-    background-color: #2c234d;  
+    background-color: #2c234d;
     font-size: 1rem;
+    height: 100%;
+    box-sizing: border-box;
   }
   
   .visual .stat-box span {
@@ -309,39 +292,20 @@ File Upload Page
     color: #2196f3;
   }
   
-  /* Chart Section */
-  .visual .chart-section {
-    margin: 0 5rem 2.5rem;
-    display: flex;
-    flex-direction: column;
-    gap: 1.5rem;
-  }
-  
-  @media (min-width: 1024px) {  /*checks the media width, if greater than 1024, it changes flex value to row.*/
-    .visual .chart-section {
-      flex-direction: row;
-    }
-  }
-  
-  .visual .chart-box, .note-box {
-   
-    flex: 1 1 0;
-    min-width: 0;
+  .visual .chart-box,
+  .visual .note-box {
     background-color: #2c234d;
     border: 1px solid #f1c40f;
     padding: 1.5rem;
     border-radius: 0.75rem;
+    height: 100%;
+    box-sizing: border-box;
   }
   
-  .visual .chart-box h2 {
-    text-align: center;
-    color: #f1c40f;
-    margin-bottom: 1rem;
-  }
-  
+  .visual .chart-box h2,
   .visual .note-box h2 {
     color: #f1c40f;
-    margin-bottom: 0.75rem;
+    margin-bottom: 1rem;
   }
   
   .visual .note-box ul {
@@ -350,17 +314,9 @@ File Upload Page
     margin: 0.5rem 0 1rem 0;
     font-size: 1.2rem;
   }
-
+  
   .visual .note-box p {
     font-size: 1.2rem;
-  }
-
-  /* Holdings Grid Section*/
-  .visual .holdings-grid {
-    margin: 0 5rem 2.5rem;
-    display: grid;
-    gap: 1.5rem;
-    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
   }
   
   .visual .holding-card {
@@ -368,13 +324,9 @@ File Upload Page
     padding: 1.25rem;
     border-radius: 0.75rem;
     border: 1px solid #f1c40f;
-    transition: transform 0.3s ease, box-shadow 0.3s ease; /*This CSS line is using the transition property 
-    to animate two different properties: transform and box-shadow. 
-    transform 0.3s ease:
-    Animates changes to the transform property (like scale, translate, or rotate) over 0.3 seconds, using an 
-    ease timing function (starts slow, speeds up, then slows down again).
-    box-shadow 0.3s ease:
-    Animates changes to the box-shadow over the same duration with the same easing. */
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    height: 100%;
+    box-sizing: border-box;
   }
   
   .visual .holding-card:hover {
@@ -397,4 +349,3 @@ File Upload Page
     font-weight: bold;
     color: #fff;
   }
- 
