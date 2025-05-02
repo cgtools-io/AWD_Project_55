@@ -5,9 +5,11 @@ import logging
 def create_app(config_name="development"):
     app = Flask(__name__, static_folder='static', template_folder='templates')
 
+    app.config['SECRET_KEY'] = 'password' # CHANGE THIS TO SOMETHING MORE SECURE BEFORE PUSHING APP LIVE  
     logging.basicConfig(level=logging.DEBUG)
     app.logger.setLevel(logging.DEBUG)
 
+    from app.routes import upload  # To register our real file_upload() route
     # from .routes.user import user
     # app.register_blueprint(user)
 
@@ -17,9 +19,10 @@ def create_app(config_name="development"):
     def index():
         return render_template('index.html')
 
-    @app.route('/file_upload')
-    def file_upload():
-        return render_template('user/file_upload.html')
+    #Editing out the below while I troubleshoot getting Flask to run Forms
+    #@app.route('/file_upload')
+    #def file_upload():
+    #    return render_template('user/file_upload.html')
     
     @app.route('/login')
     def login():
@@ -51,5 +54,7 @@ def create_app(config_name="development"):
     #     from .models import User
     #     return User.query.get(int(user_id))
     
-    
+    from app.routes.upload import upload_bp
+    app.register_blueprint(upload_bp)
+
     return app
