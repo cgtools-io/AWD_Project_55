@@ -2,6 +2,21 @@
 {% block title %}Sign Up{% endblock %}
 
 {% block content %}
+<!-- Flash Messages -->
+{% with messages = get_flashed_messages(with_categories=true) %}
+  {% if messages %}
+    <div class="container mt-3">
+      {% for category, message in messages %}
+        <div class="alert alert-{{ category if category != 'messages' else 'info' }} alert-dismissable fade show" role="alert">
+          {{ message }}
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+      {% endfor %}
+    </div>
+  {% endif %}
+{% endwith %}
+
+<!-- Signup Form -->
 <div id="bg-container" class="container-fluid d-flex justify-content-center align-items-center">
   <div class="row w-100 justify-content-center align-items-center">
     <div class="col-lg-5 col-md-6" id="form-box">
