@@ -397,4 +397,60 @@ File Upload Page
     font-weight: bold;
     color: #fff;
   }
- 
+/* ========== Share Data Page Scoped Styles ========== */
+.share-data-page h1,
+.share-data-page h2 {
+  color: #f1c40f;
+  margin-top: 1rem;
+}
+
+.share-data-page label {
+  display: block;
+  margin-top: 1rem;
+  font-weight: bold;
+}
+
+.share-data-page input,
+.share-data-page select {
+  width: 100%;
+  padding: 0.5rem;
+  margin-top: 0.5rem;
+  border: none;
+  border-radius: 5px;
+  background-color: #3b2f5e;
+  color: #ffffff;
+}
+
+.share-data-page button {
+  margin-top: 1.5rem;
+  padding: 0.75rem 1.5rem;
+  background-color: #f1c40f;
+  color: #2c234d;
+  border: none;
+  border-radius: 5px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.share-data-page button:hover {
+  background-color: #ffda4b;
+}
+
+.share-data-page table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 2rem;
+}
+
+.share-data-page th,
+.share-data-page td {
+  padding: 0.75rem;
+  text-align: left;
+  border-bottom: 1px solid #444;
+}
+
+.share-data-page th {
+  background-color: #3b2f5e;
+  color: #f1c40f;
+}
+
