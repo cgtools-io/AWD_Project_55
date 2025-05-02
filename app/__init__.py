@@ -41,6 +41,10 @@ def create_app(config_class=Config):
     @app.route('/visual')
     def visual():
         return render_template('user/visual_v03.html')    
+
+    @app.route('/share')
+    def share():
+        return render_template('share_data.html')
     
     @login_manager.user_loader
     def load_user(user_id):
