@@ -1,17 +1,25 @@
-from flask import Flask, render_template, url_for
-from flask_login import LoginManager, current_user
+from flask import Flask, render_template
 import logging
+from config import Config
 
-def create_app(config_name="development"):
+def create_app(config_class=Config):
     app = Flask(__name__, static_folder='static', template_folder='templates')
+    app.config.from_object(config_class)
+
+    # Import and initialize extensions here
+    from app.extensions import db, migrate, login_manager, csrf
+    db.init_app(app)
+    migrate.init_app(app, db)
+    login_manager.init_app(app)
+    csrf.init_app(app)
+
+    # Register blueprints here
+    from app.routes.user import user
+    app.register_blueprint(user)
 
     app.config['SECRET_KEY'] = 'password' # CHANGE THIS TO SOMETHING MORE SECURE BEFORE PUSHING APP LIVE  
     logging.basicConfig(level=logging.DEBUG)
     app.logger.setLevel(logging.DEBUG)
-
-    from app.routes import upload  # To register our real file_upload() route
-    # from .routes.user import user
-    # app.register_blueprint(user)
 
     app.logger.debug(f"Registered blueprints: {app.blueprints}")
 
@@ -23,14 +31,6 @@ def create_app(config_name="development"):
     #@app.route('/file_upload')
     #def file_upload():
     #    return render_template('user/file_upload.html')
-    
-    @app.route('/login')
-    def login():
-        return render_template('auth/login.html')
-    
-    @app.route('/signup')
-    def signup():
-        return render_template('auth/signup.html')
 
     @app.route('/about')
     def about():
@@ -42,19 +42,25 @@ def create_app(config_name="development"):
 
     @app.route('/visual')
     def visual():
-        return render_template('user/visual_v03.html')
+        return render_template('user/visual_v03.html')    
 
-    
-    # login_manager = LoginManager()
-    # login_manager.init_app(app)
-    # login_manager.login_view = 'auth.login'
-
-    # @login_manager.user_loader
-    # def load_user(user_id):
-    #     from .models import User
-    #     return User.query.get(int(user_id))
+    @app.route('/share')
+    def share():
+        return render_template('share_data.html')
     
     from app.routes.upload import upload_bp
     app.register_blueprint(upload_bp)
 
+
+    @login_manager.user_loader
+    def load_user(user_id):
+        from app.models import User, Admin
+
+        if user_id == 0:
+            return Admin(0)
+        else:
+            return db.session.execute(
+                db.select(User).where(User.id == user_id)
+            ).scalar()
+    
     return app
