@@ -3,7 +3,7 @@ from flask_login import login_user, logout_user, current_user, login_required
 import logging
 
 from app.extensions import db
-from app.forms.user_forms import SignupForm
+from app.forms.user_forms import SignupForm, LoginForm
 
 user = Blueprint('user', __name__)
 
@@ -16,3 +16,11 @@ def signup():
     form = SignupForm()
 
     return render_template('auth/signup.html', form=form)
+
+@user.route('/login', methods=['GET', 'POST'])
+def login():
+    logging.debug("User login endpoint accessed")
+
+    form = LoginForm()
+
+    return render_template('auth/login.html', form=form)

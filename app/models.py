@@ -13,3 +13,19 @@ class User(db.Model, UserMixin):
 
     def check_password(self, password):
         return check_password_hash(self.password_hash, password)
+    
+class Admin(UserMixin):
+    def __init__(self, id=None, username=None):
+        self.id = id
+        self.username = username
+        self.role = 'admin'
+        self.password_hash = None
+    
+    def set_password(self, password):
+        self.password_hash = generate_password_hash(password)
+    
+    def check_password(self, password):
+        return check_password_hash(self.password_hash, password)
+    
+    def is_admin(self):
+        return True

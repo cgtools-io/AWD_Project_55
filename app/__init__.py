@@ -10,7 +10,7 @@ def create_app(config_class=Config):
     from app.extensions import db, migrate, login_manager, csrf
     db.init_app(app)
     migrate.init_app(app, db)
-    #login_manager.init_app(app)
+    login_manager.init_app(app)
     csrf.init_app(app)
 
     # Register blueprints here
@@ -29,10 +29,6 @@ def create_app(config_class=Config):
     @app.route('/file_upload')
     def file_upload():
         return render_template('user/file_upload.html')
-    
-    @app.route('/login')
-    def login():
-        return render_template('auth/login.html')
 
     @app.route('/about')
     def about():
@@ -45,5 +41,16 @@ def create_app(config_class=Config):
     @app.route('/visual')
     def visual():
         return render_template('user/visual_v03.html')    
+    
+    @login_manager.user_loader
+    def load_user(user_id):
+        from app.models import User, Admin
+
+        if user_id == 0:
+            return Admin(0)
+        else:
+            return db.session.execute(
+                db.select(User).where(User.id == user_id)
+            ).scalar()
     
     return app
