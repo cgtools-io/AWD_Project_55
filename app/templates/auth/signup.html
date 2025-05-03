@@ -25,6 +25,8 @@
       
       <form class="form row align-items-end" id="signup-form" method="POST" action="{{ url_for('user.signup') }}">
         
+        {{ form.csrf_token }}
+
         <div class="col-12 mb-2">
           {{ form.username.label(class="col-form-label") }}
           {{ form.username(placeholder="Enter username", class="form-control") }}
