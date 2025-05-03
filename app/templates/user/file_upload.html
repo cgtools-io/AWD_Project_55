@@ -10,6 +10,9 @@
         </div>
     </div>
     <div class="row px-4 mt-3 mb-3 flex-grow-1 d-flex">
+
+        <!-- JORDY: KEEPING THIS FOR NOW AS A REFERENCE FOR CSS -->
+        <!--
         <div class="col upload-area flex-column" id="uploadfile">
             <div class="upload-text">Drag and drop file here</div>
             <img id="upload-arrow" src="/static/images/upload-icon-white.png" alt="Upload Icon" width="80" height="80" alt="Upload Icon">
@@ -17,6 +20,25 @@
                 <a class="browse-link">Browse local files</a>
             </div>
         </div>
+        -->
+
+        <div class="col upload-area flex-column" id="uploadfile">
+            <form method="POST" enctype="multipart/form-data">
+                {{ form.hidden_tag() }}
+        
+                <div class="upload-text">Drag and drop file here</div>
+                <img id="upload-arrow" src="/static/images/upload-icon-white.png" alt="Upload Icon" width="80" height="80">
+        
+                <div class="upload-text">
+                    {{ form.file(class="form-control mb-3") }}
+                </div>
+        
+                <div class="upload-text">
+                    {{ form.submit(class="button-calculate btn w-100") }}
+                </div>
+            </form>
+        </div>
+
     </div>
     <div class="row px-4 mb-3 mt-auto">
         <div class="col-sm-3 px-0 ps-sm-0 pb-2 pb-sm-0">

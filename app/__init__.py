@@ -17,6 +17,7 @@ def create_app(config_class=Config):
     from app.routes.user import user
     app.register_blueprint(user)
 
+    app.config['SECRET_KEY'] = 'password' # CHANGE THIS TO SOMETHING MORE SECURE BEFORE PUSHING APP LIVE  
     logging.basicConfig(level=logging.DEBUG)
     app.logger.setLevel(logging.DEBUG)
 
@@ -26,9 +27,10 @@ def create_app(config_class=Config):
     def index():
         return render_template('index.html')
 
-    @app.route('/file_upload')
-    def file_upload():
-        return render_template('user/file_upload.html')
+    #Editing out the below while I troubleshoot getting Flask to run Forms
+    #@app.route('/file_upload')
+    #def file_upload():
+    #    return render_template('user/file_upload.html')
 
     @app.route('/about')
     def about():
@@ -46,6 +48,10 @@ def create_app(config_class=Config):
     def share():
         return render_template('share_data.html')
     
+    from app.routes.upload import upload_bp
+    app.register_blueprint(upload_bp)
+
+
     @login_manager.user_loader
     def load_user(user_id):
         from app.models import User, Admin
