@@ -21,6 +21,25 @@ def signup():
 
     form = SignupForm()
 
+    if request.method == 'POST':
+        if form.validate_on_submit():
+            
+            #Create a new user
+            new_user = User(
+                username=form.username.data,
+                email=form.email.data
+            )
+
+            # hashes the password
+            new_user.set_password(form.password.data)
+
+            # Add the user to the DB session and commit it
+            db.session.add(new_user)
+            db.session.commit()
+
+            return redirect(url_for('user.login'))
+        else:
+            pass
     return render_template('auth/signup.html', form=form)
 
 @user.route('/login', methods=['GET', 'POST'])
