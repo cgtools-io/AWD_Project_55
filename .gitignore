@@ -178,3 +178,6 @@ app/.DS_Store
 
 # Database files
 *.db
+
+# File Uploads
+*.csv
