@@ -127,17 +127,23 @@ def logout():
 def file_upload():
     form = FileUploadForm()
 
-    if form.validate_on_submit():
-        file = form.file.data
-        if isinstance(file, list):
-            file = file[0]
+    if request.method == 'POST':
+        if form.validate_on_submit():
+            file = form.file.data
+            if isinstance(file, list):
+                file = file[0]
 
-        filename = secure_filename(file.filename)
-        upload_folder = os.path.join('app/static/uploads')
-        os.makedirs(upload_folder, exist_ok=True)
-        file.save(os.path.join(upload_folder, filename))
+            filename = secure_filename(file.filename)
+            upload_folder = os.path.join('app/static/uploads')
+            os.makedirs(upload_folder, exist_ok=True)
+            file.save(os.path.join(upload_folder, filename))
 
-        flash('Upload successful!', 'success')
+            flash('Upload successful!', 'success')
+        else:
+            for field, errors in form.errors.items():
+                for error in errors:
+                    flash(error, 'danger')
+
         return redirect(url_for('user.file_upload'))
 
     return render_template('user/file_upload.html', form=form)
