@@ -31,11 +31,6 @@ def create_app(config_class=Config):
             app.logger.debug(f'User authenticated: {current_user.username}')
         return render_template('index.html')
 
-    #Editing out the below while I troubleshoot getting Flask to run Forms
-    #@app.route('/file_upload')
-    #def file_upload():
-    #    return render_template('user/file_upload.html')
-
     @app.route('/about')
     def about():
         return render_template('about.html')
@@ -52,9 +47,6 @@ def create_app(config_class=Config):
     def share():
         return render_template('share_data.html')
     
-    from app.routes.upload import upload_bp
-    app.register_blueprint(upload_bp)
-
 
     @login_manager.user_loader
     def load_user(user_id):

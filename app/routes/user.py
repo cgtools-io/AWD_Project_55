@@ -8,6 +8,8 @@ import os
 from app.extensions import db
 from app.forms.user_forms import SignupForm, LoginForm
 from app.models import User, Admin
+from app.forms.file_upload_form import FileUploadForm
+from werkzeug.utils import secure_filename
 
 user = Blueprint('user', __name__)
 ADMIN_USERNAME = os.getenv('ADMIN_USERNAME') 
@@ -120,3 +122,22 @@ def logout():
         flash('You are not logged in.')
 
     return redirect(url_for('index'))
+
+@user.route('/file_upload', methods=['GET', 'POST'])
+def file_upload():
+    form = FileUploadForm()
+
+    if form.validate_on_submit():
+        file = form.file.data
+        if isinstance(file, list):
+            file = file[0]
+
+        filename = secure_filename(file.filename)
+        upload_folder = os.path.join('app/static/uploads')
+        os.makedirs(upload_folder, exist_ok=True)
+        file.save(os.path.join(upload_folder, filename))
+
+        flash('Upload successful!', 'success')
+        return redirect(url_for('user.file_upload'))
+
+    return render_template('user/file_upload.html', form=form)
