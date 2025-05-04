@@ -1,11 +1,17 @@
 from flask import Blueprint, request, jsonify, url_for, render_template, flash, redirect, session, abort, current_app
 from flask_login import login_user, logout_user, current_user, login_required
+from flask_wtf.csrf import CSRFError
 import logging
+from urllib.parse import urlparse
+import os
 
 from app.extensions import db
 from app.forms.user_forms import SignupForm, LoginForm
+from app.models import User, Admin
 
 user = Blueprint('user', __name__)
+ADMIN_USERNAME = os.getenv('ADMIN_USERNAME') 
+ADMIN_PASSWORD = os.getenv('ADMIN_PASSWORD') 
 
 logger = logging.getLogger(__name__)
 
@@ -21,6 +27,61 @@ def signup():
 def login():
     logging.debug("User login endpoint accessed")
 
+    if current_user.is_authenticated:
+        return redirect(url_for('index'))
+
     form = LoginForm()
 
+    if request.method == 'POST':
+        try:
+            # Returns true if form validators pass after submission
+            if form.validate_on_submit():
+                # Query the database for the user with the given username
+                user = db.session.execute(
+                    db.select(User).where(User.username == form.username.data)
+                ).scalar()
+
+                if form.username.data == ADMIN_USERNAME and form.password.data == ADMIN_PASSWORD:
+                    admin = Admin(0, ADMIN_USERNAME)
+                    login_user(admin, remember=form.remember.data)
+                    logger.debug(f'Admin {admin.username} logged in successfully')
+                    logger.debug(f'Admin authenticated: {admin.is_authenticated}')
+                    logger.debug(f'Stuff: {current_user.is_authenticated}, {current_user.username}, {current_user.id}')
+                    return redirect(url_for('index'))
+
+                # Check if the user exists and if the password is correct
+                if not user or not user.check_password(form.password.data):
+                    flash('Invalid username or password', 'danger')
+                    return redirect(url_for('user.login'))
+                
+                login_user(user, remember=form.remember.data)
+                flash('Login successful!')
+                logger.debug(f'User {user.username} logged in successfully')
+
+                # Redirect to the next page (default: index page)
+                next_page = request.args.get('next')
+                if not next_page or urlparse(next_page).netloc != '':
+                    next_page = url_for('index')
+                return redirect(next_page)
+            else:
+                for field, errors in form.errors.items():
+                    for error in errors:
+                        flash(f'Error in {field}: {error}', 'danger')
+                        logger.error(f'Error in {field}: {error}')
+
+        except CSRFError:
+            flash('CSRF token validation failed. Please try again.')
+            logger.error('CSRF token validation failed')
+
     return render_template('auth/login.html', form=form)
+
+@user.route('/logout')
+def logout():
+    logging.debug("User logout endpoint accessed")
+
+    if current_user.is_authenticated:
+        logout_user()
+    else:
+        flash('You are not logged in.')
+
+    return redirect(url_for('index'))

@@ -2,29 +2,30 @@
 {% block title %}Login{% endblock %}
 
 {% block content %}
-<!-- Flash Messages -->
-{% with messages = get_flashed_messages(with_categories=true) %}
-  {% if messages %}
-    <div class="container mt-3">
-      {% for category, message in messages %}
-        <div class="alert alert-{{ category if category != 'messages' else 'info' }} alert-dismissable fade show" role="alert">
-          {{ message }}
-          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
-      {% endfor %}
-    </div>
-  {% endif %}
-{% endwith %}
 
-<!-- Login Form -->
 <div id="bg-container" class="container-fluid d-flex justify-content-center align-items-center">
+  
+  <!-- Flash Messages -->
+  {% with messages = get_flashed_messages(with_categories=true) %}
+  {% if messages %}
+    {% for category, message in messages %}
+      <div class="alert alert-{{ category if category != 'messages' else 'info' }} alert-dismissable fade show" role="alert">
+        {{ message }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      </div>
+    {% endfor %}
+  {% endif %}
+  {% endwith %}
+
   <div class="row w-100 justify-content-center align-items-center">
     <div class="col-sm-8 col-md-6" id="form-box">
       
       <h1 id="login-header" class="text-center mb-3">Login</h1>
       
+      <!-- Login Form -->
       <form class="form w-100" id="login-form" method="POST" action="{{ url_for('user.login') }}">
-        
+        {{ form.csrf_token }}
+
         <div class="row mb-3 align-items-center">
           {{ form.username.label(class="col-3 col-xl-2 col-form-label text-end") }}
           <div class="col">

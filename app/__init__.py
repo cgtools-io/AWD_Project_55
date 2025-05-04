@@ -1,4 +1,5 @@
 from flask import Flask, render_template
+from flask_login import current_user
 import logging
 from config import Config
 
@@ -25,6 +26,9 @@ def create_app(config_class=Config):
 
     @app.route('/')
     def index():
+        app.logger.debug(f'Stuff: {current_user.is_authenticated}')
+        if current_user.is_authenticated:
+            app.logger.debug(f'User authenticated: {current_user.username}')
         return render_template('index.html')
 
     #Editing out the below while I troubleshoot getting Flask to run Forms
@@ -56,7 +60,7 @@ def create_app(config_class=Config):
     def load_user(user_id):
         from app.models import User, Admin
 
-        if user_id == 0:
+        if user_id == '0':
             return Admin(0)
         else:
             return db.session.execute(
