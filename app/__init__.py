@@ -41,7 +41,7 @@ def create_app(config_class=Config):
 
     @app.route('/visual')
     def visual():
-        return render_template('user/visual_v03.html')    
+        return render_template('user/visual.html')    
 
     @app.route('/share')
     def share():
