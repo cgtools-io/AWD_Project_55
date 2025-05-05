@@ -21,6 +21,36 @@ def signup():
 
     form = SignupForm()
 
+    if request.method == 'POST':
+        if form.validate_on_submit():
+            new_user = User(
+                username=form.username.data,
+                email=form.email.data
+            )
+
+            logging.debug(f"Creating user: {new_user.username}, {new_user.email}")
+            new_user.set_password(form.password.data)
+            db.session.add(new_user)
+            db.session.commit()
+
+            logging.debug("New user successfully committed to the database.")
+            flash('Account created successfully. Please log in.', 'success')
+            return redirect(url_for('user.login'))
+        
+        # Form was invalid — display detailed errors
+        field_names = {
+            'username': 'Username',
+            'email': 'Email address',
+            'password': 'Password',
+            'confirm_password': 'Password confirmation',
+        }
+
+        for field, errors in form.errors.items():
+            for error in errors:
+                readable_field = field_names.get(field, field)
+                flash(f'Error in {readable_field}: {error}', 'danger')
+                logging.error(f'Error in {readable_field}: {error}')
+                
     return render_template('auth/signup.html', form=form)
 
 @user.route('/login', methods=['GET', 'POST'])
