@@ -22,40 +22,35 @@ def signup():
     form = SignupForm()
 
     if request.method == 'POST':
-        if form.validate_on_submit(): # Check if form passes validators
-            
-            # Create a new User object with submitted data
+        if form.validate_on_submit():
             new_user = User(
                 username=form.username.data,
                 email=form.email.data
             )
 
-            # Log whats about to be created
             logging.debug(f"Creating user: {new_user.username}, {new_user.email}")
-
-            # Hash and store the password securely
             new_user.set_password(form.password.data)
-
-            # Add the user to the DB session and commit it
             db.session.add(new_user)
             db.session.commit()
 
-            # Log that DB commit succeeded
             logging.debug("New user successfully committed to the database.")
-
-            # Let the user know it worked
             flash('Account created successfully. Please log in.', 'success')
-
-            # Redirect to the login page
             return redirect(url_for('user.login'))
-        else:
-            # Flash validation failure message
-            flash('Please correct the errors in the form,', 'danger')
+        
+        # Form was invalid — display detailed errors
+        field_names = {
+            'username': 'Username',
+            'email': 'Email address',
+            'password': 'Password',
+            'confirm_password': 'Password confirmation',
+        }
 
-            # Log the actual form errors for debugging
-            logging.debug(f"Signup form errors: {form.errors}")
-
-    # GET request or failed validation – re-render the signup form
+        for field, errors in form.errors.items():
+            for error in errors:
+                readable_field = field_names.get(field, field)
+                flash(f'Error in {readable_field}: {error}', 'danger')
+                logging.error(f'Error in {readable_field}: {error}')
+                
     return render_template('auth/signup.html', form=form)
 
 @user.route('/login', methods=['GET', 'POST'])
