@@ -4,10 +4,11 @@ from flask_wtf.csrf import CSRFError
 import logging
 from urllib.parse import urlparse
 import os
+import csv
 
 from app.extensions import db
 from app.forms.user_forms import SignupForm, LoginForm
-from app.models import User, Admin
+from app.models import User, Admin, Transaction
 from app.forms.file_upload_form import FileUploadForm
 from werkzeug.utils import secure_filename
 
@@ -119,6 +120,7 @@ def logout():
     return redirect(url_for('index'))
 
 @user.route('/file_upload', methods=['GET', 'POST'])
+@login_required
 def file_upload():
     form = FileUploadForm()
 
@@ -131,9 +133,29 @@ def file_upload():
             filename = secure_filename(file.filename)
             upload_folder = os.path.join('app/static/uploads')
             os.makedirs(upload_folder, exist_ok=True)
-            file.save(os.path.join(upload_folder, filename))
+            file_path = os.path.join(upload_folder, filename)
+            file.save(file_path)
 
-            flash('Upload successful!', 'success')
+            # Parse CSV and store into DB
+            with open(file_path, newline='') as csvfile:
+                reader = csv.DictReader(csvfile)
+                for row in reader:
+                    transaction = Transaction(
+                        user_id=current_user.id,
+                        date=row.get('Date'),          # <-- TODO Adjust when actual headers have been disclosed
+                        asset=row.get('Asset'),
+                        type=row.get('Type'),
+                        quantity=float(row.get('Qty') or 0),
+                        price=float(row.get('Value') or 0),
+                        fee=float(row.get('Fee') or 0),
+                        exchange=row.get('Exchange'),
+                        notes=row.get('Notes')
+                    )
+                    db.session.add(transaction)
+
+                db.session.commit()
+                flash('Upload and parse successful!', 'success')
+
         else:
             for field, errors in form.errors.items():
                 for error in errors:
