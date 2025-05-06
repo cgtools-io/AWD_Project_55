@@ -10,6 +10,7 @@ App Layout Wrapper
   display: flex;
   flex-direction: column;
   flex-grow: 1;
+  overflow-x: hidden;
 }
 
 .footer {
@@ -75,6 +76,7 @@ Coinfall Animation
   opacity: 0.25;
   animation: fall 6s linear infinite;
   filter: blur(0.5px);
+  overflow: hidden;
 }
 
 @keyframes fall {
@@ -184,13 +186,13 @@ Login and Signup Page
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
+  flex-grow: 1;
+  min-height: calc(100vh - 77px);
   padding-top: 2rem;
   background-image: url('/static/images/login_bg.jpg');
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-  min-height: calc(100vh - 77px); /* Adjust for navbar height */
-  
 }
 #form-box {
   border: 1px solid #FFD700;
