@@ -264,47 +264,10 @@ visual page optimised for cross-platform responsiveness
 --------------- */
 .visual {
     margin: 0;
-    font-family: Arial, sans-serif;
-    background: #1e1a2e;
-    color: #e0e0e0;
+    background: #1A1333;
+    color: #FFFFFF;
     font-size: 1rem;
 }
-
-/* Removed the page-specific navbar to integrate a unified navbar from the base HTML
-   template for consistency. The local navbar remains in place temporarily as a fallback 
-   while cross-page CSS verification is in progress. 
-   
-.visual .navbar {
-    background-color: #2c234d;
-    padding: 1rem 2rem;
-}
-
-.visual .brand {
-    color: #f1c40f;
-    font-size: 1.5rem;
-    font-weight: bold;
-}
-
-.visual .nav-links {
-    display: flex;
-    gap: 1.5rem;
-    flex-wrap: wrap;
-    list-style: none;
-    padding-left: 0;
-    margin: 0;
-}
-
-.visual .nav-links a {
-    color: #ccc;
-    text-decoration: none;
-    font-size: 1rem;
-    transition: color 0.3s;
-}
-
-.visual .nav-links a:hover {
-    color: #f1c40f;
-}
-*/
 
 /* wrapper to center content */
 .visual .content-wrapper {
