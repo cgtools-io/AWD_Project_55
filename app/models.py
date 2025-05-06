@@ -29,3 +29,15 @@ class Admin(UserMixin):
     
     def is_admin(self):
         return True
+
+class Transaction(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))  # tie it to a user if needed
+    date = db.Column(db.String)
+    asset = db.Column(db.String)
+    type = db.Column(db.String)
+    quantity = db.Column(db.Float)
+    price = db.Column(db.Float)
+    fee = db.Column(db.Float)
+    exchange = db.Column(db.String)
+    notes = db.Column(db.Text)
