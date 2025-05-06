@@ -2,7 +2,7 @@
 App Layout Wrapper
 --------------- */
 .app-root {
-  background-color: #1A1333;
+  background-color: #1A122D;
   color: #FFFFFF;
   overflow-x: hidden;
   position: relative;
@@ -33,7 +33,7 @@ Navbar
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background-color: rgba(26, 19, 51, 0.85);
+  background-color: #1A0D2F;
   padding: 1rem 2rem;
   border-bottom: 1px solid #CBA135;
   position: sticky;
