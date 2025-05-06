@@ -180,11 +180,17 @@ Hero Section
 Login and Signup Page
 --------------- */
 #bg-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  padding-top: 2rem;
   background-image: url('/static/images/login_bg.jpg');
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
   min-height: calc(100vh - 77px); /* Adjust for navbar height */
+  
 }
 #form-box {
   border: 1px solid #FFD700;

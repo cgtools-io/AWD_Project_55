@@ -87,7 +87,7 @@ def login():
                     return redirect(url_for('user.login'))
                 
                 login_user(user, remember=form.remember.data)
-                flash('Login successful!')
+                flash('Login successful!', 'success')
                 logger.debug(f'User {user.username} logged in successfully')
 
                 # Redirect to the next page (default: index page)
