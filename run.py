@@ -13,5 +13,3 @@ if __name__ == '__main__':
     # DO NOT UNCOMMENT WHEN PUSHING TO MAIN OR OPENING A PR   
     # ========================================================
     # app.run(debug=True)
-
-    app.run(debug=True)
