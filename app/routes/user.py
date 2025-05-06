@@ -142,14 +142,14 @@ def file_upload():
                 for row in reader:
                     transaction = Transaction(
                         user_id=current_user.id,
-                        date=row.get('Date'),          # <-- TODO Adjust when actual headers have been disclosed
-                        asset=row.get('Asset'),
-                        type=row.get('Type'),
-                        quantity=float(row.get('Qty') or 0),
-                        price=float(row.get('Value') or 0),
-                        fee=float(row.get('Fee') or 0),
-                        exchange=row.get('Exchange'),
-                        notes=row.get('Notes')
+                        date=row.get('date'),          # <-- TODO Adjust when actual headers have been disclosed
+                        asset=row.get('asset'),        # <-- TODO Normalise data
+                        type=row.get('type'),
+                        quantity=float(row.get('qty') or 0),
+                        price=float(row.get('value') or 0),
+                        fee=float(row.get('fee') or 0),
+                        exchange=row.get('exchange'),
+                        notes=row.get('notes')
                     )
                     db.session.add(transaction)
 
