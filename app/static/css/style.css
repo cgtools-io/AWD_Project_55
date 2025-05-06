@@ -82,6 +82,54 @@ Coinfall Animation
   100% { transform: translateY(110vh); opacity: 0.2; }
 }
 
+.hero {
+  min-height: auto; /* no full height anymore */
+  padding-top: 6rem; /* or more */
+  padding-bottom: 4rem;
+  text-align: center;
+}
+
+.hero-fade {
+  opacity: 0;
+  transform: translateY(30px);
+  animation: fadeInUp 1s ease forwards;
+}
+
+.hero h1.hero-fade {
+  font-size: 3.5rem;
+  color: #B084CC;
+  font-weight: bold;
+  margin-bottom: 5rem;
+}
+
+.hero p.hero-fade {
+  font-size: 1.5rem;
+  margin-bottom: 4rem;
+}
+
+.hero a.cta-button.hero-fade {
+  font-size: 1.25rem;
+  padding: 1rem 2.5rem;
+  border-radius: 12px;
+  font-weight: 700;
+  background-color: #4A0F84;
+  color: #FFF;
+  border: 2px solid #FFD700;
+  transition: background 0.3s ease, transform 0.3s ease;
+}
+
+.hero a.cta-button.hero-fade:hover {
+  background-color: #6A1FB0;
+  transform: scale(1.05);
+}
+
+@keyframes fadeInUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 /* ---------------
 Hero Section
 --------------- */
