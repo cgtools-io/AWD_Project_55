@@ -30,6 +30,7 @@ class Admin(UserMixin):
     def is_admin(self):
         return True
 
+# TODO: This model structure is based on placeholder headers. Adjust fields/types once final format is known.
 class Transaction(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))  # tie it to a user if needed

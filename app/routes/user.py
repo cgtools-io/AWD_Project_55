@@ -139,11 +139,13 @@ def file_upload():
             # Parse CSV and store into DB
             with open(file_path, newline='') as csvfile:
                 reader = csv.DictReader(csvfile)
+
+                # TODO: Placeholder field names — replace once actual headers are known
                 for row in reader:
                     transaction = Transaction(
-                        user_id=current_user.id,
-                        date=row.get('date'),          # <-- TODO Adjust when actual headers have been disclosed
-                        asset=row.get('asset'),        # <-- TODO Normalise data
+                        user_id=current_user.id,       # TODO: This block uses placeholder headers.
+                        date=row.get('date'),          # Replace these with correct keys once final CSV format is confirmed.
+                        asset=row.get('asset'),        # Consider extracting this into a helper function for reusability later.
                         type=row.get('type'),
                         quantity=float(row.get('qty') or 0),
                         price=float(row.get('value') or 0),
