@@ -187,11 +187,11 @@ Login and Signup Page
   justify-content: flex-start;
   align-items: center;
   flex-grow: 1;
-  min-height: calc(100vh - 77px);
+  min-height: calc(100vh - 130px);
   padding-top: 2rem;
   background-image: url('/static/images/login_bg.jpg');
   background-size: cover;
-  background-position: center;
+  background-position: top;
   background-repeat: no-repeat;
 }
 #form-box {

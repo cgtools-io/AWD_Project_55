@@ -113,6 +113,7 @@ def logout():
 
     if current_user.is_authenticated:
         logout_user()
+        flash('You have been logged out.', 'success')
     else:
         flash('You are not logged in.')
 
