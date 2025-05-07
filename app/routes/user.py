@@ -125,6 +125,9 @@ def file_upload():
     form = FileUploadForm()
 
     if request.method == 'POST':
+
+        filename = None
+
         if form.validate_on_submit():
             file = form.file.data
             if isinstance(file, list):
@@ -141,28 +144,65 @@ def file_upload():
                 reader = csv.DictReader(csvfile)
 
                 # TODO: Placeholder field names — replace once actual headers are known
-                for row in reader:
-                    transaction = Transaction(
-                        user_id=current_user.id,       # TODO: This block uses placeholder headers.
-                        date=row.get('date'),          # Replace these with correct keys once final CSV format is confirmed.
-                        asset=row.get('asset'),        # Consider extracting this into a helper function for reusability later.
-                        type=row.get('type'),
-                        quantity=float(row.get('qty') or 0),
-                        price=float(row.get('value') or 0),
-                        fee=float(row.get('fee') or 0),
-                        exchange=row.get('exchange'),
-                        notes=row.get('notes')
-                    )
-                    db.session.add(transaction)
+                # for row in reader:
+                #     transaction = Transaction(
+                #         user_id=current_user.id,       # TODO: This block uses placeholder headers.
+                #         date=row.get('date'),          # Replace these with correct keys once final CSV format is confirmed.
+                #         asset=row.get('asset'),        # Consider extracting this into a helper function for reusability later.
+                #         type=row.get('type'),
+                #         quantity=float(row.get('qty') or 0),
+                #         price=float(row.get('value') or 0),
+                #         fee=float(row.get('fee') or 0),
+                #         exchange=row.get('exchange'),
+                #         notes=row.get('notes')
+                #     )
+                #     db.session.add(transaction)
 
                 db.session.commit()
-                flash('Upload and parse successful!', 'success')
+                flash('Upload successful!', 'success')
 
         else:
             for field, errors in form.errors.items():
                 for error in errors:
                     flash(error, 'danger')
 
-        return redirect(url_for('user.file_upload'))
+        return redirect(url_for('user.file_upload', filename=filename))
 
     return render_template('user/file_upload.html', form=form)
+
+@user.route("/file_upload/process/<filename>", methods=["POST"])
+@user.route("/file_upload/process/", methods=["POST"])
+@login_required
+def process_csv(filename=None):
+    total_buy_val = 0
+    total_sell_val = 0
+
+    if filename == None:
+        flash("No file uploaded.", "danger")
+        logging.error("No file uploaded.")
+        return redirect(url_for('user.file_upload'))
+
+    file_path = os.path.join('app/static/uploads', filename)
+
+    if not os.path.exists(file_path):
+        flash("File not found.", "danger")
+        logging.error(f"File not found: {file_path}")
+        return redirect(url_for('user.file_upload'))
+
+    with open(file_path, newline='') as csvfile:
+        reader = csv.DictReader(csvfile)
+
+        for row in reader:
+            logger.debug(f"Processing row: {row.get('Value $')}")
+            if row.get('Value $') == '-':
+                continue
+            if row.get('Type') == 'Buy':
+                total_buy_val += float(row.get('Value $', 0).replace(',', ''))
+            elif row.get('Type') == 'Sell':
+                total_sell_val += float(row.get('Value $', 0).replace(',', ''))
+    
+    flash("CSV file processed successfully!")
+    flash(f"Total Buy Value: {total_buy_val} Total Sell Value: {total_sell_val}", "info")
+    logging.debug(f"Total Buy Value: {total_buy_val} Total Sell Value: {total_sell_val}")
+
+    return redirect(url_for('user.file_upload'))
