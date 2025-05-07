@@ -29,24 +29,15 @@ def create_app(config_class=Config):
         app.logger.debug(f'Stuff: {current_user.is_authenticated}')
         if current_user.is_authenticated:
             app.logger.debug(f'User authenticated: {current_user.username}')
-        return render_template('index.html')
+        return render_template('public/index.html')
 
     @app.route('/about')
     def about():
-        return render_template('about.html')
+        return render_template('public/about.html')
 
     @app.route('/contact')
     def contact():
-        return render_template('contact.html')
-
-    @app.route('/visual')
-    def visual():
-        return render_template('user/visual.html')    
-
-    @app.route('/share')
-    def share():
-        return render_template('share_data.html')
-    
+        return render_template('public/contact.html')    
 
     @login_manager.user_loader
     def load_user(user_id):
