@@ -47,6 +47,10 @@ def create_app(config_class=Config):
     def share():
         return render_template('share_data.html')
     
+    @app.route('/dashboard')
+    def dashboard():
+        return render_template('user/dashboard.html')
+    
 
     @login_manager.user_loader
     def load_user(user_id):
