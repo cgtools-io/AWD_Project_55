@@ -73,12 +73,25 @@ To help us manage tasks efficiently during the final sprint, we’re using GitHu
 - `_priority: low` – Nice-to-have or polish; not required for assessment
 
 ### ✅ Usage Etiquette
-- Only change someone else’s labels after discussion
 - If you’re unsure about priority, use `_priority: medium` and add a comment
 - Multiple labels are fine (e.g. `styling` + `bug` + `_priority: high`)
 
 ---
 
+## ✅ Project Tasks
+
+### Function
+- Allows users to upload private data, 
+- View automated analysis of their data, 
+- Selectively share the results with other users
+
+### Essential pages
+- An "introductory" view, describing the context and purpose of the application, and allowing the user to create an account or log in.
+- An "upload data" view, allowing the user to add new data.
+- A "visualise data" view, allowing user's to view analysis of either their data or other people's data which has been shared with them.
+- A "share data" view, allowing the users to selectively share their data with other specific users.
+
+Added [Rx] as optional tags to add to issues raised.
 
 ## ✅ Project Rubric
 
