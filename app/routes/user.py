@@ -50,7 +50,7 @@ def signup():
         for field, errors in form.errors.items():
             for error in errors:
                 readable_field = field_names.get(field, field)
-                flash(f'Error in {readable_field}: {error}', 'danger')
+                flash(error, 'danger')
                 logging.error(f'Error in {readable_field}: {error}')
                 
     return render_template('auth/signup.html', form=form)

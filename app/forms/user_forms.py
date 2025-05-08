@@ -17,14 +17,14 @@ class SignupForm(FlaskForm):
             raise ValidationError('Please logout to create a new account.')
         new_user = User.query.filter_by(username=username.data).first()
         if new_user:
-            raise ValidationError('That username is already taken. Please choose a different one.')
+            raise ValidationError('Username already taken.')
 
     def validate_email(self, email):
         if current_user.is_authenticated:
             raise ValidationError('Please logout to create a new account.')
         new_email = User.query.filter_by(email=email.data).first()
         if new_email:
-            raise ValidationError('That email is already registered. Please choose a different one.')
+            raise ValidationError('Email already registered.')
 
 class LoginForm(FlaskForm):
     username = StringField('Username:', validators=[InputRequired(), Length(min=2, max=25)])
