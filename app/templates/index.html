@@ -16,7 +16,9 @@
     </div>
   {% endif %}
 {% endwith %}
+  <div id="coin-bg" class="background"></div>
 
+  <!-- 
   <div class="background">
     <div class="coin" style="left: 5%; animation-delay: 0s; animation-duration: 5s;"></div>
     <div class="coin" style="left: 20%; animation-delay: 0.8s; animation-duration: 6s;"></div>
@@ -24,6 +26,7 @@
     <div class="coin" style="left: 60%; animation-delay: 0.3s; animation-duration: 5.5s;"></div>
     <div class="coin" style="left: 80%; animation-delay: 2s; animation-duration: 6.5s;"></div>
   </div>
+  -->
 
   <main class="hero">
     <div class="container">
@@ -31,13 +34,7 @@
     <p class="tagline">Easily calculate your capital gains tax on crypto — fast, simple, accurate.</p>
     <a href="{{ url_for('user.file_upload') }}" class="cta-button">Start Your Estimate</a>
 
-    <!-- kept these for now in case someone wants to re-use them on a different page
-    <div class="features">
-      <div class="feature">🧮 Capital Gains Tax Calculation</div>
-      <div class="feature">📤 Upload Your Trade Data</div>
-      <div class="feature">📊 Real-Time Portfolio Insights</div>
-      <div class="feature">🧾 Export Reports for Tax Filing</div>
-    </div> -->
   </div>
   </main>
+  <script src="{{ url_for('static', filename='js/script.js') }}"></script>
 {% endblock %}
