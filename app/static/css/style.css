@@ -58,6 +58,7 @@ Navbar
   border-radius: 6px;
   background-color: transparent;
 }
+
 .login-btn:hover {
   background-color: #FFD700 !important;
   color: #1A1333 !important;
@@ -99,7 +100,8 @@ Coinfall Animation
 .background .coin {
   position: absolute;
   top: 0;
-  left: 50%; /* You can randomize this later */
+  left: 50%;
+  /* You can randomize this later */
   width: 16px;
   height: 16px;
   background-color: #FFD700;
@@ -110,14 +112,26 @@ Coinfall Animation
 }
 
 @keyframes fall {
-  0% { transform: translateY(-100px); opacity: 0; }
-  75% { opacity: 0.2;}
-  100% { transform: translateY(100vh); opacity: 0.2; }
+  0% {
+    transform: translateY(-100px);
+    opacity: 0;
+  }
+
+  75% {
+    opacity: 0.2;
+  }
+
+  100% {
+    transform: translateY(100vh);
+    opacity: 0.2;
+  }
 }
 
 .hero {
-  min-height: auto; /* no full height anymore */
-  padding-top: 6rem; /* or more */
+  min-height: auto;
+  /* no full height anymore */
+  padding-top: 6rem;
+  /* or more */
   padding-bottom: 4rem;
   text-align: center;
 }
@@ -210,6 +224,21 @@ Hero Section
 }
 
 /* ---------------
+About Page
+--------------- */
+
+.about-box {
+  padding: 1rem !important;
+  border-radius: 1.5rem !important;
+  background-color: #2c234d !important;
+  font-size: 1rem;
+  height: 100%;
+  box-sizing: border-box;
+}
+
+
+
+/* ---------------
 Login and Signup Page
 --------------- */
 #bg-container {
@@ -225,6 +254,7 @@ Login and Signup Page
   background-position: top;
   background-repeat: no-repeat;
 }
+
 #form-box {
   border: 1px solid #FFD700;
   background-color: #1A1333;
@@ -232,6 +262,7 @@ Login and Signup Page
   padding: 10px;
   border-radius: 10px;
 }
+
 #submit-btn {
   background-color: #FFD700;
   color: #1A1333;
@@ -240,6 +271,7 @@ Login and Signup Page
   border-radius: 5px;
   cursor: pointer;
 }
+
 .col-form-label {
   font-size: 20px;
   color: white;
@@ -262,6 +294,7 @@ File Upload Page
   font-size: 45px;
   color: white;
 }
+
 .upload-area {
   border: 5px dashed #B084CC;
   border-radius: 10px;
@@ -270,18 +303,21 @@ File Upload Page
   justify-content: center;
   align-content: center;
 }
+
 .upload-text {
   font-size: 20px;
   color: #B084CC;
   text-align: center;
   display: block;
 }
+
 #upload-arrow {
   display: block;
   margin: 30px auto;
   align-content: center;
   text-align: center;
 }
+
 .button-secondary {
   background-color: #B084CC;
   color: #1A1333;
@@ -290,6 +326,7 @@ File Upload Page
   font-weight: bold;
   font-size: 25px;
 }
+
 .button-calculate {
   background-color: #FFD700;
   color: #1A1333;
@@ -298,10 +335,12 @@ File Upload Page
   font-weight: bold;
   font-size: 25px;
 }
+
 .button-calculate:hover {
   background-color: #1A1333;
   color: #FFD700;
 }
+
 .button-secondary:hover {
   background-color: gray;
 }
@@ -367,123 +406,123 @@ File Upload Page
 visual page optimised for cross-platform responsiveness
 --------------- */
 .visual {
-    margin: 0;
-    background: #1A1333;
-    color: #FFFFFF;
-    font-size: 1rem;
+  margin: 0;
+  background: #1A1333;
+  color: #FFFFFF;
+  font-size: 1rem;
 }
 
 /* wrapper to center content */
 .visual .content-wrapper {
-    max-width: 1750px;
-    margin: 0 auto;
+  max-width: 1750px;
+  margin: 0 auto;
 }
 
 /* Header */
 .visual .header h1 {
-    padding: 1rem;
-    font-size: 2rem;
-    color: #f1c40f;
+  padding: 1rem;
+  font-size: 2rem;
+  color: #f1c40f;
 }
 
 .visual .header p {
-    color: #e0e0e0;
-    font-size: 1rem;
+  color: #e0e0e0;
+  font-size: 1rem;
 }
 
 /* Stats */
 .visual .stat-box {
-    padding: 1rem;
-    border-radius: 1.5rem;
-    background-color: #2c234d;
-    font-size: 1rem;
-    height: 100%;
-    box-sizing: border-box;
+  padding: 1rem;
+  border-radius: 1.5rem;
+  background-color: #2c234d;
+  font-size: 1rem;
+  height: 100%;
+  box-sizing: border-box;
 }
 
 .visual .stat-box span {
-    display: block;
-    margin-top: 0.5rem;
-    font-size: 1.25rem;
-    font-weight: bold;
+  display: block;
+  margin-top: 0.5rem;
+  font-size: 1.25rem;
+  font-weight: bold;
 }
 
 .visual .stat-box.value {
-    border: 1px solid #f1c40f;
-    color: #4caf50;
+  border: 1px solid #f1c40f;
+  color: #4caf50;
 }
 
 .visual .stat-box.cost {
-    border: 1px solid #f1c40f;
-    color: #ffeb3b;
+  border: 1px solid #f1c40f;
+  color: #ffeb3b;
 }
 
 .visual .stat-box.pnl {
-    border: 1px solid #f1c40f;
-    color: #ff4081;
+  border: 1px solid #f1c40f;
+  color: #ff4081;
 }
 
 .visual .stat-box.gain {
-    border: 1px solid #f1c40f;
-    color: #2196f3;
+  border: 1px solid #f1c40f;
+  color: #2196f3;
 }
 
 /* Chart and note */
 .visual .chart-box,
 .visual .note-box {
-    background-color: #2c234d;
-    border: 1px solid #f1c40f;
-    padding: 1rem;
-    border-radius: 0.75rem;
-    height: 100%;
-    box-sizing: border-box;
+  background-color: #2c234d;
+  border: 1px solid #f1c40f;
+  padding: 1rem;
+  border-radius: 0.75rem;
+  height: 100%;
+  box-sizing: border-box;
 }
 
 .visual .chart-box h2,
 .visual .note-box h2 {
-    color: #f1c40f;
-    margin-bottom: 1rem;
+  color: #f1c40f;
+  margin-bottom: 1rem;
 }
 
 .visual .note-box ul {
-    list-style: disc;
-    padding-left: 1.25rem;
-    margin: 0.5rem 0 1rem 0;
-    font-size: 1rem;
+  list-style: disc;
+  padding-left: 1.25rem;
+  margin: 0.5rem 0 1rem 0;
+  font-size: 1rem;
 }
 
 .visual .note-box p {
-    font-size: 1rem;
+  font-size: 1rem;
 }
 
 /* Holdings */
 .visual .holding-card {
-    background-color: #2c234d;
-    padding: 1rem;
-    border-radius: 0.75rem;
-    border: 1px solid #f1c40f;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    height: 100%;
-    box-sizing: border-box;
+  background-color: #2c234d;
+  padding: 1rem;
+  border-radius: 0.75rem;
+  border: 1px solid #f1c40f;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  height: 100%;
+  box-sizing: border-box;
 }
 
 .visual .holding-card:hover {
-    transform: scale(1.03);
-    box-shadow: 0 0 12px #f1c40f;
+  transform: scale(1.03);
+  box-shadow: 0 0 12px #f1c40f;
 }
 
 .visual .holding-card h2 {
-    font-size: 1rem;
-    color: #f1c40f;
-    margin-bottom: 0.75rem;
+  font-size: 1rem;
+  color: #f1c40f;
+  margin-bottom: 0.75rem;
 }
 
 .visual .holding-card p {
-    margin: 0.25rem 0;
-    color: #ccc;
+  margin: 0.25rem 0;
+  color: #ccc;
 }
 
 .visual .holding-card p span {
-    font-weight: bold;
-    color: #fff;
+  font-weight: bold;
+  color: #fff;
 }
