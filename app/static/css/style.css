@@ -2,11 +2,29 @@
 App Layout Wrapper
 --------------- */
 .app-root {
-  background-color: #1A1333;
+  background-color: #1A122D;
   color: #FFFFFF;
   overflow-x: hidden;
   position: relative;
-  min-height: 100vh; 
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  overflow-x: hidden;
+}
+
+.footer {
+  background-color: #1A0D2F;
+  border-top: 1px solid #CBA135;
+  color: #FFD700;
+  text-align: center;
+  padding: 1rem 0;
+  z-index: 1;
+}
+
+.footer-text {
+  font-size: 0.9rem;
+  color: #FFD700;
 }
 
 /* ---------------
@@ -16,7 +34,7 @@ Navbar
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background-color: rgba(26, 19, 51, 0.85);
+  background-color: #1A0D2F;
   padding: 1rem 2rem;
   border-bottom: 1px solid #CBA135;
   position: sticky;
@@ -46,11 +64,42 @@ Navbar
 }
 
 /* ---------------
+Flash Alerts
+--------------- */
+.alert {
+  text-align: center;
+  font-size: 1rem;
+  padding: 1rem 1.5rem;
+  border-radius: 6px;
+}
+
+.alert-success {
+  background-color: rgba(212, 237, 218, 0.85);
+}
+
+.alert-danger {
+  background-color: rgba(248, 215, 218, 0.85);
+}
+
+/* ---------------
 Coinfall Animation
 --------------- */
+
+.background {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  overflow: hidden;
+  z-index: -1;
+}
+
 .background .coin {
   position: absolute;
-  top: -50px;
+  top: 0;
+  left: 50%; /* You can randomize this later */
   width: 16px;
   height: 16px;
   background-color: #FFD700;
@@ -62,7 +111,56 @@ Coinfall Animation
 
 @keyframes fall {
   0% { transform: translateY(-100px); opacity: 0; }
-  100% { transform: translateY(110vh); opacity: 0.2; }
+  75% { opacity: 0.2;}
+  100% { transform: translateY(100vh); opacity: 0.2; }
+}
+
+.hero {
+  min-height: auto; /* no full height anymore */
+  padding-top: 6rem; /* or more */
+  padding-bottom: 4rem;
+  text-align: center;
+}
+
+.hero-fade {
+  opacity: 0;
+  transform: translateY(30px);
+  animation: fadeInUp 1s ease forwards;
+}
+
+.hero h1.hero-fade {
+  font-size: 3.5rem;
+  color: #B084CC;
+  font-weight: bold;
+  margin-bottom: 5rem;
+}
+
+.hero p.hero-fade {
+  font-size: 1.5rem;
+  margin-bottom: 4rem;
+}
+
+.hero a.cta-button.hero-fade {
+  font-size: 1.25rem;
+  padding: 1rem 2.5rem;
+  border-radius: 12px;
+  font-weight: 700;
+  background-color: #4A0F84;
+  color: #FFF;
+  border: 2px solid #FFD700;
+  transition: background 0.3s ease, transform 0.3s ease;
+}
+
+.hero a.cta-button.hero-fade:hover {
+  background-color: #6A1FB0;
+  transform: scale(1.05);
+}
+
+@keyframes fadeInUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 /* ---------------
@@ -115,11 +213,17 @@ Hero Section
 Login and Signup Page
 --------------- */
 #bg-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  flex-grow: 1;
+  min-height: calc(100vh - 130px);
+  padding-top: 2rem;
   background-image: url('/static/images/login_bg.jpg');
   background-size: cover;
-  background-position: center;
+  background-position: top;
   background-repeat: no-repeat;
-  min-height: calc(100vh - 77px); /* Adjust for navbar height */
 }
 #form-box {
   border: 1px solid #FFD700;
