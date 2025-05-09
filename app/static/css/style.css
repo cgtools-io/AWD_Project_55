@@ -36,7 +36,7 @@ Navbar
   align-items: center;
   background-color: #1A0D2F;
   padding: 1rem 2rem;
-  border-bottom: 1px solid #CBA135;
+  border-bottom: 3px solid #CBA135;
   position: sticky;
   top: 0;
   z-index: 10;
@@ -62,6 +62,24 @@ Navbar
   background-color: #FFD700 !important;
   color: #1A1333 !important;
 }
+
+.navbar-toggler {
+  border: none;
+  background-color: transparent;
+  box-shadow: none;
+  padding: 0.5rem;
+}
+
+.navbar-toggler:focus {
+  outline: none;
+  box-shadow: none;
+}
+
+.navbar-toggler:hover svg circle {
+  fill: #ffe066;
+  stroke: #e6b800;
+}
+
 
 /* ---------------
 Flash Alerts
