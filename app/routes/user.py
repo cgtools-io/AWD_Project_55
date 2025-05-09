@@ -108,6 +108,7 @@ def login():
     return render_template('auth/login.html', form=form)
 
 @user.route('/logout')
+@login_required
 def logout():
     logging.debug("User logout endpoint accessed")
 
@@ -120,6 +121,7 @@ def logout():
     return redirect(url_for('index'))
 
 @user.route('/file_upload', methods=['GET', 'POST'])
+@login_required
 def file_upload():
     form = FileUploadForm()
 
@@ -143,3 +145,13 @@ def file_upload():
         return redirect(url_for('user.file_upload'))
 
     return render_template('user/file_upload.html', form=form)
+
+@user.route('/visual')
+@login_required
+def visual():
+    return render_template('user/visual.html')    
+
+@user.route('/share')
+@login_required
+def share():
+    return render_template('user/share_data.html')

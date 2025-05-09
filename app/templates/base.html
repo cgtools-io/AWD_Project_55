@@ -19,6 +19,7 @@
   {% block extra_css %}{% endblock %}
 </head>
 
+
 <body class="app-root {% block body_class %}{% endblock %}">
   <nav class="navbar navbar-expand-lg sticky-top px-4"
     style="border-bottom: 1px solid #CBA135;">
@@ -56,6 +57,34 @@
       });
     }, 15000); // Fade timer for flash messages
   </script>
+
+<body class="app-root">
+    <nav class="navbar navbar-expand-lg sticky-top px-4" style="background-color: rgba(26, 19, 51, 0.85); border-bottom: 1px solid #CBA135;">
+      <div class="container-fluid d-flex justify-content-between align-items-center">
+        <span class="navbar-brand fw-bold text-warning">CGTools</span>
+    
+        <!-- All nav links including Login are here -->
+        <div class="d-flex gap-4 align-items-center">
+          <a href="{{ url_for('index') }}" class="nav-link nav-hover">Home</a>
+          <a href="{{ url_for('about') }}" class="nav-link nav-hover">About</a>
+          <a href="{{ url_for('contact') }}" class="nav-link nav-hover">Contact</a>
+          {% if current_user.is_authenticated %}
+            <a href="{{ url_for('user.file_upload') }}" class="nav-link nav-hover">File Upload</a>
+            <a href="{{ url_for('user.visual') }}" class="nav-link nav-hover">Tax Calculation</a>
+            <a href="{{ url_for('user.share') }}" class="nav-link nav-hover">Share Data</a>
+            <a href="{{ url_for('user.logout') }}" class="btn btn-outline-warning text-white fw-medium login-btn">Logout</a>
+          {% else %}
+            <a href="{{ url_for('user.login') }}" class="btn btn-outline-warning text-white fw-medium login-btn">Login</a>
+          {% endif %}
+        </div>
+      </div>
+    </nav>
+    {% block content %}{% endblock %}
+    {% block extra_js %}{% endblock %}
+<script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html>
+
 </body>
 
 </html>
