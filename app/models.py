@@ -42,3 +42,9 @@ class Transaction(db.Model):
     fee = db.Column(db.Float)
     exchange = db.Column(db.String)
     notes = db.Column(db.Text)
+
+class Summary(db.Model):
+    id = db.Column(db.Integer, primary_key=True) 
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False) # makes sure there is an associated user_id for each summary
+    total_buy = db.Column(db.Float)
+    total_sell = db.Column(db.Float)

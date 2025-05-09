@@ -8,7 +8,7 @@ import csv
 
 from app.extensions import db
 from app.forms.user_forms import SignupForm, LoginForm
-from app.models import User, Admin, Transaction
+from app.models import User, Admin, Transaction, Summary
 from app.forms.file_upload_form import FileUploadForm
 from werkzeug.utils import secure_filename
 
@@ -189,8 +189,10 @@ def process_csv(filename=None):
         logging.error(f"File not found: {file_path}")
         return redirect(url_for('user.file_upload'))
 
+    current_app.logger.debug("make sure file is reached")
     with open(file_path, newline='') as csvfile:
         reader = csv.DictReader(csvfile)
+        current_app.logger.debug("Rows reached")
 
         for row in reader:
             logger.debug(f"Processing row: {row.get('Value $')}")
@@ -205,4 +207,14 @@ def process_csv(filename=None):
     flash(f"Total Buy Value: {total_buy_val} Total Sell Value: {total_sell_val}", "info")
     logging.debug(f"Total Buy Value: {total_buy_val} Total Sell Value: {total_sell_val}")
 
+    print(f"Saving summary for user {current_user.id} – Buy: {total_buy_val}, Sell: {total_sell_val}") # debug print
+
+    # Save the summary to the database
+    summary = Summary(
+        user_id=current_user.id,
+        total_buy=total_buy_val,
+        total_sell=total_sell_val
+    )
+    db.session.add(summary)
+    db.session.commit()
     return redirect(url_for('user.file_upload'))
