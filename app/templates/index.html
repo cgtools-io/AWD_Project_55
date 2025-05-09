@@ -5,20 +5,21 @@
 {% block content %}
 <!-- Flash Messages -->
 {% with messages = get_flashed_messages(with_categories=true) %}
-  {% if messages %}
-    <div class="container mt-3">
-      {% for category, message in messages %}
-        <div class="alert alert-{{ category if category != 'messages' else 'info' }} alert-dismissable fade show" role="alert">
-          {{ message }}
-          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
-      {% endfor %}
-    </div>
-  {% endif %}
+{% if messages %}
+<div class="container mt-3">
+  {% for category, message in messages %}
+  <div class="alert alert-{{ category if category != 'messages' else 'info' }} alert-dismissable fade show"
+    role="alert">
+    {{ message }}
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+  </div>
+  {% endfor %}
+</div>
+{% endif %}
 {% endwith %}
-  <div id="coin-bg" class="background"></div>
+<div id="coin-bg" class="background"></div>
 
-  <!-- 
+<!-- 
   <div class="background">
     <div class="coin" style="left: 5%; animation-delay: 0s; animation-duration: 5s;"></div>
     <div class="coin" style="left: 20%; animation-delay: 0.8s; animation-duration: 6s;"></div>
@@ -28,13 +29,11 @@
   </div>
   -->
 
-  <main class="hero">
-    <div class="container">
+<main class="hero">
+  <div class="container">
     <h1>Crypto Tax, Made Tolerable</h1>
     <p class="tagline">Easily calculate your capital gains tax on crypto — fast, simple, accurate.</p>
-    <a href="{{ url_for('user.file_upload') }}" class="cta-button">Start Your Estimate</a>
 
   </div>
-  </main>
-  <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</main>
 {% endblock %}
