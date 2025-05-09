@@ -3,26 +3,29 @@
 
 {% block content %}
 <div id="bg-container" class="container-fluid d-flex justify-content-center align-items-center">
-  
-  <!-- Flash Messages -->
-  {% with messages = get_flashed_messages(with_categories=true) %}
-  {% if messages %}
-    <div class="container mt-3">
-      {% for category, message in messages %}
-        <div class="alert alert-{{ category if category != 'messages' else 'info' }} alert-dismissable fade show" role="alert">
+
+  <div class="row w-100 justify-content-center align-items-center">
+
+    <!-- FLASH MESSAGE WRAPPER -->
+    <div class="position-relative w-100 d-flex justify-content-center" style="min-height: 4rem;">
+      <div class="position-absolute col-lg-5 col-md-6" style="top: 0; z-index: 1000;">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+        {% for category, message in messages %}
+        <div class="alert alert-{{ category }} alert-dismissible fade show text-center shadow" role="alert">
           {{ message }}
           <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
-      {% endfor %}
+        {% endfor %}
+        {% endif %}
+        {% endwith %}
+      </div>
     </div>
-  {% endif %}
-  {% endwith %}
-
-  <div class="row w-100 justify-content-center align-items-center">
+    
     <div class="col-lg-5 col-md-6" id="form-box">
-      
+
       <h1 class="text-center">Sign Up</h1>
-      
+
       <!-- Sign Up Form -->
       <form class="form row align-items-end" id="signup-form" method="POST" action="{{ url_for('user.signup') }}">
         {{ form.csrf_token }}
@@ -31,26 +34,26 @@
           {{ form.username.label(class="col-form-label") }}
           {{ form.username(placeholder="Enter username", class="form-control") }}
         </div>
-        
+
         <div class="col-12 mb-2">
           {{ form.email.label(class="col-form-label") }}
           {{ form.email(placeholder="Enter email", class="form-control") }}
         </div>
-        
+
         <div class="col-6 mb-2 pe-1">
           {{ form.password.label(class="col-form-label") }}
           {{ form.password(placeholder="Enter password", class="form-control") }}
         </div>
-        
+
         <div class="col-6 mb-2 ps-1">
           {{ form.confirm_password.label(class="col-form-label") }}
           {{ form.confirm_password(placeholder="Confirm password", class="form-control") }}
         </div>
-        
+
         <div class="d-grid mt-2">
           {{ form.submit(class="btn", id="submit-btn") }}
         </div>
-        
+
         <div class="row mt-3">
           <div class="col text-center">
             <p>Already have an account? <a href="{{ url_for('user.login') }}">Login here</a></p>

@@ -3,23 +3,36 @@
 
 {% block content %}
 
+
 <div id="bg-container" class="container-fluid d-flex justify-content-center align-items-center">
   
-  <!-- Flash Messages -->
-  {% with messages = get_flashed_messages(with_categories=true) %}
-  {% if messages %}
-    {% for category, message in messages %}
-      <div class="alert alert-{{ category if category != 'messages' else 'info' }} alert-dismissable fade show" role="alert">
-        {{ message }}
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-      </div>
-    {% endfor %}
-  {% endif %}
-  {% endwith %}
+  
 
   <div class="row w-100 justify-content-center align-items-center">
-    <div class="col-sm-8 col-md-6" id="form-box">
-      
+    
+<!-- Flash Messages -->
+  
+<div class="row w-100 justify-content-center align-items-center">
+  <div class="col-sm-8 col-md-6" id="login-wrapper">
+
+    <!-- Flash Messages -->
+    <div class="position-relative" style="width: 100%;">
+      <div class="position-absolute" style="top: -4.5rem; width: 100%;">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+          {% if messages %}
+            {% for category, message in messages %}
+              <div class="alert alert-{{ category }} alert-dismissible fade show shadow" role="alert">
+                {{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+              </div>
+            {% endfor %}
+          {% endif %}
+        {% endwith %}
+      </div>
+    </div>
+
+    <!-- Login Box -->
+    <div id="form-box">
       <h1 id="login-header" class="text-center mb-3">Login</h1>
       
       <!-- Login Form -->
@@ -51,12 +64,16 @@
           {{ form.submit(class="btn", id="submit-btn") }}
         </div>
       </form>
-      
       <div class="row mt-3">
         <div class="col text-center">
           <p>Dont have an account? <a href="{{ url_for('user.signup') }}">Sign up here</a></p>
         </div>
       </div>
+   </div>
+   </div>
+   </div>
+      
+      
 
     </div>
   </div>
