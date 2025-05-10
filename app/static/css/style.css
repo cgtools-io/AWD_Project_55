@@ -276,22 +276,43 @@ About Page
   cursor: pointer;
 }
 
-.about-box:hover {
-  transform: translateY(-6px) scale(1.02);
-  box-shadow: 0 0.5rem 1rem rgba(241, 196, 15, 0.3);
+.info-box {
+  font-size: 20px;
+  transition: transform 0.2s ease;
+  padding-top: 50px;
+}
+.info-box:hover {
+  transform: translateY(-6px) scale(1.05);
 }
 
-.col-md-3:nth-of-type(1) .about-box { animation-delay: 600ms; }
-.col-md-3:nth-of-type(2) .about-box { animation-delay: 1200ms; }
-.col-md-3:nth-of-type(3) .about-box { animation-delay: 1800ms; }
+.info-box h3 {
+  font-size: 25px;
+  color: #CBA135;
+  text-align: center;
+}
+
+.row .col:nth-of-type(1) .about-box { animation-delay: 600ms; }
+.row .col:nth-of-type(2) .about-box { animation-delay: 1200ms; }
+.row .col:nth-of-type(3) .about-box { animation-delay: 1800ms; }
 
 .tech-pill {
-  background-color: rgba(124, 15, 241, 0.3);
+  background-color: rgba(124, 15, 241, 0.1);
   padding: 0.75rem 1.25rem;
   border-radius: 2rem;
   border: 1px solid #444;
   margin-bottom: 0.75rem;
   color: #f8f9fa;
+}
+
+.tech-pill svg {
+  width: 30px;
+  height: 30px;
+  padding-right: 10px;
+  padding-bottom: 5px;
+}
+
+.tech-pill strong {
+  margin-top: 22px;
 }
 
 .fade-in {
@@ -306,6 +327,11 @@ About Page
 @keyframes fadeInPage {
   from { opacity: 0; transform: translateY(20px); }
   to { opacity: 1; transform: translateY(0); }
+}
+
+.icon-box svg {
+  width: 40px;
+  height: 40px;
 }
 
 
