@@ -86,8 +86,30 @@ Navbar
   padding-top: 0;
 }
 
-button.navbar-toggler.collapsed {
-  padding-bottom: 0;
+.nav-link.dropdown-toggle {
+  transition: 0.3s ease, transform 0.3s ease;
+}
+
+.nav-link.dropdown-toggle.show  {
+  color:#B084CC;
+  text-align: center;
+}
+
+.dropdown-menu {
+  background-color: #4A0F84;;
+  border: 2px solid #ffe066;
+  border-radius: 10px;
+  text-align: center;
+}
+
+.dropdown-item {
+  color: #fff;
+}
+.dropdown-menu .dropdown-item:hover {
+  color: #fff;
+  background-color: #B084CC;
+  transition: background 0.3s ease, transform 0.3s ease;
+  border-radius: 5px;
 }
 
 
