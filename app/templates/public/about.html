@@ -1,14 +1,89 @@
 {% extends "base.html" %}
-
-{% block title %}CGTools{% endblock %}
+{% block title %}About{% endblock %}
 
 {% block content %}
 <div id="coin-bg" class="background"></div>
 
-<main class="hero">
-  <div class="container">
-    <h1>About</h1>
-    <p class="tagline">Easily calculate your capital gains tax on crypto — fast, simple, accurate.</p>
+<!-- Feature Cards -->
+<div class="container-fluid text-white py-4">
+  <div class="row text-center justify-content-center">
+    <div class="col-md-3 mb-3 mb-md-0">
+      <div class="about-box p-3 shadow-sm">
+        <h3 class="text-warning">Upload</h3>
+        <p>Upload your CSV file to calculate your capital gains.</p>
+      </div>
+    </div>
+    <div class="col-md-3 mb-3 mb-md-0">
+      <div class="about-box p-3 shadow-sm">
+        <h3 class="text-warning">Visualise</h3>
+        <p>See your trades, totals, and potential gains/losses.</p>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="about-box p-3 shadow-sm">
+        <h3 class="text-warning">Share</h3>
+        <p>Export or share your summary with a tax agent or partner.</p>
+      </div>
+    </div>
   </div>
-</main>
+</div>
+
+<!-- Main Content -->
+<div class="container py-5 fade-in">
+  <div class="row justify-content-center">
+    <div class="col-lg-10 col-xl-8">
+
+      <!-- Header -->
+      <h1 class="text-center text-warning mb-5 display-5 fw-bold">About CGTools</h1>
+      <p class="lead text-center text-light mb-5 fs-5">
+        A crypto capital gains tracker built by students — for real people.
+      </p>
+
+      <!-- Sections -->
+      <section class="mb-5">
+        <h3 class="text-warning">What CGTools Does</h3>
+        <ul class="text-light">
+          <li>Upload crypto transaction CSVs</li>
+          <li>View your capital gains & losses summary</li>
+          <li>Store your data in your account</li>
+          <li>Share reports with view/edit permissions</li>
+        </ul>
+      </section>
+
+      <section class="mb-5">
+        <h3 class="text-warning">Why CGT Matters</h3>
+        <p class="text-light">Crypto is taxed in Australia under capital gains rules. A CGT event may happen when you:</p>
+        <ul class="text-light">
+          <li>Sell or gift crypto</li>
+          <li>Swap tokens</li>
+          <li>Convert to AUD or buy something</li>
+        </ul>
+        <p class="text-light">CGTools helps you interpret your transaction history, not lodge your tax return.</p>
+      </section>
+
+      <section class="mb-5">
+        <h3 class="text-warning">Who Built This?</h3>
+        <p class="text-light">This tool was built by UWA students as an Agile Web Development project. We wanted to make crypto tax easier with visualed summaries.</p>
+      </section>
+
+      <section class="mb-5">
+        <h3 class="text-warning">Tech Stack</h3>
+        <ul class="list-unstyled">
+          <li class="tech-pill"><strong>Python & Flask</strong> – Core backend framework</li>
+          <li class="tech-pill"><strong>HTML/CSS & Bootstrap</strong> – Styling and responsive design</li>
+          <li class="tech-pill"><strong>Flask-WTF</strong> – Form handling & CSRF protection</li>
+          <li class="tech-pill"><strong>SQLite + SQLAlchemy</strong> – Lightweight database with ORM</li>
+          <li class="tech-pill"><strong>Pytest & Selenium</strong> – Testing (unit + end-to-end)</li>
+          <li class="tech-pill"><strong>Git & GitHub</strong> – Version control & collaboration</li>
+        </ul>
+      </section>
+
+      <section class="mb-5">
+        <h3 class="text-danger">🚫 Not Financial Advice</h3>
+        <p class="text-light">CGTools is an educational tool. It doesn't auto-lodge anything or provide official tax advice. Use it to get clarity, not as a substitute for a tax agent.</p>
+      </section>
+
+    </div>
+  </div>
+</div>
 {% endblock %}
