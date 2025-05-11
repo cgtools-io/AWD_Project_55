@@ -9,20 +9,18 @@
   
 
   <div class="row w-100 justify-content-center align-items-center">
-    
-<!-- Flash Messages -->
-  
+      
 <div class="row w-100 justify-content-center align-items-center">
   <div class="col-sm-8 col-md-6" id="login-wrapper">
 
     <!-- Flash Messages -->
     <div class="position-relative" style="width: 100%;">
-      <div class="position-absolute" style="top: -4.5rem; width: 100%;">
+      <div class="position-absolute start-50 translate-middle">
         {% with messages = get_flashed_messages(with_categories=true) %}
           {% if messages %}
             {% for category, message in messages %}
-              <div class="alert alert-{{ category }} alert-dismissible fade show shadow" role="alert">
-                {{ message }}
+              <div class="alert alert-{{ category }} alert-dismissible show shadow d-inline-block text-nowrap" role="alert" style="top: -2rem;">
+                <span class="me-3">{{ message }}</span>
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
               </div>
             {% endfor %}
