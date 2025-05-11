@@ -7,18 +7,20 @@
   <div class="row w-100 justify-content-center align-items-center">
 
     <!-- FLASH MESSAGE WRAPPER -->
-    <div class="position-relative w-100 d-flex justify-content-center" style="min-height: 4rem;">
-      <div class="position-absolute col-lg-5 col-md-6" style="top: 0; z-index: 1000;">
-        {% with messages = get_flashed_messages(with_categories=true) %}
-        {% if messages %}
-        {% for category, message in messages %}
-        <div class="alert alert-{{ category }} alert-dismissible fade show text-center shadow" role="alert">
-          {{ message }}
-          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    <div class="position-relative" style="width: 100%;">
+      <div class="position-absolute start-50 translate-middle" style="top: 10rem;">
+        <div class="d-flex flex-column align-items-center gap-1">
+          {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+              {% for category, message in messages %}
+                <div class="alert alert-{{ category }} alert-dismissible fade show shadow d-inline-block text-nowrap" role="alert" style="top: -2rem;">
+                  <span class="me-3">{{ message }}</span>
+                  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+              {% endfor %}
+            {% endif %}
+          {% endwith %}
         </div>
-        {% endfor %}
-        {% endif %}
-        {% endwith %}
       </div>
     </div>
     

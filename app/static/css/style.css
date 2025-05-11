@@ -268,7 +268,6 @@ Login and Signup Page
   align-items: center;
   flex-grow: 1;
   min-height: calc(100vh - 132px);
-  padding-top: 2rem;
   background-image: url('/static/images/login_bg.jpg');
   background-size: cover;
   background-position: top;
