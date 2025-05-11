@@ -1,9 +1,7 @@
 import sys
 import os
-import pytest
-from app import create_app
 
-# Ensure Python can find the 'app' module when running pytest from project root
+#Ensure Python can find the 'app' module when running pytest from project root
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
 import pytest
@@ -13,6 +11,7 @@ from app import create_app
 def app():
     app = create_app()
     app.config['TESTING'] = True
+    app.config['WTF_CSRF_ENABLED'] = False # disabled CSRF for testing POSTs
     return app
 
 @pytest.fixture
