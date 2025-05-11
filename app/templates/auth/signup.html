@@ -5,28 +5,10 @@
 <div id="bg-container" class="container-fluid d-flex justify-content-center align-items-center">
 
   <div class="row w-100 justify-content-center align-items-center">
-
-    <!-- FLASH MESSAGE WRAPPER -->
-    <div class="position-relative" style="width: 100%;">
-      <div class="position-absolute start-50 translate-middle" style="top: 10rem;">
-        <div class="d-flex flex-column align-items-center gap-1">
-          {% with messages = get_flashed_messages(with_categories=true) %}
-            {% if messages %}
-              {% for category, message in messages %}
-                <div class="alert alert-{{ category }} alert-dismissible fade show shadow d-inline-block text-nowrap" role="alert" style="top: -2rem;">
-                  <span class="me-3">{{ message }}</span>
-                  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                </div>
-              {% endfor %}
-            {% endif %}
-          {% endwith %}
-        </div>
-      </div>
-    </div>
     
-    <div class="col-lg-5 col-md-6" id="form-box">
+    <div class="col-lg-5 col-md-6 pb-0" id="form-box">
 
-      <h1 class="text-center">Sign Up</h1>
+      <h1 class="text-center mb-0">Sign Up</h1>
 
       <!-- Sign Up Form -->
       <form class="form row align-items-end" id="signup-form" method="POST" action="{{ url_for('user.signup') }}">
@@ -35,11 +17,25 @@
         <div class="col-12 mb-2">
           {{ form.username.label(class="col-form-label") }}
           {{ form.username(placeholder="Enter username", class="form-control") }}
+          {% if form.username.errors %}
+            <div class="text-danger">
+              {% for error in form.username.errors %}
+                <span>{{ error }}</span>
+              {% endfor %}
+            </div>
+          {% endif %}
         </div>
 
         <div class="col-12 mb-2">
           {{ form.email.label(class="col-form-label") }}
           {{ form.email(placeholder="Enter email", class="form-control") }}
+          {% if form.email.errors %}
+            <div class="text-danger">
+              {% for error in form.email.errors %}
+                <span>{{ error }}</span>
+              {% endfor %}
+            </div>
+          {% endif %}
         </div>
 
         <div class="col-6 mb-2 pe-1">
@@ -51,12 +47,19 @@
           {{ form.confirm_password.label(class="col-form-label") }}
           {{ form.confirm_password(placeholder="Confirm password", class="form-control") }}
         </div>
+        {% if form.confirm_password.errors %}
+          <div class="text-danger offset-6 ps-1">
+            {% for error in form.confirm_password.errors %}
+              <span>{{ error }}</span>
+            {% endfor %}
+          </div>
+        {% endif %}
 
         <div class="d-grid mt-2">
           {{ form.submit(class="btn", id="submit-btn") }}
         </div>
 
-        <div class="row mt-3">
+        <div class="col-12 mt-3">
           <div class="col text-center">
             <p>Already have an account? <a href="{{ url_for('user.login') }}">Login here</a></p>
           </div>
