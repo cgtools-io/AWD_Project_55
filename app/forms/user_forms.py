@@ -4,27 +4,29 @@ from wtforms import StringField, PasswordField, SubmitField, BooleanField, Email
 from wtforms.validators import Length, EqualTo, Email, InputRequired
 
 from app.models import User
+import app.constants as msg
+
 
 class SignupForm(FlaskForm):
     username = StringField('Username:', validators=[InputRequired(), Length(min=2, max=25)])
     email = EmailField('Email:', validators=[InputRequired(), Email()])
     password = PasswordField('Password:', validators=[InputRequired()])
-    confirm_password = PasswordField('Confirm password:', validators=[InputRequired(), EqualTo('password', message='Passwords must match')])
+    confirm_password = PasswordField('Confirm password:', validators=[InputRequired(), EqualTo('password', message=msg.PASSWORD_MISMATCH)])
     submit = SubmitField('Register account')
 
     def validate_username(self, username):
         if current_user.is_authenticated:
-            raise ValidationError('Please logout to create a new account.')
+            raise ValidationError(msg.ALREADY_LOGGED_IN)
         new_user = User.query.filter_by(username=username.data).first()
         if new_user:
-            raise ValidationError('Username already taken.')
+            raise ValidationError(msg.USERNAME_TAKEN)
 
     def validate_email(self, email):
         if current_user.is_authenticated:
-            raise ValidationError('Please logout to create a new account.')
+            raise ValidationError(msg.ALREADY_LOGGED_IN)
         new_email = User.query.filter_by(email=email.data).first()
         if new_email:
-            raise ValidationError('Email already registered.')
+            raise ValidationError(msg.EMAIL_REGISTERED)
 
 class LoginForm(FlaskForm):
     username = StringField('Username:', validators=[InputRequired(), Length(min=2, max=25)])

@@ -8,6 +8,7 @@ import pytest
 from app import create_app
 from app.models import User
 from app.extensions import db
+import app.constants as msg
 
 class UserSession:
     def __init__(self, client):
@@ -35,7 +36,6 @@ def app():
         yield app
         db.session.remove()
         db.drop_all()
-    return app
 
 @pytest.fixture
 def test_user(app):
