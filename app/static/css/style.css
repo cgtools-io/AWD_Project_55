@@ -276,6 +276,15 @@ About Page
   cursor: pointer;
 }
 
+.about-text {
+  color: #f6ebff;
+}
+
+.about-text h2 {
+ color: #CBA135;
+}
+
+
 .info-box {
   font-size: 20px;
   transition: transform 0.2s ease;
@@ -291,9 +300,9 @@ About Page
   text-align: center;
 }
 
-.row .col:nth-of-type(1) .about-box { animation-delay: 600ms; }
-.row .col:nth-of-type(2) .about-box { animation-delay: 1200ms; }
-.row .col:nth-of-type(3) .about-box { animation-delay: 1800ms; }
+.row .col:nth-of-type(1) .about-box { animation-delay: 1000ms; }
+.row .col:nth-of-type(2) .about-box { animation-delay: 2000ms; }
+.row .col:nth-of-type(3) .about-box { animation-delay: 3000ms; }
 
 .tech-pill {
   background-color: rgba(124, 15, 241, 0.1);
@@ -615,4 +624,48 @@ visual page optimised for cross-platform responsiveness
 .visual .holding-card p span {
     font-weight: bold;
     color: #fff;
+}
+
+/* ========================= */
+/* Landing page CTAs         */
+/* ========================= */
+.landing-cta {
+  margin-top: 4rem;        /* push it away from the steps above */
+  margin-bottom: 4rem;     /* give it space before the footer */
+}
+
+.landing-cta .btn-lg {
+  font-size: 1.25rem;      /* larger text */
+  padding: 0.75rem 2.5rem;  /* more clickable area */
+  min-width: 180px;         /* keep them an even width */
+}
+/* Primary CTA (Get Started) */
+.cta-primary {
+  background-color: #4A0F84;     /* your deep-purple */
+  border: 2px solid #FFD700;     /* gold border */
+  color: #FFFFFF;
+}
+.cta-primary:hover {
+  background-color: #6A1FB0;
+  color: #FFFFFF;
+}
+
+/* Secondary CTA (Learn More) */
+.cta-secondary {
+  background-color: #FFD700;     /* gold fill */
+  border: 2px solid #FFD700;
+  color: #1A1333;
+}
+.cta-secondary:hover {
+  background-color: #1A1333;
+  color: #FFD700;
+}
+
+.info-steps + .about-box {
+  border-color: rgba(212, 175, 55, 0.75);
+}
+
+.about-box .icon-box svg {
+  width: 48px;
+  height: 48px;
 }
