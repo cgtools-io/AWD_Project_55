@@ -217,4 +217,23 @@ def process_csv(filename=None):
     )
     db.session.add(summary)
     db.session.commit()
-    return redirect(url_for('user.file_upload'))
+    return redirect(url_for('user.dashboard'))
+
+@user.route('/dashboard')
+@login_required
+def dashboard():
+    # Get the latest summary for the logged-in user
+    summary = db.session.execute(
+        db.select(Summary)
+        .where(Summary.user_id == current_user.id)
+        .order_by(Summary.id.desc())
+    ).scalars().first()
+
+    total_buy_val = summary.total_buy if summary else 0
+    total_sell_val = summary.total_sell if summary else 0
+
+    return render_template(
+        'user/dashboard.html',
+        total_buy_val=total_buy_val,
+        total_sell_val=total_sell_val
+    )
