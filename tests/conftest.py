@@ -1,8 +1,9 @@
 import sys
-import os
+import shutil, os
 
 #Ensure Python can find the 'app' module when running pytest from project root
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+UPLOAD_DIR = os.path.join('app', 'static', 'uploads')
 
 import pytest
 from app import create_app
@@ -42,8 +43,8 @@ def app():
 @pytest.fixture
 def test_user(app):
     with app.app_context():
-        user = User(username="testuser", email="user@test.com")
-        user.set_password("password123!")
+        user = User(username=msg.TEST_USER, email=msg.TEST_EMAIL)
+        user.set_password(msg.TEST_PASSWORD)
         db.session.add(user)
         db.session.commit()
         return user
@@ -55,3 +56,10 @@ def auth(client):
 @pytest.fixture
 def client(app):
     return app.test_client()
+
+@pytest.fixture(autouse=True)
+def clean_upload_folder():
+    if os.path.exists(UPLOAD_DIR):
+        shutil.rmtree(UPLOAD_DIR)
+    os.makedirs(UPLOAD_DIR, exist_ok=True)
+    yield

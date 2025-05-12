@@ -7,6 +7,9 @@ import pytest
 def test_always_passes():
     assert True
 
+def test_secret_key_not_default(app):
+    assert app.config["SECRET_KEY"] != "default-secret"
+
 
 # -------------------------------
 # Public page loads
@@ -61,56 +64,14 @@ def test_navbar_links_present(client):
     assert "About" in html
     assert "Contact" in html
 
+# -------------------------------
+# Static files load            TODO: add svg folder when merged
+# -------------------------------
 
+def test_css_style_sheet_loads(client):
+    response = client.get('/static/css/style.css')
+    assert response.status_code == 200
 
-
-
-
-# def test_(client):
-#     response = client.get('/')
-#     assert response.status_code == 200
-#     assert b''
-#  # GET a nonsense URL (e.g. /no-such-page) → assert a 404 status
-
-
-
-# def test_(client):
-#     response = client.get('/')
-#     assert response.status_code == 200
-#     assert b''
-#  # Check for custom 404 template then check for that
-
-# def test_(client):
-#     response = client.get('/')
-#     assert response.status_code == 200
-#     assert b''
-#  # static assest (??)(If you’ve got a custom 404 template) check for a specific message or heading in the response
-
-# def test_(client):
-#     response = client.get('/')
-#     assert response.status_code == 200
-#     assert b''
-#  # check main CSS assert status 200 
-
-# def test_(client):
-#     response = client.get('/')
-#     assert response.status_code == 200
-#     assert b''
-#  # JS files under /static/ -> assert status 200
-
-# def test_(client):
-#     response = client.get('/')
-#     assert response.status_code == 200
-#     assert b''
-#  # README:
-#     # Setup instructions
-#     # Virtualenv + requirements.txt
-#     # Running tests
-#     # DB setup (migrate vs create_all)
-
-# def test_(client):
-#     response = client.get('/')
-#     assert response.status_code == 200
-#     assert b''
-#  # Production config does NOT use sqlite or default secret key
-
+def test_javascript_script_loads(client):
+    response = client.get('/static/js/script.js')
+    assert response.status_code == 200
