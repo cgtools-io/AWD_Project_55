@@ -304,6 +304,10 @@ Login Form
 /* ---------------
 File Upload Page
 --------------- */
+#page-body {
+  min-height: calc(100vh - 132px);
+}
+
 #upload-header {
   text-align: left;
   margin-top: 20px;
@@ -313,7 +317,7 @@ File Upload Page
 .upload-area {
   border: 5px dashed #B084CC;
   border-radius: 10px;
-  padding: 40px;
+  padding: 30px;
   background-color: transparent;
   justify-content: center;
   align-content: center;
