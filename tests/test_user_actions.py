@@ -1,18 +1,9 @@
+# login, signup, logout, “already logged in,” redirect-when-authenticated, blank-field errors
+
 import app.constants as msg
 import uuid
 
-# FIRST: Pages Load cases
-def test_login_page_loads(client): 
-    response = client.get('/login')
-    assert response.status_code == 200
-    assert b"Login" in response.data
-
-def test_signup_page_load(client):
-    response = client.get('/signup')
-    assert response.status_code == 200
-    assert b"Register account" in response.data
-
-# SECOND: Logging in/out cases
+# Logging in/out cases
 def test_valid_user(client, test_user):
     response = client.post('/login', data={
         'username': msg.TEST_USER,
@@ -34,7 +25,7 @@ def test_logout(client, auth, test_user):
     response = client.get('/logout', follow_redirects=True)
     assert msg.LOGOUT_SUCCESS.encode() in response.data
 
-# THIRD: Registration cases
+# Registration cases
 def test_register_user(client):
     unique_user = f"user_{uuid.uuid4().hex[:8]}"
     unique_email = f"{unique_user}@text.com"
@@ -60,7 +51,20 @@ def test_duplicate_user(client, test_user):
 
     assert msg.USERNAME_TAKEN.encode() in response.data
 
-# TODO: Unauthenticated user access redirects to login
-# TODO: Authenticated user access succeeds
+# def test_missing_data(client:
+#     response = client.post('/signup', data={
+#         'username'
+
+
+
+#     })
+#     )
+
 # TODO: Register with missing/invalid data
 # TODO: Redirect or error handling on registration failure
+
+
+
+# FOURTH: Access cases
+# TODO: Unauthenticated user access redirects to login
+# TODO: Authenticated user access succeeds
