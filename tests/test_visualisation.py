@@ -1,0 +1,1 @@
+# access to `/visual`, chart-context data, JSON endpoints if any

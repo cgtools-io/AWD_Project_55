@@ -2,10 +2,12 @@ from flask import Flask, render_template
 from flask_login import current_user
 import logging
 from config import Config
+import app.constants as msg
 
 def create_app(config_class=Config):
     app = Flask(__name__, static_folder='static', template_folder='templates')
     app.config.from_object(config_class)
+    print("DB in use:", app.config["SQLALCHEMY_DATABASE_URI"]) # Debugging multiple db issues
 
     # Import and initialize extensions here
     from app.extensions import db, migrate, login_manager, csrf
@@ -13,6 +15,11 @@ def create_app(config_class=Config):
     migrate.init_app(app, db)
     login_manager.init_app(app)
     csrf.init_app(app)
+
+    # To redirect with a flash message instead of ERROR page
+    login_manager.login_view = 'user.login'
+    login_manager.login_message = msg.LOGIN_REQUIRED
+    login_manager.login_message_category = "danger"
 
     # Register blueprints here
     from app.routes.user import user

@@ -6,3 +6,5 @@ Flask-Login==0.6.3
 Flask-WTF==1.2.0
 email-validator==2.2.0
 python-dotenv==1.1.0
+selenium==4.32.0
+pytest==8.3.5

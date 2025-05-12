@@ -1,0 +1,1 @@
+# once we have a parser: valid-CSV → correct objects, malformed rows, summary logic

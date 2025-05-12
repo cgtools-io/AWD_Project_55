@@ -5,6 +5,7 @@ import logging
 from urllib.parse import urlparse
 import os
 
+import app.constants as msg
 from app.extensions import db
 from app.forms.user_forms import SignupForm, LoginForm
 from app.models import User, Admin
@@ -36,7 +37,7 @@ def signup():
             db.session.commit()
 
             logging.debug("New user successfully committed to the database.")
-            flash('Account created successfully. Please log in.', 'success')
+            flash(msg.ACCOUNT_CREATED, 'success')
             return redirect(url_for('user.login'))
         
         # Form was invalid — display detailed errors
@@ -83,11 +84,11 @@ def login():
 
                 # Check if the user exists and if the password is correct
                 if not user or not user.check_password(form.password.data):
-                    flash('Invalid username or password', 'danger')
+                    flash(msg.INVALID_CREDENTIALS, 'danger')
                     return redirect(url_for('user.login'))
                 
                 login_user(user, remember=form.remember.data)
-                flash('Login successful!', 'success')
+                flash(msg.LOGIN_SUCCESS, 'success')
                 logger.debug(f'User {user.username} logged in successfully')
 
                 # Redirect to the next page (default: index page)
@@ -102,7 +103,7 @@ def login():
                         logger.error(f'Error in {field}: {error}')
 
         except CSRFError:
-            flash('CSRF token validation failed. Please try again.')
+            flash(msg.CSRF_FAILED)
             logger.error('CSRF token validation failed')
 
     return render_template('auth/login.html', form=form)
@@ -114,9 +115,9 @@ def logout():
 
     if current_user.is_authenticated:
         logout_user()
-        flash('You have been logged out.', 'success')
+        flash(msg.LOGOUT_SUCCESS, 'success')
     else:
-        flash('You are not logged in.')
+        flash(msg.NOT_LOGGED_IN)
 
     return redirect(url_for('index'))
 
@@ -136,7 +137,7 @@ def file_upload():
             os.makedirs(upload_folder, exist_ok=True)
             file.save(os.path.join(upload_folder, filename))
 
-            flash('Upload successful!', 'success')
+            flash(msg.UPLOAD_SUCCESS, 'success')
         else:
             for field, errors in form.errors.items():
                 for error in errors:
@@ -155,3 +156,8 @@ def visual():
 @login_required
 def share():
     return render_template('user/share_data.html')
+
+@user.errorhandler(CSRFError)
+def handle_csrf_error(e):
+    flash(msg.CSRF_FAILED, 'danger')
+    return redirect(request.url or url_for('index'))
