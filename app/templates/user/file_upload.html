@@ -16,13 +16,13 @@
         <div class="col upload-area flex-column" id="uploadfile">
             {% with messages = get_flashed_messages(with_categories=true) %}
                 {% if messages %}
-                    <div class="w-100 mb-3 justify-content-center">
-                    {% for category, message in messages %}
-                        <div class="alert alert-{{ category }} alert-dismissible fade show d-inline-block text-nowrap" role="alert">
-                        <span class="me-3">{{ message }}</span>
-                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                        </div>
-                    {% endfor %}
+                    <div class="w-100 mb-3 justify-content-center d-flex">
+                        {% for category, message in messages %}
+                            <div class="alert alert-{{ category }} alert-dismissible fade show d-inline-block text-nowrap" role="alert">
+                                <span class="me-3">{{ message }}</span>
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                            </div>
+                        {% endfor %}
                     </div>
                 {% endif %}
             {% endwith %}
