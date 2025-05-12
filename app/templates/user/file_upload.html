@@ -27,17 +27,6 @@
                 {% endif %}
             {% endwith %}
 
-            {% if form.errors %}
-                <div class="w-100 mb-3 justify-content-center">
-                {% for field, errors in form.errors.items() %}
-                    <div class="alert alert-danger alert-dismissible fade show d-inline-block text-nowrap" role="alert">
-                    <span class="me-3">{{ field }}: {{ errors[0] }}</span>
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                    </div>
-                {% endfor %}
-                </div>
-            {% endif %}
-
             <form method="POST" enctype="multipart/form-data">
                 {{ form.hidden_tag() }}
                 
@@ -47,11 +36,11 @@
 
                 <div class="d-flex gap-3 justify-content-center align-items-center">
                     <div class="upload-text col-8">
-                        {{ form.file(class="form-control") }}
+                        {{ form.file(class="form-control form-control-lg border border-2") }}
                     </div>
 
                     <div class="upload-text col-3">
-                        {{ form.submit(class="button-calculate btn w-100") }}
+                        {{ form.submit(class="button-calculate btn w-100 py-1") }}
                     </div>
                 </div>
             </form>
