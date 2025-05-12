@@ -51,6 +51,12 @@ def test_duplicate_user(client, test_user):
 
     assert msg.USERNAME_TAKEN.encode() in response.data
 
+
+def test_protected_route_requires_login(client):
+    response = client.get('/file_upload')
+    assert response.status_code == 403
+    assert b'ERROR 403' in response.data
+
 # def test_missing_data(client:
 #     response = client.post('/signup', data={
 #         'username'
@@ -68,3 +74,21 @@ def test_duplicate_user(client, test_user):
 # FOURTH: Access cases
 # TODO: Unauthenticated user access redirects to login
 # TODO: Authenticated user access succeeds
+
+
+# -------------------------------
+# NavBar loads and redirects
+# -------------------------------
+
+# def test_(client):
+#     response = client.get('/')
+#     assert response.status_code == 200
+#     assert b''
+
+# On / or /about, assert you see “Home”, “About”, “Contact” and a “Login” button
+
+# def test_(client):
+#     response = client.get('/')
+#     assert response.status_code == 200
+#     assert b''
+# # Navigation bar links (unauthenticated) route to right page

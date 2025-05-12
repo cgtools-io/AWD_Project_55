@@ -29,6 +29,8 @@ def app():
     app.config['TESTING'] = True
     app.config['WTF_CSRF_ENABLED'] = False # disabled CSRF for testing POSTs
     app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///:memory:" # temp DB for testing
+    app.config['TRAP_HTTP_EXCEPTIONS'] = True
+    app.config['PROPAGATE_EXCEPTIONS'] = False
 
     with app.app_context():
         from app.extensions import db
