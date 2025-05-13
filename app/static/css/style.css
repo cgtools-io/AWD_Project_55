@@ -258,6 +258,91 @@ Hero Section
   }
 }
 
+
+/* ---------------
+About Page
+--------------- */
+
+.about-box {
+  border-radius: 1.5rem;
+  font-size: 1rem;
+  height: 100%;
+  box-sizing: border-box;
+  opacity: 0;
+  animation: fadeInScale 0.6s ease forwards;
+  border: 2px solid #f1c40f;
+  background: linear-gradient(135deg, #2c234d, #1A122D);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  cursor: pointer;
+}
+
+.about-text {
+  color: #f6ebff;
+}
+
+.about-text h2 {
+ color: #CBA135;
+}
+
+
+.info-box {
+  font-size: 20px;
+  transition: transform 0.2s ease;
+  padding-top: 50px;
+}
+.info-box:hover {
+  transform: translateY(-6px) scale(1.05);
+}
+
+.info-box h3 {
+  font-size: 25px;
+  color: #CBA135;
+  text-align: center;
+}
+
+.row .col:nth-of-type(1) .about-box { animation-delay: 1000ms; }
+.row .col:nth-of-type(2) .about-box { animation-delay: 2000ms; }
+.row .col:nth-of-type(3) .about-box { animation-delay: 3000ms; }
+
+.tech-pill {
+  background-color: rgba(124, 15, 241, 0.1);
+  padding: 0.75rem 1.25rem;
+  border-radius: 2rem;
+  border: 1px solid #444;
+  margin-bottom: 0.75rem;
+  color: #f8f9fa;
+}
+
+.tech-pill svg {
+  width: 30px;
+  height: 30px;
+  padding-bottom: 2px;
+}
+
+.tech-pill strong {
+  margin-top: 22px;
+}
+
+.fade-in {
+  animation: fadeInPage 1s ease both;
+}
+
+@keyframes fadeInScale {
+  from { opacity: 0; transform: scale(0.9); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+@keyframes fadeInPage {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.icon-box svg {
+  width: 40px;
+  height: 40px;
+}
+
+
 /* ---------------
 Login and Signup Page
 --------------- */
@@ -538,4 +623,91 @@ visual page optimised for cross-platform responsiveness
 .visual .holding-card p span {
     font-weight: bold;
     color: #fff;
+}
+
+/* ========================= */
+/* Landing page CTAs         */
+/* ========================= */
+.landing-cta {
+  margin-top: 4rem;        
+  margin-bottom: 4rem;     
+}
+
+.landing-cta .btn-lg {
+  font-size: 1.25rem;      
+  padding: 0.75rem 2.5rem;  
+  min-width: 180px;         
+}
+/* Primary CTA (Get Started) */
+.cta-primary {
+  background-color: #4A0F84;     
+  border: 2px solid #FFD700;    
+  color: #FFFFFF;
+}
+.cta-primary:hover {
+  background-color: #6A1FB0;
+  color: #FFFFFF;
+}
+
+/* Secondary CTA (Learn More) */
+.cta-secondary {
+  background-color: #FFD700;     
+  border: 2px solid #FFD700;
+  color: #1A1333;
+}
+.cta-secondary:hover {
+  background-color: #1A1333;
+  color: #FFD700;
+}
+
+.info-steps + .about-box {
+  border-color: rgba(212, 175, 55, 0.75);
+}
+
+.about-box .icon-box svg {
+  width: 48px;
+  height: 48px;
+}
+
+/* ====================
+   Tech-stack dropdown
+   ==================== */
+#techToggle {
+  background-color: rgba(255,255,255,0.1);
+  border-color: #CBA135;
+  width: 220px;
+}
+
+/* dropdown mechanics */
+.dropdown-content {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.4s ease-out;
+  width: 100%;
+  max-width: 800px;
+  margin: 0 auto;
+  overflow-y: hidden;
+  overflow-x: visible;
+}
+
+.dropdown-content.open {
+  /* JS will set max-height to scrollHeight */
+}
+
+/* pill style + flex alignment */
+.tech-pill {
+  display: flex;
+  align-items: center;
+  color: #fff;             /* SVG uses currentColor */
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.2);
+  border-radius: 2rem;
+  padding: 1rem 1.5rem;
+}
+
+.tech-pill svg {
+  flex-shrink: 0;
+  width: 24px;
+  height: 24px;
+  margin-right: 1rem;
 }
