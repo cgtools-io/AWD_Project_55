@@ -16,7 +16,7 @@
             {% for subfield in form.broker %}
                 <div class="col-3 d-flex justify-content-center">
                     <label>
-                        <input class="broker-radio" type="radio" name="options" value="{{ subfield.value }}" autocomplete="off">
+                        <input class="broker-radio" type="radio" name="broker" value="{{ subfield.data }}" autocomplete="off">
                         <img src='/static/images/{{ subfield.label.text }}.svg' alt="{{ subfield.label.text }}" width="220" height="220">
                     </label>
                 </div>
@@ -51,7 +51,7 @@
 
                     <div class="d-flex gap-3 justify-content-center align-items-center">
                         <div class="upload-text col-8">
-                            {{ form.file(class="form-control form-control-lg border border-4") }}
+                            {{ form.file(class="form-control form-control-lg border border-3") }}
                         </div>
 
                         <div class="upload-text col-3">
