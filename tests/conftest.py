@@ -10,6 +10,7 @@ from app import create_app
 from app.models import User
 from app.extensions import db
 import app.constants as msg
+from config import TestConfig
 
 class UserSession:
     def __init__(self, client):
@@ -26,15 +27,11 @@ class UserSession:
 
 @pytest.fixture
 def app():
-    app = create_app()
-    app.config['TESTING'] = True
-    app.config['WTF_CSRF_ENABLED'] = False # disabled CSRF for testing POSTs
-    app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///:memory:" # temp DB for testing
-    app.config['TRAP_HTTP_EXCEPTIONS'] = True
-    app.config['PROPAGATE_EXCEPTIONS'] = False
+    app = create_app(config_class=TestConfig)
+    
+    assert "sqlite" in app.config["SQLALCHEMY_DATABASE_URI"], "NOT using a test DB!"
 
     with app.app_context():
-        from app.extensions import db
         db.create_all()
         yield app
         db.session.remove()
