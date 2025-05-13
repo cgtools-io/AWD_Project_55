@@ -4,11 +4,12 @@ from flask_wtf.csrf import CSRFError
 import logging
 from urllib.parse import urlparse
 import os
+import csv
 
 import app.constants as msg
 from app.extensions import db
 from app.forms.user_forms import SignupForm, LoginForm
-from app.models import User, Admin
+from app.models import User, Admin, Summary
 from app.forms.file_upload_form import FileUploadForm
 from werkzeug.utils import secure_filename
 
@@ -126,6 +127,9 @@ def file_upload():
     form = FileUploadForm()
 
     if request.method == 'POST':
+
+        filename = None
+
         if form.validate_on_submit():
             file = form.file.data
             if isinstance(file, list):
@@ -134,7 +138,8 @@ def file_upload():
             filename = secure_filename(file.filename)
             upload_folder = os.path.join('app/static/uploads')
             os.makedirs(upload_folder, exist_ok=True)
-            file.save(os.path.join(upload_folder, filename))
+            file_path = os.path.join(upload_folder, filename)
+            file.save(file_path)
 
             flash(msg.UPLOAD_SUCCESS, 'success')
         else:
@@ -142,7 +147,7 @@ def file_upload():
                 for error in errors:
                     flash(error, 'danger')
 
-        return redirect(url_for('user.file_upload'))
+        return redirect(url_for('user.file_upload', filename=filename))
 
     return render_template('user/file_upload.html', form=form)
 
@@ -160,3 +165,71 @@ def share():
 def handle_csrf_error(e):
     flash(msg.CSRF_FAILED, 'danger')
     return redirect(request.url or url_for('index'))
+
+@user.route("/file_upload/process/<filename>", methods=["POST"])
+@user.route("/file_upload/process/", methods=["POST"])
+@login_required
+def process_csv(filename=None):
+    total_buy_val = 0
+    total_sell_val = 0
+
+    if filename == None:
+        flash("No file uploaded.", "danger")
+        logging.error("No file uploaded.")
+        return redirect(url_for('user.file_upload'))
+
+    file_path = os.path.join('app/static/uploads', filename)
+
+    if not os.path.exists(file_path):
+        flash("File not found.", "danger")
+        logging.error(f"File not found: {file_path}")
+        return redirect(url_for('user.file_upload'))
+
+    current_app.logger.debug("make sure file is reached")
+    with open(file_path, newline='') as csvfile:
+        reader = csv.DictReader(csvfile)
+        current_app.logger.debug("Rows reached")
+
+        for row in reader:
+            logger.debug(f"Processing row: {row.get('Value $')}")
+            if row.get('Value $') == '-':
+                continue
+            if row.get('Type') == 'Buy':
+                total_buy_val += float(row.get('Value $', 0).replace(',', ''))
+            elif row.get('Type') == 'Sell':
+                total_sell_val += float(row.get('Value $', 0).replace(',', ''))
+    
+    flash("CSV file processed successfully!")
+    flash(f"Total Buy Value: {total_buy_val} Total Sell Value: {total_sell_val}", "info")
+    logging.debug(f"Total Buy Value: {total_buy_val} Total Sell Value: {total_sell_val}")
+
+    print(f"Saving summary for user {current_user.id} – Buy: {total_buy_val}, Sell: {total_sell_val}") # debug print
+
+    # Save the summary to the database
+    summary = Summary(
+        user_id=current_user.id,
+        total_buy=total_buy_val,
+        total_sell=total_sell_val
+    )
+    db.session.add(summary)
+    db.session.commit()
+    return redirect(url_for('user.dashboard'))
+
+@user.route('/dashboard')
+@login_required
+def dashboard():
+    # Get the latest summary for the logged-in user
+    summary = db.session.execute(
+        db.select(Summary)
+        .where(Summary.user_id == current_user.id)
+        .order_by(Summary.id.desc())
+    ).scalars().first()
+
+    total_buy_val = summary.total_buy if summary else 0
+    total_sell_val = summary.total_sell if summary else 0
+
+    return render_template(
+        'user/dashboard.html',
+        total_buy_val=total_buy_val,
+        total_sell_val=total_sell_val
+    )

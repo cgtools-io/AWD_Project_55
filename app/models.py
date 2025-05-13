@@ -29,3 +29,9 @@ class Admin(UserMixin):
     
     def is_admin(self):
         return True
+
+class Summary(db.Model):
+    id = db.Column(db.Integer, primary_key=True) 
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False) # makes sure there is an associated user_id for each summary
+    total_buy = db.Column(db.Float)
+    total_sell = db.Column(db.Float)
