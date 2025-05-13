@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block title %}Your Dashboard – CGTools{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+
+    <div class="hero">
+        <h1 class="mb-4 text-center">Account Dashboard</h1>
+    </div>
+
+    <div class="row justify-content-center">
+        <div class="col-md-6 mb-4">
+            <div class="card text-white cta-button mb-3" style="background-color: rgb(1, 69, 14);">
+                <div class="fw-bold">Total Buy Value</div>
+                <div class="card-body">
+                    <h4 class="card-title">${{ total_buy_val }}</h4>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 mb-4">
+            <div class="card text-white cta-button  mb-3" style="background-color: rgb(63, 2, 2);">
+                <div class="fw-bold">Total Sell Value</div>
+                <div class="card-body">
+                    <h4 class="card-title">${{ total_sell_val }}</h4>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    
+    {% endblock %}
+    {% block extra_js %}
+    {% endblock %}
