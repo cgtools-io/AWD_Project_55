@@ -28,7 +28,7 @@ class UserSession:
 @pytest.fixture
 def app():
     app = create_app(config_class=TestConfig)
-
+    
     assert "sqlite" in app.config["SQLALCHEMY_DATABASE_URI"], "NOT using a test DB!"
 
     with app.app_context():
