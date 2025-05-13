@@ -9,7 +9,7 @@ import csv
 import app.constants as msg
 from app.extensions import db
 from app.forms.user_forms import SignupForm, LoginForm
-from app.models import User, Admin, Transaction, Summary
+from app.models import User, Admin, Summary
 from app.forms.file_upload_form import FileUploadForm
 from werkzeug.utils import secure_filename
 
