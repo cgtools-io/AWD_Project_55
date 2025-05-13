@@ -393,6 +393,11 @@ File Upload Page
   min-height: calc(100vh - 132px);
 }
 
+.form-second-part,
+.form-third-part {
+  display: none;
+}
+
 .upload-header {
   text-align: left;
   margin-top: 20px;
@@ -400,6 +405,7 @@ File Upload Page
   color: white;
   font-weight: bold;
 }
+
 .upload-area {
   border: 5px dashed #B084CC;
   border-radius: 10px;
@@ -408,18 +414,21 @@ File Upload Page
   justify-content: center;
   align-content: center;
 }
+
 .upload-text {
   font-size: 20px;
   color: #B084CC;
   text-align: center;
   display: block;
 }
+
 #upload-arrow {
   display: block;
   margin: 30px auto;
   align-content: center;
   text-align: center;
 }
+
 .button-secondary {
   background-color: #B084CC;
   color: #1A1333;
@@ -428,6 +437,7 @@ File Upload Page
   font-weight: bold;
   font-size: 25px;
 }
+
 .button-calculate {
   background-color: #FFD700;
   color: #1A1333;
@@ -440,6 +450,7 @@ File Upload Page
   background-color: #1A1333;
   color: #FFD700;
 }
+
 .button-secondary:hover {
   background-color: gray;
 }
@@ -453,12 +464,12 @@ File Upload Page
 
 .broker-radio + img {
   cursor: pointer;
-  border: 5px solid transparent;
+  border: 10px solid transparent;
 }
 
 .broker-radio:checked + img {
-  border: 5px solid #B084CC;
-  border-radius: 100px;
+  border: 10px solid #B084CC;
+  border-radius: 110px;
 }
 
 /* ========== Share Data Page Scoped Styles ========== */

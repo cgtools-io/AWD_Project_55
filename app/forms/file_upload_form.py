@@ -6,7 +6,7 @@ from wtforms.validators import InputRequired
 import app.constants as msg
 
 class FileUploadForm(FlaskForm):
-    broker = RadioField('Crypto Broker:', choices=[('kraken', 'Kraken'), ('binance', 'Binance')], validators=[
+    broker = RadioField('Choose broker:', choices=[('kraken', 'Kraken'), ('binance', 'Binance')], validators=[
         InputRequired(message=msg.BROKER_REQUIRED)
     ])
     file = FileField('Upload .csv file:', validators=[
