@@ -316,8 +316,7 @@ About Page
 .tech-pill svg {
   width: 30px;
   height: 30px;
-  padding-right: 10px;
-  padding-bottom: 5px;
+  padding-bottom: 2px;
 }
 
 .tech-pill strong {
@@ -630,19 +629,19 @@ visual page optimised for cross-platform responsiveness
 /* Landing page CTAs         */
 /* ========================= */
 .landing-cta {
-  margin-top: 4rem;        /* push it away from the steps above */
-  margin-bottom: 4rem;     /* give it space before the footer */
+  margin-top: 4rem;        
+  margin-bottom: 4rem;     
 }
 
 .landing-cta .btn-lg {
-  font-size: 1.25rem;      /* larger text */
-  padding: 0.75rem 2.5rem;  /* more clickable area */
-  min-width: 180px;         /* keep them an even width */
+  font-size: 1.25rem;      
+  padding: 0.75rem 2.5rem;  
+  min-width: 180px;         
 }
 /* Primary CTA (Get Started) */
 .cta-primary {
-  background-color: #4A0F84;     /* your deep-purple */
-  border: 2px solid #FFD700;     /* gold border */
+  background-color: #4A0F84;     
+  border: 2px solid #FFD700;    
   color: #FFFFFF;
 }
 .cta-primary:hover {
@@ -652,7 +651,7 @@ visual page optimised for cross-platform responsiveness
 
 /* Secondary CTA (Learn More) */
 .cta-secondary {
-  background-color: #FFD700;     /* gold fill */
+  background-color: #FFD700;     
   border: 2px solid #FFD700;
   color: #1A1333;
 }
@@ -668,4 +667,47 @@ visual page optimised for cross-platform responsiveness
 .about-box .icon-box svg {
   width: 48px;
   height: 48px;
+}
+
+/* ====================
+   Tech-stack dropdown
+   ==================== */
+#techToggle {
+  background-color: rgba(255,255,255,0.1);
+  border-color: #CBA135;
+  width: 220px;
+}
+
+/* dropdown mechanics */
+.dropdown-content {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.4s ease-out;
+  width: 100%;
+  max-width: 800px;
+  margin: 0 auto;
+  overflow-y: hidden;
+  overflow-x: visible;
+}
+
+.dropdown-content.open {
+  /* JS will set max-height to scrollHeight */
+}
+
+/* pill style + flex alignment */
+.tech-pill {
+  display: flex;
+  align-items: center;
+  color: #fff;             /* SVG uses currentColor */
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.2);
+  border-radius: 2rem;
+  padding: 1rem 1.5rem;
+}
+
+.tech-pill svg {
+  flex-shrink: 0;
+  width: 24px;
+  height: 24px;
+  margin-right: 1rem;
 }

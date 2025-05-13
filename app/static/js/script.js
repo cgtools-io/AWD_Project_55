@@ -19,3 +19,24 @@ document.addEventListener('DOMContentLoaded', () => {
       });
     }
   });
+
+
+// =======================
+// dropdown toggle script
+// =======================
+document.addEventListener('DOMContentLoaded', () => {
+  const btn     = document.getElementById('techToggle'),
+        content = document.getElementById('techContent'),
+        arrow   = document.getElementById('techArrow');
+
+  btn.addEventListener('click', () => {
+    const isOpen = content.classList.toggle('open');
+    if (isOpen) {
+      content.style.maxHeight = content.scrollHeight + 'px';
+      arrow.textContent = '▴';
+    } else {
+      content.style.maxHeight = '0';
+      arrow.textContent = '▾';
+    }
+  });
+});
