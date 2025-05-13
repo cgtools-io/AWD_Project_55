@@ -199,7 +199,7 @@ def process_csv(filename=None):
             elif row.get('Type') == 'Sell':
                 total_sell_val += float(row.get('Value $', 0).replace(',', ''))
     
-    flash("CSV file processed successfully!")
+    flash("CSV file processed successfully!", "success")
     flash(f"Total Buy Value: {total_buy_val} Total Sell Value: {total_sell_val}", "info")
     logging.debug(f"Total Buy Value: {total_buy_val} Total Sell Value: {total_sell_val}")
 
