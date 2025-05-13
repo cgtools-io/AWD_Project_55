@@ -4,32 +4,35 @@
 
 {% block content %}
 <div id="page-body" class="container-fluid mt-0 d-flex flex-column">
-    
-    <div class="row px-4">
-        <div class="col ps-0">
-            <h1 id="upload-header" class="p-0">Upload .csv file:</h1>
-        </div>
-    </div>
 
-    <div class="row px-4 mt-3 mb-3 flex-grow-1 d-flex">
-
-        <div class="col upload-area flex-column" id="uploadfile">
-            {% with messages = get_flashed_messages(with_categories=true) %}
-                {% if messages %}
-                    <div class="w-100 mb-3 justify-content-center d-flex">
-                        {% for category, message in messages %}
-                            <div class="alert alert-{{ category }} alert-dismissible fade show d-inline-block text-nowrap" role="alert">
-                                <span class="me-3">{{ message }}</span>
-                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                            </div>
-                        {% endfor %}
-                    </div>
-                {% endif %}
-            {% endwith %}
-
-            <form method="POST" enctype="multipart/form-data">
+    <form method="POST" enctype="multipart/form-data">
                 {{ form.hidden_tag() }}
-                
+
+                {{ form.broker.label }}
+                {{ form.broker(class="form-radio form-select-lg") }}
+    
+        <div class="row px-4">
+            <div class="col ps-0">
+                <h1 id="upload-header" class="p-0">Upload .csv file:</h1>
+            </div>
+        </div>
+
+        <div class="row px-4 mt-3 mb-3 flex-grow-1 d-flex">
+
+            <div class="col upload-area flex-column" id="uploadfile">
+                {% with messages = get_flashed_messages(with_categories=true) %}
+                    {% if messages %}
+                        <div class="w-100 mb-3 justify-content-center d-flex">
+                            {% for category, message in messages %}
+                                <div class="alert alert-{{ category }} alert-dismissible fade show d-inline-block text-nowrap" role="alert">
+                                    <span class="me-3">{{ message }}</span>
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                {% endwith %}
+                    
                 <div class="upload-text">Drag and drop file here</div>
                 
                 <img id="upload-arrow" src="/static/images/upload-icon-white.png" alt="Upload Icon" width="80" height="80">
@@ -43,9 +46,9 @@
                         {{ form.submit(class="button-calculate btn w-100 py-1") }}
                     </div>
                 </div>
-            </form>
+            </div>
         </div>
-    </div>
+    </form>            
 
     <div class="row px-4 mb-3 mt-auto">
         <div class="col-sm-3 px-0 ps-sm-0 pb-2 pb-sm-0">
