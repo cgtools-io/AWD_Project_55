@@ -14,10 +14,11 @@
 
         <div class="row px-4 mb-3 justify-content-center">
             {% for subfield in form.broker %}
-                <div class="col-3 d-flex justify-content-center">
-                    <label>
+                <div class="col-3 d-flex justify-content-center pt-4">
+                    <label class="text-center broker-label">
                         <input class="broker-radio" type="radio" name="broker" value="{{ subfield.data }}" autocomplete="off">
-                        <img src='/static/images/{{ subfield.label.text }}.svg' alt="{{ subfield.label.text }}" width="220" height="220">
+                        <img class="broker-img" src='/static/images/{{ subfield.label.text }}.svg' alt="{{ subfield.label.text }}" width="270" height="270">
+                        {{ subfield.label.text }}
                     </label>
                 </div>
             {% endfor %}
@@ -80,4 +81,8 @@
         </div>
     </div>
 </div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{{ url_for('static', filename='js/file_upload.js') }}"></script>
 {% endblock %}

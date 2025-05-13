@@ -395,7 +395,7 @@ File Upload Page
 
 .form-second-part,
 .form-third-part {
-  
+  display: none;
 }
 
 .upload-header {
@@ -469,7 +469,11 @@ File Upload Page
 
 .broker-radio:checked + img {
   border: 10px solid #B084CC;
-  border-radius: 110px;
+  border-radius: 135px;
+}
+
+.broker-label {
+  font-size: 20px;
 }
 
 /* ========== Share Data Page Scoped Styles ========== */
