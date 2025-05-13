@@ -1,5 +1,5 @@
 import sys
-import shutil, os
+import shutil, os, stat
 
 #Ensure Python can find the 'app' module when running pytest from project root
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
@@ -60,6 +60,7 @@ def client(app):
 @pytest.fixture(autouse=True)
 def clean_upload_folder():
     if os.path.exists(UPLOAD_DIR):
+        os.chmod(UPLOAD_DIR, stat.S_IWUSR)
         shutil.rmtree(UPLOAD_DIR)
     os.makedirs(UPLOAD_DIR, exist_ok=True)
     yield
