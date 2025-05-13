@@ -393,7 +393,7 @@ File Upload Page
   min-height: calc(100vh - 132px);
 }
 
-#upload-header {
+.upload-header {
   text-align: left;
   margin-top: 20px;
   font-size: 45px;
@@ -441,6 +441,23 @@ File Upload Page
 }
 .button-secondary:hover {
   background-color: gray;
+}
+
+[type=radio] { 
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+/* IMAGE STYLES */
+[type=radio] + img {
+  cursor: pointer;
+}
+
+/* CHECKED STYLES */
+[type=radio]:checked + img {
+  outline: 2px solid #f00;
 }
 
 /* ========== Share Data Page Scoped Styles ========== */

@@ -6,15 +6,24 @@
 <div id="page-body" class="container-fluid mt-0 d-flex flex-column">
 
     <form method="POST" enctype="multipart/form-data">
-                {{ form.hidden_tag() }}
+        {{ form.hidden_tag() }}
 
-                {{ form.broker.label }}
-                {{ form.broker(class="form-radio form-select-lg") }}
+        <div class="row px-4 mb-3">
+            {{ form.broker.label(class="upload-header") }}
+        </div>
+
+        <div class="row px-4 mb-3 justify-content-center">
+            {% for subfield in form.broker %}
+                <div class="col-3 d-flex justify-content-center">
+                    <label>
+                        <input type="radio" name="options" value="{{ subfield.value }}" checked>
+                        <img src='/static/images/{{ subfield.label.text }}.svg' alt="{{ subfield.label.text }}" width="200" height="200">
+                </div>
+            {% endfor %}
+        </div>
     
         <div class="row px-4">
-            <div class="col ps-0">
-                <h1 id="upload-header" class="p-0">Upload .csv file:</h1>
-            </div>
+            {{ form.file.label(class="upload-header") }}
         </div>
 
         <div class="row px-4 mt-3 mb-3 flex-grow-1 d-flex">
@@ -39,7 +48,7 @@
 
                 <div class="d-flex gap-3 justify-content-center align-items-center">
                     <div class="upload-text col-8">
-                        {{ form.file(class="form-control form-control-lg border border-2") }}
+                        {{ form.file(class="form-control form-control-lg border border-4") }}
                     </div>
 
                     <div class="upload-text col-3">

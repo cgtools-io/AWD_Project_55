@@ -9,7 +9,7 @@ class FileUploadForm(FlaskForm):
     broker = RadioField('Crypto Broker:', choices=[('kraken', 'Kraken'), ('binance', 'Binance'), ('other', 'Other')], validators=[
         InputRequired(message=msg.BROKER_REQUIRED)
     ])
-    file = FileField('Upload CSV', validators=[
+    file = FileField('Upload .csv file:', validators=[
         FileRequired(),
         FileAllowed(['csv'], msg.CSV_ONLY)
     ])
