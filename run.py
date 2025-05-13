@@ -1,8 +1,9 @@
-from app import create_app
+from app import create_app, models
 from app.extensions import db
 from app.models import User
 from dotenv import load_dotenv
-load_dotenv() 
+
+load_dotenv()
 
 app = create_app()
 
@@ -12,6 +13,5 @@ if __name__ == '__main__':
 
     # ========================================================
     # DEBUG MODE — DEVELOPMENT USE ONLY                       
-    # DO NOT UNCOMMENT WHEN PUSHING TO MAIN OR OPENING A PR   
     # ========================================================
     app.run(debug=True)

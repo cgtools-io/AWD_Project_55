@@ -74,8 +74,12 @@ def create_app(config_class=Config):
 
     @app.route('/contact')
     def contact():
-        return render_template('public/contact.html')    
+        return render_template('public/contact.html')
 
+    @app.route('/dashboard')
+    def dashboard():
+        return render_template('user/dashboard.html')
+    
     @login_manager.user_loader
     def load_user(user_id):
         from app.models import User, Admin
