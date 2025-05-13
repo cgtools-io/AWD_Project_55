@@ -16,7 +16,7 @@
             {% for subfield in form.broker %}
                 <div class="col-3 d-flex justify-content-center">
                     <label>
-                        <input type="radio" name="options" value="{{ subfield.value }}" checked>
+                        <input class="broker-radio" type="radio" name="options" value="{{ subfield.value }}" autocomplete="off">
                         <img src='/static/images/{{ subfield.label.text }}.svg' alt="{{ subfield.label.text }}" width="200" height="200">
                     </label>
                 </div>
