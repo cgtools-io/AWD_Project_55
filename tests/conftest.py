@@ -7,9 +7,10 @@ UPLOAD_DIR = os.path.join('app', 'static', 'uploads')
 
 import pytest
 from app import create_app
-from app.models import User
+from app.models import User, Summary
 from app.extensions import db
 import app.constants as msg
+from config import TestConfig
 
 class UserSession:
     def __init__(self, client):
@@ -26,15 +27,11 @@ class UserSession:
 
 @pytest.fixture
 def app():
-    app = create_app()
-    app.config['TESTING'] = True
-    app.config['WTF_CSRF_ENABLED'] = False # disabled CSRF for testing POSTs
-    app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///:memory:" # temp DB for testing
-    app.config['TRAP_HTTP_EXCEPTIONS'] = True
-    app.config['PROPAGATE_EXCEPTIONS'] = False
+    app = create_app(config_class=TestConfig)
+
+    assert "sqlite" in app.config["SQLALCHEMY_DATABASE_URI"], "NOT using a test DB!"
 
     with app.app_context():
-        from app.extensions import db
         db.create_all()
         yield app
         db.session.remove()
@@ -64,3 +61,28 @@ def clean_upload_folder():
         shutil.rmtree(UPLOAD_DIR)
     os.makedirs(UPLOAD_DIR, exist_ok=True)
     yield
+
+@pytest.fixture
+def two_users(app):
+    user1 = User(username="james",   email="james@example.com")
+    user1.set_password("pw1")
+
+    user2 = User(username="sacha", email="sacha@example.com")
+    user2.set_password("pw2")
+
+    db.session.add_all([user1, user2])
+    db.session.commit()
+
+    return user1, user2
+
+@pytest.fixture
+def some_summaries(app, two_users):
+    james, _ = two_users
+
+    s1 = Summary(user_id=james.id, total_buy=100, total_sell=200)
+    s2 = Summary(user_id=james.id, total_buy=300, total_sell=400)
+
+    db.session.add_all([s1, s2])
+    db.session.commit()
+
+    return [s1, s2]
