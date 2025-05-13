@@ -25,7 +25,7 @@ def test_about_page_load(client):
     # GET /about
     response = client.get('/about')
     assert response.status_code == 200
-    assert b'Easily calculate' in response.data  # About page tagline
+    assert b'A friendly' in response.data  # About page tagline
 
 def test_contact_page_load(client):
     # GET /contact
