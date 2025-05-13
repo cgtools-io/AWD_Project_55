@@ -1,4 +1,4 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, abort
 from flask_login import current_user
 import logging
 from config import Config
@@ -17,9 +17,39 @@ def create_app(config_class=Config):
     csrf.init_app(app)
 
     # To redirect with a flash message instead of ERROR page
+    @login_manager.unauthorized_handler
+    def custom_unauthorized():
+        # Forces a 403 error instead of redirecting to login page
+        return abort(403)
+
     login_manager.login_view = 'user.login'
     login_manager.login_message = msg.LOGIN_REQUIRED
     login_manager.login_message_category = "danger"
+
+    # Error handlers
+    @app.errorhandler(400)
+    def bad_request(e):
+        return render_template('errors/400.html'), 400
+
+    @app.errorhandler(401)
+    def unauthorized(e):
+        return render_template('errors/401.html'), 401
+
+    @app.errorhandler(403)
+    def forbidden(e):
+        return render_template('errors/403.html'), 403
+
+    @app.errorhandler(404)
+    def page_not_found(e):
+        return render_template('errors/404.html'), 404
+
+    @app.errorhandler(405)
+    def method_not_allowed(e):
+        return render_template('errors/405.html'), 405
+
+    @app.errorhandler(500)
+    def internal_server_error(e):
+        return render_template('errors/500.html'), 500
 
     # Register blueprints here
     from app.routes.user import user
