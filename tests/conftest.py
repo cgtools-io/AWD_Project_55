@@ -60,7 +60,7 @@ def client(app):
 @pytest.fixture(autouse=True)
 def clean_upload_folder():
     if os.path.exists(UPLOAD_DIR):
-        os.chmod(UPLOAD_DIR, stat.S_IWUSR)
+        os.chmod(UPLOAD_DIR, stat.S_IRWXU)
         shutil.rmtree(UPLOAD_DIR)
     os.makedirs(UPLOAD_DIR, exist_ok=True)
     yield
