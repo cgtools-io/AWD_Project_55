@@ -11,6 +11,7 @@ from app.extensions import db
 from app.forms.user_forms import SignupForm, LoginForm
 from app.models import User, Admin, Summary
 from app.forms.file_upload_form import FileUploadForm
+from app.forms.share_form import ShareForm
 from werkzeug.utils import secure_filename
 
 user = Blueprint('user', __name__)
@@ -156,10 +157,34 @@ def file_upload():
 def visual():
     return render_template('user/visual.html')    
 
-@user.route('/share')
+@user.route('/share', methods=['GET'])
 @login_required
 def share():
-    return render_template('user/share_data.html')
+    form = ShareForm()
+    # TODO: adjust the format, broke it down to help me with SQLAlchemy
+    # Quesy the DB for all Summaries *current user* owns
+    summaries = (
+        Summary
+        .query
+        .filter(User.id= current_user.id)
+        .all()
+    )
+
+    # Then query the dB for *other* users that might share with
+    users = (
+        User
+        .query
+        .filter(User.id! =current_user.id)
+        .all()
+    )
+
+    #    Turn those two Python lists into the dropdown choices
+    #    Each choice is a (value, label) tuple
+    form.summary_id.choices   = [(s.id, f"Summary #{s.id}") for s in summaries]
+    form.recipient_id.choices = [(u.id, u.username) for u in users]
+
+    # Return the template, passing the form + any existing shared records
+    return render_template('user/share_data.html', form=form)
 
 @user.errorhandler(CSRFError)
 def handle_csrf_error(e):
