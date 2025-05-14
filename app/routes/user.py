@@ -4,7 +4,9 @@ from flask_wtf.csrf import CSRFError
 import logging
 from urllib.parse import urlparse
 import os
+import pandas as pd
 import csv
+import re
 
 import app.constants as msg
 from app.extensions import db
@@ -12,6 +14,15 @@ from app.forms.user_forms import SignupForm, LoginForm
 from app.models import User, Admin, Summary
 from app.forms.file_upload_form import FileUploadForm
 from werkzeug.utils import secure_filename
+
+def clean_float(value):
+    try:
+        # Remove all non-digit, non-dot, and non-minus characters
+        cleaned = re.sub(r'[^0-9.\-]', '', str(value))
+        return float(cleaned)
+    except:
+        return 0.0
+
 
 user = Blueprint('user', __name__)
 ADMIN_USERNAME = os.getenv('ADMIN_USERNAME') 
@@ -173,11 +184,12 @@ def handle_csrf_error(e):
 @user.route("/file_upload/process/<filename>", methods=["POST"])
 @user.route("/file_upload/process/", methods=["POST"])
 @login_required
-def process_csv(filename=None):
-    total_buy_val = 0
-    total_sell_val = 0
 
-    if filename == None:
+
+def process_csv(filename=None):
+    from datetime import datetime
+
+    if filename is None:
         flash("No file uploaded.", "danger")
         logging.error("No file uploaded.")
         return redirect(url_for('user.file_upload', form_state=2))
@@ -186,7 +198,6 @@ def process_csv(filename=None):
 
     if not os.path.exists(file_path):
         flash("File not found.", "danger")
-        logging.error(f"File not found: {file_path}")
         return redirect(url_for('user.file_upload'))
 
     current_app.logger.debug("make sure file is reached")
