@@ -11,6 +11,7 @@ from app.models import User, Summary
 from app.extensions import db
 import app.constants as msg
 from config import TestConfig
+from datetime import datetime, timedelta
 
 class UserSession:
     def __init__(self, client):
@@ -79,10 +80,41 @@ def two_users(app):
 def some_summaries(app, two_users):
     james, _ = two_users
 
-    s1 = Summary(user_id=james.id, total_buy=100, total_sell=200)
-    s2 = Summary(user_id=james.id, total_buy=300, total_sell=400)
+    s1 = Summary(user_id=james.id, total_cgt=100.00, filename="binance.csv")
+    s2 = Summary(user_id=james.id, total_cgt=200.00, filename="kraken.csv")
 
     db.session.add_all([s1, s2])
     db.session.commit()
 
     return [s1, s2]
+
+@pytest.fixture
+def two_users_and_summary(app):
+
+    # Create two users, one summary for user1
+
+    james = User(username="james", email="james@example.com")
+    james.set_password("pw1")
+    sacha   = User(username="sacha",   email="sacha@example.com")
+    sacha.set_password("pw2")
+    db.session.add_all([james, sacha])
+    db.session.commit()
+
+    summary = Summary(user_id=james.id, total_cgt=100.0, filename="binance.csv")
+    db.session.add(summary)
+    db.session.commit()
+
+    return james, sacha, summary
+
+@pytest.fixture
+def two_users_and_summary(app, two_users):
+    # –––––– Create two users, one summary for user1 ––––––
+    james, sacha = two_users
+    db.session.add_all([james, sacha])
+    db.session.commit()
+
+    summary = Summary(user_id=james.id, total_cgt=100.0, filename="binance.csv")
+    db.session.add(summary)
+    db.session.commit()
+
+    return james, sacha, summary

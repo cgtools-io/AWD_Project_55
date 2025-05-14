@@ -13,7 +13,7 @@ from app.extensions import db
 from app.forms.user_forms import SignupForm, LoginForm
 from app.models import User, Admin, Summary
 from app.forms.file_upload_form import FileUploadForm
-from app.forms.share_form import ShareForm
+#from app.forms.share_form import ShareForm
 from werkzeug.utils import secure_filename
 
 def clean_float(value):
@@ -177,7 +177,7 @@ def share():
     summaries = (
         Summary
         .query
-        .filter(User.id= current_user.id)
+        .filter(User.id == current_user.id)
         .all()
     )
 
@@ -185,12 +185,12 @@ def share():
     users = (
         User
         .query
-        .filter(User.id! =current_user.id)
+        .filter(User.id!=current_user.id)
         .all()
     )
 
-    #    Turn those two Python lists into the dropdown choices
-    #    Each choice is a (value, label) tuple
+    # Turn those two Python lists into the dropdown choices
+    # Each choice is a (value, label) tuple
     form.summary_id.choices   = [(s.id, f"Summary #{s.id}") for s in summaries]
     form.recipient_id.choices = [(u.id, u.username) for u in users]
 

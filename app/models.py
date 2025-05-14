@@ -32,16 +32,35 @@ class Admin(UserMixin):
         return True
 
 class Summary(db.Model):
-    id = db.Column(db.Integer, primary_key=True) # makes sure there is an associated user_id for each summary
+    __tablename__ = 'summary'
+    
+    id = db.Column(
+        db.Integer,
+        primary_key=True) # makes sure there is an associated user_id for each summary
     
     user_id = db.Column(
-        db.Integer, 
-        db.ForeignKey('user.id'), 
+        db.Integer,
+        db.ForeignKey('user.id'),
         nullable=False
-        ) 
+        )
 
-    total_buy = db.Column(db.Float)
-    total_sell = db.Column(db.Float)
+    total_cgt = db.Column(
+        db.Float,
+        nullable=False
+        )
+    
+    filename = db.Column(
+        db.String(255),
+        nullable=True
+    )
+
+    created_at = db.Column(
+        db.DateTime,
+        default=datetime.now(),
+        nullable=False
+    )
+
+    user = db.relationship('User', backref='summaries')
 
 class SharedSummary(db.Model):
     __tablename__ = 'shared_summary'
@@ -73,7 +92,3 @@ class SharedSummary(db.Model):
         default=datetime.now(),
         nullable=False
     )
-
-
-
-
