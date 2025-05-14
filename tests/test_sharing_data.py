@@ -1,4 +1,6 @@
-from app.models import Summary
+import pytest
+from datetime import datetime, timedelta
+from app.models import User, Summary, SharedSummary
 from app.extensions import db
 
 # TODO: share endpoint, model creation, invalid recipient, duplicate share
@@ -58,3 +60,83 @@ def test_created_summaries_are_saved_in_database(some_summaries):
 
     # Make sure both summaries were actually saved and can be retrieved
     assert len(summaries_in_db) == 2
+
+# -------------------------------
+# Models
+# -------------------------------
+
+@pytest.fixture
+def two_users_and_summary(app):
+
+    # Create two users, one summary for user1
+
+    james = User(username="james", email="james@example.com")
+    james.set_password("pw1")
+    sacha   = User(username="sacha",   email="sacha@example.com")
+    sacha.set_password("pw2")
+    db.session.add_all([james, sacha])
+    db.session.commit()
+
+    summary = Summary(user_id=james.id, total_buy=100.0, total_sell=150.0)
+    db.session.add(summary)
+    db.session.commit()
+
+    return james, sacha, summary
+
+
+def test_create_and_query_shared_summary(app, two_users_and_summary):
+    james, sacha, summary = two_users_and_summary
+
+    share = SharedSummary(
+        summary_id=summary.id,
+        from_user_id=james.id,
+        to_user_id=sacha.id
+    )
+    db.session.add(share)
+    db.session.commit()
+
+    # It got an ID and correct Foreign Keys
+    assert share.id is not None
+    assert share.summary_id    == summary.id
+    assert share.from_user_id  == james.id
+    assert share.to_user_id    == sacha.id
+
+    now = datetime.utcnow()
+    assert isinstance(share.timestamp, datetime)
+    assert now - share.timestamp < timedelta(seconds=5)
+
+@pytest.fixture
+def two_users_and_summary(app, two_users):
+    # –––––– Create two users, one summary for user1 ––––––
+    james, sacha = two_users
+    db.session.add_all([james, sacha])
+    db.session.commit()
+
+    summary = Summary(user_id=james.id, total_buy=100.0, total_sell=150.0)
+    db.session.add(summary)
+    db.session.commit()
+
+    return james, sacha, summary
+
+
+def test_create_and_query_shared_summary(app, two_users_and_summary):
+    james, sacha, summary = two_users_and_summary
+
+    share = SharedSummary(
+        summary_id=summary.id,
+        from_user_id=james.id,
+        to_user_id=sacha.id
+    )
+    db.session.add(share)
+    db.session.commit()
+
+    # It got an ID and correct FKs
+    assert share.id is not None
+    assert share.summary_id    == summary.id
+    assert share.from_user_id  == james.id
+    assert share.to_user_id    == sacha.id
+
+    # timestamp default is “now”
+    now = datetime.utcnow()
+    assert isinstance(share.timestamp, datetime)
+    assert now - share.timestamp < timedelta(seconds=5)
