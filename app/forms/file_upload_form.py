@@ -14,4 +14,5 @@ class FileUploadForm(FlaskForm):
         FileAllowed(['csv'], msg.CSV_ONLY)
     ])
     submit = SubmitField('Upload')
+    calculate = SubmitField('Calculate')
 

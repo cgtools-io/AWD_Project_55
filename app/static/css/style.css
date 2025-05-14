@@ -393,9 +393,13 @@ File Upload Page
   min-height: calc(100vh - 132px);
 }
 
-.form-second-part,
-.form-third-part {
+#form-first-part {
   display: block;
+  scroll-margin-top: 74px;
+}
+
+#form-second-part {
+  display: none;
 }
 
 .upload-header {
