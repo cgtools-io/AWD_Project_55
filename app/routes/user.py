@@ -13,7 +13,7 @@ from app.extensions import db
 from app.forms.user_forms import SignupForm, LoginForm
 from app.models import User, Admin, Summary
 from app.forms.file_upload_form import FileUploadForm
-#from app.forms.share_form import ShareForm
+from app.forms.share_form import ShareForm
 from werkzeug.utils import secure_filename
 
 def clean_float(value):

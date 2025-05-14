@@ -2,24 +2,27 @@
 
 {% block title %}Share Data - CGTools{% endblock %}
 
-{% block extra_css %}
-<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
-{% endblock %}
-
 {% block content %}
 <main class="container share-data-page">
   <h1>Share Data</h1>
   <p>Select the data you want to share and who you want to share it with.</p>
 
-  <form class="share-form">
-    <label for="recipient">User ID / Recipient</label>
-    <input type="text" id="recipient" placeholder="e.g. user123" required />
+  <form method="POST" action="{{ url_for('user.share') }}" class="share-form">
+    {{ form.hidden_tag() }}
 
-    <label for="dataset">Select Data to Share</label>
-    <select id="dataset">
+    <div class="mb-3">
+      {{ form.recipient_id.label(class="form-label") }} {{
+      form.recipient_id(class="form-select") }}
+    </div>
+
+    <div class="mb-3">
+      {{ form.summary_id.label(class="form-label") }}
+      {{ form.summary_id(class="form-select") }}
+    </div>
+    <!-- <select id="dataset">
       <option>Binance CSV</option>
       <option>Bybit CSV</option>
-    </select>
+    </select> -->
 
     <label for="permissions">Permissions</label>
     <select id="permissions">
@@ -27,7 +30,9 @@
       <option>View + Download</option>
     </select>
 
-    <button type="submit">Share</button>
+    <button type="submit" class="btn btn-primary">
+      {{ form.submit.label.text }}
+    </button>
   </form>
 
   <section class="history">
