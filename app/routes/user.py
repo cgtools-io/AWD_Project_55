@@ -124,9 +124,12 @@ def logout():
 @user.route('/file_upload', methods=['GET', 'POST'])
 @login_required
 def file_upload():
+
     form = FileUploadForm()
 
     if request.method == 'POST':
+
+        print(request.form)
 
         filename = None
 
@@ -147,9 +150,9 @@ def file_upload():
                 for error in errors:
                     flash(error, 'danger')
 
-        return redirect(url_for('user.file_upload', filename=filename))
+        return render_template('user/file_upload.html', filename=filename, form_state=2, form=form, old_form=request.form)
 
-    return render_template('user/file_upload.html', form=form)
+    return render_template('user/file_upload.html', form=form, form_state=1, old_form=None)
 
 @user.route('/visual')
 @login_required

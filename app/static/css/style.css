@@ -395,12 +395,12 @@ File Upload Page
 
 .form-second-part,
 .form-third-part {
-  display: none;
+  display: block;
 }
 
 .upload-header {
   text-align: left;
-  margin-top: 20px;
+  margin-top: 0px;
   font-size: 45px;
   color: white;
   font-weight: bold;
@@ -409,7 +409,7 @@ File Upload Page
 .upload-area {
   border: 5px dashed #B084CC;
   border-radius: 10px;
-  padding: 30px;
+  padding: 20px;
   background-color: transparent;
   justify-content: center;
   align-content: center;
@@ -424,7 +424,7 @@ File Upload Page
 
 #upload-arrow {
   display: block;
-  margin: 30px auto;
+  margin: 25px auto;
   align-content: center;
   text-align: center;
 }
