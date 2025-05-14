@@ -1,0 +1,139 @@
+<!-- Refactored visual page to use base template. All content is now placed inside the appropriate Jinja blocks. 
+     Removed the page-specific navbar to integrate a unified navbar. -->
+{% extends "base.html" %}
+
+{% block title %}Crypto Holdings{% endblock %}
+
+{% block content %}
+<div class="visual">
+ <main class="content-wrapper px-3">
+
+    <header class="header text-center container-fluid">
+        <h1>CG Calculator</h1>
+        <p>Real-time snapshot of assets</p>
+    </header>
+
+    <section class="stats container-fluid my-4">
+        <div class="row g-3 text-center">
+            <div class="col-6 col-md-3">
+                <div class="stat-box value">Total Market Value<br><span>$39,728</span></div>
+            </div>
+            <div class="col-6 col-md-3">
+                <div class="stat-box cost">Total Cost<br><span>$31,200</span></div>
+            </div>
+            <div class="col-6 col-md-3">
+                <div class="stat-box pnl">Total P&L (unrealised)<br><span>+$8,528</span></div>
+            </div>
+            <div class="col-6 col-md-3">
+                <div class="stat-box gain">Capital Gain<br><span>$5,100</span></div>
+            </div>
+        </div>
+    </section>
+
+    <section class="chart-section container-fluid my-4">
+        <div class="row g-3">
+            <div class="col-12 col-lg-6">
+                <div class="chart-box">
+                    <h2>Total Value vs Time</h2>
+                    <canvas id="valueChart"></canvas>
+                </div>
+            </div>
+            <div class="col-12 col-lg-6">
+                <div class="note-box">
+                    <h2>Capital Gains Note</h2>
+                    <p>In general, a CGT event happens when you dispose of a CGT asset. For the purposes of crypto
+                        assets, that may be when you:</p>
+                    <ul>
+                        <li>sell a crypto asset</li>
+                        <li>gift a crypto asset</li>
+                        <li>trade, exchange or swap one crypto asset for another</li>
+                        <li>convert a crypto asset to Australian or foreign currency</li>
+                        <li>buy goods or services with a crypto asset</li>
+                    </ul>
+                    <p>There are other CGT events, such as the loss or destruction of an asset, or creating
+                        contractual or other rights.</p>
+                    <p>The type of CGT event that applies to your crypto asset transactions may affect:</p>
+                    <ul>
+                        <li>the time when the CGT event happens</li>
+                        <li>how you calculate your capital gain or loss</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="holdings-grid container-fluid my-4">
+        <div class="row g-3">
+            <div class="col-12 col-md-4">
+                <div class="holding-card">
+                    <h2>Bitcoin (BTC)</h2>
+                    <p>💰 Amount: <span>0.5234</span></p>
+                    <p>💸 Value: <span>$27,850</span></p>
+                    <p>📦 Cost Basis: <span>$21,000</span></p>
+                    <p>📈 P&L: <span>+$6,850</span></p>
+                </div>
+            </div>
+            <div class="col-12 col-md-4">
+                <div class="holding-card">
+                    <h2>Ethereum (ETH)</h2>
+                    <p>💰 Amount: <span>3.142</span></p>
+                    <p>💸 Value: <span>$9,478</span></p>
+                    <p>📦 Cost Basis: <span>$7,800</span></p>
+                    <p>📈 P&L: <span>+$1,678</span></p>
+                </div>
+            </div>
+            <div class="col-12 col-md-4">
+                <div class="holding-card">
+                    <h2>Solana (SOL)</h2>
+                    <p>💰 Amount: <span>120</span></p>
+                    <p>💸 Value: <span>$2,400</span></p>
+                    <p>📦 Cost Basis: <span>$2,400</span></p>
+                    <p>📈 P&L: <span>+$0</span></p>
+                </div>
+            </div>
+        </div>
+    </section>
+ </main>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.js"></script>
+
+<script>
+    const ctx = document.getElementById('valueChart').getContext('2d');
+    new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May'],
+            datasets: [{
+                label: 'Total Portfolio Value ($)',
+                data: [21000, 24800, 31200, 36800, 39728],
+                borderColor: '#f1c40f',
+                backgroundColor: 'rgba(241, 196, 15, 0.1)',
+                tension: 0.4,
+                fill: true,
+                pointBackgroundColor: '#f1c40f',
+                borderWidth: 2
+            }]
+        },
+        options: {
+            scales: {
+                x: {
+                    ticks: { color: '#ccc' },
+                    grid: { color: '#333' }
+                },
+                y: {
+                    ticks: { color: '#ccc' },
+                    grid: { color: '#333' }
+                }
+            },
+            plugins: {
+                legend: {
+                    labels: { color: '#ccc' }
+                }
+            }
+        }
+    });
+</script>
+{% endblock %}

@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+{% block title %}Sign Up{% endblock %}
+
+{% block content %}
+<div id="bg-container" class="container-fluid d-flex justify-content-center align-items-center">
+
+  <div class="row w-100 justify-content-center align-items-center">
+    
+    <div class="col-lg-5 col-md-6 pb-0 my-2" id="form-box">
+
+      <h1 class="text-center mb-0">Sign Up</h1>
+
+      <!-- Sign Up Form -->
+      <form class="form row align-items-end" id="signup-form" method="POST" action="{{ url_for('user.signup') }}">
+        {{ form.csrf_token }}
+
+        <div class="col-12 mb-2">
+          {{ form.username.label(class="col-form-label") }}
+          {{ form.username(placeholder="Enter username", class="form-control") }}
+          {% if form.username.errors %}
+            <div class="text-danger">
+              {% for error in form.username.errors %}
+                <span>{{ error }}</span>
+              {% endfor %}
+            </div>
+          {% endif %}
+        </div>
+
+        <div class="col-12 mb-2">
+          {{ form.email.label(class="col-form-label") }}
+          {{ form.email(placeholder="Enter email", class="form-control") }}
+          {% if form.email.errors %}
+            <div class="text-danger">
+              {% for error in form.email.errors %}
+                <span>{{ error }}</span>
+              {% endfor %}
+            </div>
+          {% endif %}
+        </div>
+
+        <div class="col-6 mb-2 pe-1">
+          {{ form.password.label(class="col-form-label") }}
+          {{ form.password(placeholder="Enter password", class="form-control") }}
+        </div>
+
+        <div class="col-6 mb-2 ps-1">
+          {{ form.confirm_password.label(class="col-form-label") }}
+          {{ form.confirm_password(placeholder="Confirm password", class="form-control") }}
+        </div>
+        {% if form.confirm_password.errors %}
+          <div class="text-danger offset-6 ps-1">
+            {% for error in form.confirm_password.errors %}
+              <span>{{ error }}</span>
+            {% endfor %}
+          </div>
+        {% endif %}
+
+        <div class="d-grid mt-2">
+          {{ form.submit(class="btn", id="submit-btn") }}
+        </div>
+
+        <div class="col-12 mt-3">
+          <div class="col text-center">
+            <p>Already have an account? <a href="{{ url_for('user.login') }}">Login here</a></p>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}
