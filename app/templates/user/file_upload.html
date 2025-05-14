@@ -71,7 +71,7 @@
                     <button type='button' class="button-secondary btn w-100" id="back-btn">Back</button>
                 </div>
                 <div class="col-sm-6 px-0 px-sm-3 pb-2 pb-sm-0">
-                        {{ form.calculate(formaction=url_for('user.process_csv'), class="button-calculate btn w-100", id="calculate") }}
+                        {{ form.calculate(formaction="url_for('user.file_upload', filename=filename)", class="button-calculate btn w-100", id="calculate") }}
                 </div>
                 <div class="col-sm-3 px-0 pe-sm-0">
                     <button type='button' class="button-secondary btn w-100" id="upload">No file?</button>

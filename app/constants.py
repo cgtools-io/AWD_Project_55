@@ -34,3 +34,5 @@ TEST_PASSWORD = "password123!"
 # Upload Constraints (File Uploads)
 # -------------------------------
 CSV_ONLY = 'CSV files only!'
+NO_FILE = 'File not found.'
+NO_UPLOAD = 'Please upload a file.'
