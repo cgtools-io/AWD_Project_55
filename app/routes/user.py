@@ -4,7 +4,9 @@ from flask_wtf.csrf import CSRFError
 import logging
 from urllib.parse import urlparse
 import os
+import pandas as pd
 import csv
+import re
 
 import app.constants as msg
 from app.extensions import db
@@ -13,6 +15,15 @@ from app.models import User, Admin, Summary
 from app.forms.file_upload_form import FileUploadForm
 from app.forms.share_form import ShareForm
 from werkzeug.utils import secure_filename
+
+def clean_float(value):
+    try:
+        # Remove all non-digit, non-dot, and non-minus characters
+        cleaned = re.sub(r'[^0-9.\-]', '', str(value))
+        return float(cleaned)
+    except:
+        return 0.0
+
 
 user = Blueprint('user', __name__)
 ADMIN_USERNAME = os.getenv('ADMIN_USERNAME') 
@@ -194,67 +205,85 @@ def handle_csrf_error(e):
 @user.route("/file_upload/process/<filename>", methods=["POST"])
 @user.route("/file_upload/process/", methods=["POST"])
 @login_required
-def process_csv(filename=None):
-    total_buy_val = 0
-    total_sell_val = 0
 
-    if filename == None:
+
+def process_csv(filename=None):
+    from datetime import datetime
+
+    if filename is None:
         flash("No file uploaded.", "danger")
-        logging.error("No file uploaded.")
         return redirect(url_for('user.file_upload'))
 
     file_path = os.path.join('app/static/uploads', filename)
 
     if not os.path.exists(file_path):
         flash("File not found.", "danger")
-        logging.error(f"File not found: {file_path}")
         return redirect(url_for('user.file_upload'))
 
-    current_app.logger.debug("make sure file is reached")
-    with open(file_path, newline='') as csvfile:
-        reader = csv.DictReader(csvfile)
-        current_app.logger.debug("Rows reached")
+    try:
+        df = pd.read_csv(file_path, encoding='utf-8')
+        df['datetime'] = pd.to_datetime(df['Date(UTC)'], utc=True)
+        df = df.rename(columns={
+            'Side': 'Side',
+            'Price': 'Price',
+            'Executed': 'executed_amount',
+            'Fee': 'fee_amount',
+            'Pair': 'base_asset'
+        })
 
-        for row in reader:
-            logger.debug(f"Processing row: {row.get('Value $')}")
-            if row.get('Value $') == '-':
-                continue
-            if row.get('Type') == 'Buy':
-                total_buy_val += float(row.get('Value $', 0).replace(',', ''))
-            elif row.get('Type') == 'Sell':
-                total_sell_val += float(row.get('Value $', 0).replace(',', ''))
-    
-    flash("CSV file processed successfully!")
-    flash(f"Total Buy Value: {total_buy_val} Total Sell Value: {total_sell_val}", "info")
-    logging.debug(f"Total Buy Value: {total_buy_val} Total Sell Value: {total_sell_val}")
+        df['fee_amount'] = df['fee_amount'].apply(clean_float)
+        df['executed_amount'] = df['executed_amount'].apply(clean_float)
+        df['Price'] = df['Price'].apply(clean_float)
 
-    print(f"Saving summary for user {current_user.id} – Buy: {total_buy_val}, Sell: {total_sell_val}") # debug print
 
-    # Save the summary to the database
-    summary = Summary(
-        user_id=current_user.id,
-        total_buy=total_buy_val,
-        total_sell=total_sell_val
-    )
-    db.session.add(summary)
-    db.session.commit()
-    return redirect(url_for('user.dashboard'))
 
-@user.route('/dashboard')
-@login_required
-def dashboard():
-    # Get the latest summary for the logged-in user
-    summary = db.session.execute(
-        db.select(Summary)
-        .where(Summary.user_id == current_user.id)
-        .order_by(Summary.id.desc())
-    ).scalars().first()
+        df = df.sort_values(by='datetime')
+        buy_pool = []
+        cgt_results = []
 
-    total_buy_val = summary.total_buy if summary else 0
-    total_sell_val = summary.total_sell if summary else 0
+        for _, row in df.iterrows():
+            if row['Side'] == 'BUY':
+                buy_pool.append({
+                    'datetime': row['datetime'],
+                    'asset': row['base_asset'],
+                    'amount': clean_float(row['executed_amount']),
+                    'price': clean_float(row['Price']),
+                    'fee': clean_float(row['fee_amount'])
+                })
 
-    return render_template(
-        'user/dashboard.html',
-        total_buy_val=total_buy_val,
-        total_sell_val=total_sell_val
-    )
+            elif row['Side'] == 'SELL':
+                sell_asset = row['base_asset']
+                sell_amount = clean_float(row['executed_amount'])
+                sell_price = clean_float(row['Price'])
+                fee_amount = clean_float(row['fee_amount'])
+                sale_proceeds = sell_amount * sell_price - fee_amount
+                cost_base = 0.0
+
+                while sell_amount > 0 and buy_pool:
+                    earliest = buy_pool[0]
+                    if earliest['asset'] != sell_asset:
+                        buy_pool.pop(0)
+                        continue
+
+                    used = min(sell_amount, earliest['amount'])
+                    cost = used * earliest['price']
+                    cost_base += cost
+
+                    earliest['amount'] -= used
+                    if earliest['amount'] <= 0:
+                        buy_pool.pop(0)
+
+                    sell_amount -= used
+
+                capital_gain = sale_proceeds - cost_base
+                cgt_results.append(capital_gain)
+
+        total_cgt = round(sum(cgt_results), 2)
+        flash("CSV file processed successfully!")
+        flash(f"Total CGT: ${total_cgt}", "info")
+        return redirect(url_for('dashboard'))
+
+    except Exception as e:
+        logging.exception(f"Error processing CSV: {e}")
+        flash("Failed to process CSV. Check format or logs.", "danger")
+        return redirect(url_for('user.file_upload'))

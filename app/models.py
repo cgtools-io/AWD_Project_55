@@ -70,7 +70,7 @@ class SharedSummary(db.Model):
     # mostly for debugging, unsure if this will feature in actual sharing
     timestamp = db.Column(
         db.DateTime,
-        default=datetime.utcnow,
+        default=datetime.now(),
         nullable=False
     )
 

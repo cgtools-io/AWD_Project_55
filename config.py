@@ -10,6 +10,7 @@ class Config:
     SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL') or default_db_path
     SECRET_KEY = os.environ.get('SECRET_KEY') or 'super-secret-private-key'
 
+# conftest loads this to completely isolate from rest of project
 class TestConfig:
     TESTING = True
     WTF_CSRF_ENABLED = False
