@@ -137,6 +137,6 @@ def test_create_and_query_shared_summary(app, two_users_and_summary):
     assert share.to_user_id    == sacha.id
 
     # timestamp default is “now”
-    now = datetime.utcnow()
+    now = datetime.now()
     assert isinstance(share.timestamp, datetime)
     assert now - share.timestamp < timedelta(seconds=5)
