@@ -394,7 +394,7 @@ File Upload Page
 }
 
 #form-first-part {
-  display: block;
+  display: none;
   scroll-margin-top: 74px;
 }
 

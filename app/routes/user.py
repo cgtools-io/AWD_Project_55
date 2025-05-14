@@ -142,11 +142,12 @@ def file_upload(filename=None):
     print(request)
     print(request.form)
 
-    form = FileUploadForm(obj=request.form)
-    form_state = request.args.get('form_state', 1)
-    file_uploaded = False
+    form = FileUploadForm()
 
     if request.method == 'POST':
+
+        session['last_selected_broker'] = form.broker.data
+        session.modified = True
 
         if form.validate_on_submit():
 
@@ -160,9 +161,9 @@ def file_upload(filename=None):
             file_path = os.path.join(upload_folder, filename)
             file.save(file_path)
 
-            file_uploaded = True
-
             flash(msg.UPLOAD_SUCCESS, 'success')
+            session['last_uploaded_file'] = filename
+            session.modified = True
 
             if not os.path.exists(file_path):
                 flash(msg.NO_FILE, "danger")
@@ -185,15 +186,14 @@ def file_upload(filename=None):
 
             logging.debug(f"New summary created: {new_summary.filename}, {new_summary.total_cgt}")
 
-            return redirect(url_for('user.file_upload', filename=filename, form_state=2))
         else:
             for field, errors in form.errors.items():
                 for error in errors:
                     flash(error, 'danger')
-
-        return render_template('user/file_upload.html', filename=filename, form_state=2, form=form, old_form=request.form)
-
-    return render_template('user/file_upload.html', form=form, form_state=form_state, old_form=None)
+        
+        return render_template('user/file_upload.html', form=form, form_state=2)
+    
+    return render_template('user/file_upload.html', form=form, form_state=1)
 
 @user.route('/visual')
 @login_required

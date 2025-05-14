@@ -1,4 +1,4 @@
-from flask import Flask, render_template, abort
+from flask import Flask, render_template, abort, session
 from flask_login import current_user
 import logging
 from config import Config
@@ -63,9 +63,6 @@ def create_app(config_class=Config):
 
     @app.route('/')
     def index():
-        app.logger.debug(f'Stuff: {current_user.is_authenticated}')
-        if current_user.is_authenticated:
-            app.logger.debug(f'User authenticated: {current_user.username}')
         return render_template('public/index.html')
 
     @app.route('/about')
