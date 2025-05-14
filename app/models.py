@@ -1,3 +1,4 @@
+from datetime import datetime
 from .extensions import db
 from flask_login import UserMixin
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -31,7 +32,48 @@ class Admin(UserMixin):
         return True
 
 class Summary(db.Model):
-    id = db.Column(db.Integer, primary_key=True) 
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False) # makes sure there is an associated user_id for each summary
+    id = db.Column(db.Integer, primary_key=True) # makes sure there is an associated user_id for each summary
+    
+    user_id = db.Column(
+        db.Integer, 
+        db.ForeignKey('user.id'), 
+        nullable=False
+        ) 
+
     total_buy = db.Column(db.Float)
     total_sell = db.Column(db.Float)
+
+class SharedSummary(db.Model):
+    __tablename__ = 'shared_summary'
+    
+    id = db.Column(db.Integer, primary_key = True) # just to simplify queries if needed
+
+    # links to summary id
+    summary_id = db.Column(
+        db.Integer,
+        db.ForeignKey('summary.id'),
+        nullable=False
+    )
+
+    from_user_id = db.Column(
+        db.Integer,
+        db.ForeignKey('user.id'),
+        nullable=False
+    )
+
+    to_user_id = db.Column(
+        db.Integer,
+        db.ForeignKey('user.id'),
+        nullable=False
+    )
+
+    # mostly for debugging, unsure if this will feature in actual sharing
+    timestamp = db.Column(
+        db.DateTime,
+        default=datetime.now(),
+        nullable=False
+    )
+
+
+
+
