@@ -2,7 +2,7 @@
 App Layout Wrapper
 --------------- */
 .app-root {
-  background-color: #1A122D;
+  background-color: #1A0D2F;
   color: #FFFFFF;
   overflow-x: hidden;
   position: relative;
@@ -538,7 +538,7 @@ visual page optimised for cross-platform responsiveness
 --------------- */
 .visual {
     margin: 0;
-    background: #1A1333;
+    background: #1A0D2F;
     color: #FFFFFF;
     font-size: 1rem;
 }

@@ -126,6 +126,7 @@ def logout():
 def file_upload():
 
     form = FileUploadForm()
+    form_state = request.args.get('form_state', 1)
 
     if request.method == 'POST':
 
@@ -152,7 +153,7 @@ def file_upload():
 
         return render_template('user/file_upload.html', filename=filename, form_state=2, form=form, old_form=request.form)
 
-    return render_template('user/file_upload.html', form=form, form_state=1, old_form=None)
+    return render_template('user/file_upload.html', form=form, form_state=form_state, old_form=None)
 
 @user.route('/visual')
 @login_required
@@ -179,7 +180,7 @@ def process_csv(filename=None):
     if filename == None:
         flash("No file uploaded.", "danger")
         logging.error("No file uploaded.")
-        return redirect(url_for('user.file_upload'))
+        return redirect(url_for('user.file_upload', form_state=2))
 
     file_path = os.path.join('app/static/uploads', filename)
 
