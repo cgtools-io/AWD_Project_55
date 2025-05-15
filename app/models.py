@@ -56,7 +56,7 @@ class Summary(db.Model):
 
     created_at = db.Column(
         db.DateTime,
-        default=datetime.now(),
+        default=datetime.now,
         nullable=False
     )
 
@@ -89,7 +89,7 @@ class SharedSummary(db.Model):
     # mostly for debugging, unsure if this will feature in actual sharing
     timestamp = db.Column(
         db.DateTime,
-        default=datetime.now(),
+        default=datetime.now,
         nullable=False
     )
 
