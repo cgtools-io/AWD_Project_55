@@ -4,6 +4,49 @@ function roundToDecimal(number, decimalPlaces) {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
+    const ctx = document.getElementById('valueChart').getContext('2d');
+    let pnlChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: [],
+            datasets: [{
+                label: 'Total Portfolio Profit/Loss ($)',
+                data: [],
+                borderColor: '#f1c40f',
+                backgroundColor: 'rgba(241, 196, 15, 0.1)',
+                tension: 0.4,
+                fill: true,
+                pointBackgroundColor: '#f1c40f',
+                borderWidth: 2
+            }]
+        },
+        options: {
+            scales: {
+                x: {
+                    ticks: { color: '#ccc' },
+                    grid: { color: '#333' },
+                    border: { color: '#f1c40f', width: 1 },
+                    offset: false,
+                    title: {display: true, text: "Number of Transactions", color: '#f1c40f'}
+                },
+                y: {
+                    ticks: { color: '#ccc', display: false },
+                    grid: { color: '#333' },
+                    border: { color: '#f1c40f', width: 1 },
+                    axis: 'y',
+                    beginAtZero: false,
+                    title: {display: true, text: "$ Profit/Loss (USD)", color: '#f1c40f'}
+                }
+            },
+            plugins: {
+                legend: {
+                    labels: { color: '#ccc' }
+                }
+            }
+        }
+    });
+
+
     document.getElementById('visualise').addEventListener('click', () => {
         const   summaryId = document.getElementById('summary-select').value,
                 csrf_token = document.getElementById('csrf_token').value;
@@ -26,8 +69,28 @@ document.addEventListener('DOMContentLoaded', () => {
                     pnlNum = document.getElementById('pnl_num');
 
             if(data.error) {
-                cgtNum.innerHTML = `${data.error}`;
+                cgtNum.innerHTML = `${"$ - "}`;
+                costNum.innerHTML = `${"$ - "}`;
+                mvNum.innerHTML = `${"$ - "}`;
+                pnlNum.innerHTML = `${"$ - "}`;
+                pnlChart.data.labels = [];
+                pnlChart.data.datasets[0] = [];
+                pnlChart.options.scales.y.ticks.display = false;
+                pnlChart.update();
+            } else {
+                pnlGraphData = JSON.parse(data.pnl_graph);
+
+                pnlChart.data.labels = pnlGraphData.map(pair => pair[0]);
+                pnlChart.data.datasets[0].data = pnlGraphData.map(pair => pair[1]);
+                
+                pnlChart.options.scales.y.ticks.display = true;
+                const minY = Math.min(pnlGraphData.map(pair => pair[1]));
+                const yMin = Math.floor(minY - Math.abs(minY * 0.1));
+                pnlChart.options.scales.y.min = yMin;
+                
+                pnlChart.update();
             }
+            
             if(data.total_cgt === undefined) {
                 cgtNum.innerHTML = `${"$ - "}`;
             }

@@ -50,7 +50,7 @@ def calculate_pnl_stats(df):
                     units_sold -= earliest['units']
                     buy_pool.pop(i)
                     i = 0
-        pnl_graph.append((transaction_counter, 100 * (total_mv - total_cost)))
+        pnl_graph.append((transaction_counter, round((total_mv - total_cost), 2)))
         transaction_counter += 1
         print(row)
         print(total_cost)
