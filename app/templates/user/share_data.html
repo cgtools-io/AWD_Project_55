@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% block title %}Share Data - CGTools{% endblock %}
+{% block title %}Share Data – CGTools{% endblock %}
 
 {% block content %}
 <main class="container share-data-page">
@@ -11,84 +11,70 @@
     {{ form.hidden_tag() }}
 
     <div class="mb-3">
-      {{ form.recipient_id.label(class="form-label") }} {{
-      form.recipient_id(class="form-select") }}
+      {{ form.recipient_id.label(class="form-label") }}
+      {{ form.recipient_id(class="form-select") }}
     </div>
 
     <div class="mb-3">
       {{ form.summary_id.label(class="form-label") }}
       {{ form.summary_id(class="form-select") }}
     </div>
-    <!-- <select id="dataset">
-      <option>Binance CSV</option>
-      <option>Bybit CSV</option>
-    </select> -->
-
-    <label for="permissions">Permissions</label>
-    <select id="permissions">
-      <option>View Only</option>
-      <option>View + Download</option>
-    </select>
 
     <button type="submit" class="btn btn-primary">
       {{ form.submit.label.text }}
     </button>
   </form>
 
-  <section class="history">
-    <h2>Sharing History</h2>
-    <table>
+  <section class="history mt-5">
+    <h2>Shared by Me</h2>
+    <table class="table">
       <thead>
         <tr>
           <th>Recipient</th>
-          <th>Data Shared</th>
+          <th>File</th>
           <th>CGT Amount</th>
-          <th>Permissions</th>
           <th>Date</th>
         </tr>
       </thead>
       <tbody>
+        {% for share in shared_by_me %}
         <tr>
-          <td>user_001</td>
-          <td>Binance CSV</td>
-          <td>$500</td>
-          <td>View Only</td>
-          <td>2025-04-13</td>
+          <td>{{ share.to_user.username }}</td>
+          <td>{{ share.summary.filename }}</td>
+          <td>${{ '%.2f' % share.summary.total_cgt }}</td>
+          <td>{{ share.timestamp.strftime('%Y-%m-%d') }}</td>
         </tr>
-        <tr>
-          <td>user_002</td>
-          <td>Bybit CSV</td>
-          <td>$1200</td>
-          <td>View + Download</td>
-          <td>2025-04-10</td>
-        </tr>
+        {% else %}
+        <tr><td colspan="4"><em>No summaries shared yet.</em></td></tr>
+        {% endfor %}
       </tbody>
     </table>
   </section>
 
-  <section class="history">
-    <h2>Data Shared With You</h2>
-    <table>
+  <section class="history mt-4">
+    <h2>Shared with Me</h2>
+    <table class="table">
       <thead>
         <tr>
           <th>Sender</th>
-          <th>Data Shared</th>
+          <th>File</th>
           <th>CGT Amount</th>
-          <th>Permissions</th>
           <th>Date</th>
         </tr>
       </thead>
       <tbody>
+        {% for share in shared_with_me %}
         <tr>
-          <td>admin_001</td>
-          <td>Binance CSV</td>
-          <td>$320</td>
-          <td>View Only</td>
-          <td>2025-04-12</td>
+          <td>{{ share.from_user.username }}</td>
+          <td>{{ share.summary.filename }}</td>
+          <td>${{ '%.2f' % share.summary.total_cgt }}</td>
+          <td>{{ share.timestamp.strftime('%Y-%m-%d') }}</td>
         </tr>
+        {% else %}
+        <tr><td colspan="4"><em>No one has shared with you yet.</em></td></tr>
+        {% endfor %}
       </tbody>
     </table>
   </section>
 </main>
-
 {% endblock %}

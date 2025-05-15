@@ -92,3 +92,7 @@ class SharedSummary(db.Model):
         default=datetime.now(),
         nullable=False
     )
+
+    summary    = db.relationship('Summary', backref='shared_entries')
+    from_user  = db.relationship('User',    foreign_keys=[from_user_id])
+    to_user    = db.relationship('User',    foreign_keys=[to_user_id])

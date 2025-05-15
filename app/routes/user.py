@@ -11,7 +11,7 @@ import re
 import app.constants as msg
 from app.extensions import db
 from app.forms.user_forms import SignupForm, LoginForm
-from app.models import User, Admin, Summary
+from app.models import User, Admin, Summary, SharedSummary
 from app.forms.file_upload_form import FileUploadForm
 from app.forms.share_form import ShareForm
 from werkzeug.utils import secure_filename
@@ -168,39 +168,53 @@ def file_upload():
 def visual():
     return render_template('user/visual.html')    
 
-@user.route('/share', methods=['GET'])
+@user.route('/share', methods=['GET', 'POST'])
 @login_required
 def share():
     form = ShareForm()
-    # TODO: adjust the format, broke it down to help me with SQLAlchemy
-    # Quesy the DB for all Summaries *current user* owns
-    summaries = (
-        Summary
-        .query
-        .filter(User.id == current_user.id)
-        .all()
+
+    # 1) only pull summaries that *I* own
+    my_summaries = Summary.query.filter_by(user_id=current_user.id).all()
+
+    # 2) all other users
+    other_users = User.query.filter(User.id != current_user.id).all()
+
+    form.summary_id.choices   = [(s.id, f"#{s.id}: {s.filename}") for s in my_summaries]
+    form.recipient_id.choices = [(u.id, u.username)         for u in other_users]
+
+    if form.validate_on_submit():
+        
+        # 3) duplicate‐share guard
+        exists = SharedSummary.query.filter_by(
+            summary_id   = form.summary_id.data,
+            from_user_id = current_user.id,
+            to_user_id   = form.recipient_id.data
+        ).first()
+
+        if exists:
+            flash("You've already shared this summary with that user.", "warning")
+            return redirect(url_for('user.share'))
+
+        share = SharedSummary(
+            summary_id   = form.summary_id.data,
+            from_user_id = current_user.id,
+            to_user_id   = form.recipient_id.data
+        )
+        db.session.add(share)
+        db.session.commit()
+        flash("Summary successfully shared!", "success")
+        return redirect(url_for('user.share'))
+
+    # 4) history
+    shared_by_me   = SharedSummary.query.filter_by(from_user_id=current_user.id).all()
+    shared_with_me = SharedSummary.query.filter_by(to_user_id=current_user.id).all()
+
+    return render_template(
+        'user/share_data.html',
+        form            = form,
+        shared_by_me    = shared_by_me,
+        shared_with_me  = shared_with_me
     )
-
-    # Then query the dB for *other* users that might share with
-    users = (
-        User
-        .query
-        .filter(User.id!=current_user.id)
-        .all()
-    )
-
-    # Turn those two Python lists into the dropdown choices
-    # Each choice is a (value, label) tuple
-    form.summary_id.choices   = [(s.id, f"Summary #{s.id}") for s in summaries]
-    form.recipient_id.choices = [(u.id, u.username) for u in users]
-
-    # Return the template, passing the form + any existing shared records
-    return render_template('user/share_data.html', form=form)
-
-@user.errorhandler(CSRFError)
-def handle_csrf_error(e):
-    flash(msg.CSRF_FAILED, 'danger')
-    return redirect(request.url or url_for('index'))
 
 @user.route("/file_upload/process/<filename>", methods=["POST"])
 @user.route("/file_upload/process/", methods=["POST"])
