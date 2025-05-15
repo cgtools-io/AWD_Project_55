@@ -58,6 +58,11 @@ class Summary(db.Model):
         db.Float,
         nullable=False
     )
+
+    pnl_graph = db.Column(
+        db.JSON,
+        nullable=True
+    )
     
     filename = db.Column(
         db.String(255),

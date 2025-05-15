@@ -9,6 +9,7 @@ from datetime import datetime
 import csv
 import re
 from werkzeug.utils import secure_filename
+import json
 
 import app.constants as msg
 from app.extensions import db
@@ -16,7 +17,7 @@ from app.forms.user_forms import SignupForm, LoginForm
 from app.models import User, Admin, Summary
 from app.forms.file_upload_form import FileUploadForm
 from app.utils.cgt_processing import parse_binance_csv, calculate_cgt_binance
-from app.utils.portfolio_pnl import calculate_total_cost, calculate_total_mv
+from app.utils.portfolio_pnl import calculate_pnl_stats
 
 def clean_float(value):
     try:
@@ -140,9 +141,6 @@ def logout():
 @login_required
 def file_upload(filename=None):
 
-    print(request)
-    print(request.form)
-
     form = FileUploadForm()
 
     if request.method == 'POST':
@@ -178,8 +176,8 @@ def file_upload(filename=None):
                     flash(f"{df}", "danger")
                 else:
                     total_cgt = calculate_cgt_binance(df)
-                    total_cost = calculate_total_cost(df)
-                    total_mv = calculate_total_mv(df)
+                    total_cost, total_mv, pnl_graph = calculate_pnl_stats(df)
+                    print(json.dumps(pnl_graph))
 
             elif request.form['broker'] == 'kraken':
                 # TODO: Implement Kraken CSV parsing
@@ -196,6 +194,7 @@ def file_upload(filename=None):
                     total_cgt=total_cgt,
                     total_cost=total_cost,
                     total_mv=total_mv,
+                    pnl_graph=json.dumps(pnl_graph)
                 )
 
                 db.session.add(new_summary)
@@ -242,6 +241,7 @@ def get_summary():
         'total_cgt': summary.total_cgt,
         'total_cost': summary.total_cost,
         'total_mv': summary.total_mv,
+        'pnl_graph': summary.pnl_graph,
         'filename': summary.filename,
     })
 
