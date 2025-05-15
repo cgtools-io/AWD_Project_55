@@ -16,9 +16,8 @@
     <input type="hidden" id="csrf_token" value="{{ csrf_token() }}">
 
     <div class="row d-flex justify-content-center align-items-center my-5">
-        <label for="item" class="form-label col-2 text-end">Choose an option:</label>
         <div class="col-3">
-            <select class = "form-select" name="item_id" id="summary-select">
+            <select class = "form-select form-select-md border border-2" name="item_id" id="summary-select">
                 <option selected>Choose file</option>
                 {% for option in options %}
                     {% if option.filename != None %}
@@ -27,7 +26,7 @@
                 {% endfor %}
             </select>
         </div>
-        <button id="visualise" class="btn btn-secondary col-3">Visualise</button>
+        <button id="visualise" class="btn button-visualise col-2 p-0">Visualise</button>
     </div>
 
     <section class="stats container-fluid my-4">
