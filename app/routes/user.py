@@ -16,6 +16,7 @@ from app.forms.user_forms import SignupForm, LoginForm
 from app.models import User, Admin, Summary
 from app.forms.file_upload_form import FileUploadForm
 from app.utils.cgt_processing import parse_binance_csv, calculate_cgt_binance
+from app.utils.portfolio_pnl import calculate_total_cost
 
 def clean_float(value):
     try:
@@ -177,7 +178,8 @@ def file_upload(filename=None):
                     flash(f"{df}", "danger")
                 else:
                     total_cgt = calculate_cgt_binance(df)
-                    flash(f"Total CGT: ${total_cgt}", "info")
+                    total_cost = calculate_total_cost(df)
+                    total_mv = 0
 
             elif request.form['broker'] == 'kraken':
                 # TODO: Implement Kraken CSV parsing
@@ -192,6 +194,8 @@ def file_upload(filename=None):
                     user_id=current_user.id,
                     filename=filename,
                     total_cgt=total_cgt,
+                    total_cost=total_cost,
+                    total_mv=total_mv,
                 )
 
                 db.session.add(new_summary)
@@ -236,6 +240,8 @@ def get_summary():
     return jsonify({
         'id': summary.id,
         'total_cgt': summary.total_cgt,
+        'total_cost': summary.total_cost,
+        'total_mv': summary.total_mv,
         'filename': summary.filename,
     })
 

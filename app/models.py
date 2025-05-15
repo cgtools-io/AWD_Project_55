@@ -49,6 +49,16 @@ class Summary(db.Model):
         nullable=False
         )
     
+    total_cost = db.Column(
+        db.Float,
+        nullable=False
+    )
+
+    total_mv = db.Column(
+        db.Float,
+        nullable=False
+    )
+    
     filename = db.Column(
         db.String(255),
         nullable=True

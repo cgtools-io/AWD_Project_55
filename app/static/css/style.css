@@ -609,11 +609,11 @@ visual page optimised for cross-platform responsiveness
 }
 
 .visual .stat-box.cost {
-    color: #ffeb3b;
+    color: #ff4081;
 }
 
 .visual .stat-box.pnl {
-    color: #ff4081;
+    color: #ffeb3b;
 }
 
 .visual .stat-box.gain {

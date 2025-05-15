@@ -21,7 +21,7 @@
                 <option selected>Choose file</option>
                 {% for option in options %}
                     {% if option.filename != None %}
-                        <option value="{{ option.id }}">{{ option.filename }}, {{ option.created_at.strftime('%Y-%m-%d %H:%M:%S') }}</option>
+                        <option value="{{ option.id }}">{{ option.filename }}, {{ option.created_at.strftime('%Y-%m-%d') }}</option>
                     {% endif %}
                 {% endfor %}
             </select>
@@ -32,13 +32,13 @@
     <section class="stats container-fluid my-4">
         <div class="row g-3 text-center">
             <div class="col-6 col-md-3">
-                <div class="stat-box value">Total Market Value<br><span>$ - </span></div>
+                <div class="stat-box value">Total Market Value<br><span id="mv_num">$ - </span></div>
             </div>
             <div class="col-6 col-md-3">
-                <div class="stat-box cost">Total Cost<br><span>$ - </span></div>
+                <div class="stat-box cost">Total Cost<br><span id="cost_num">$ - </span></div>
             </div>
             <div class="col-6 col-md-3">
-                <div class="stat-box pnl">Total P&L (unrealised)<br><span>$ - </span></div>
+                <div class="stat-box pnl">Total P&L (unrealised)<br><span id="pnl_num">$ - </span></div>
             </div>
             <div class="col-6 col-md-3">
                 <div class="stat-box gain">Capital Gain<br><span id="cgt_num">$ - </span></div>
