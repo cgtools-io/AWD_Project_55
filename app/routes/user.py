@@ -175,9 +175,9 @@ def file_upload(filename=None):
                 df = parse_binance_csv(filename)
                 if isinstance(df, str):
                     flash(f"{df}", "danger")
-
-                total_cgt = calculate_cgt_binance(df)
-                flash(f"Total CGT: ${total_cgt}", "info")
+                else:
+                    total_cgt = calculate_cgt_binance(df)
+                    flash(f"Total CGT: ${total_cgt}", "info")
 
             elif request.form['broker'] == 'kraken':
                 # TODO: Implement Kraken CSV parsing
@@ -207,7 +207,11 @@ def file_upload(filename=None):
 @user.route('/visual')
 @login_required
 def visual():
-    return render_template('user/visual.html')    
+
+    options = db.session.execute(
+        db.select(Summary).where(Summary.user_id == current_user.id)
+    ).scalars()
+    return render_template('user/visual.html', options=options)    
 
 @user.route('/share')
 @login_required
