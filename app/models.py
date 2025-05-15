@@ -44,6 +44,10 @@ class Summary(db.Model):
     total_sell = db.Column(db.Float)
     total_cgt = db.Column(db.Float)
     filename = db.Column(db.String(150))
+    timestamp = db.Column(
+        db.DateTime,
+        default=datetime.now(),
+    )
 
 class SharedSummary(db.Model):
     __tablename__ = 'shared_summary'

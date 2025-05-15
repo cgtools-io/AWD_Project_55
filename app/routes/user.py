@@ -187,7 +187,7 @@ def file_upload(filename=None):
             new_summary = Summary(
                 user_id=current_user.id,
                 filename=filename,
-                total_cgt=total_cgt,
+                total_cgt=total_cgt
             )
 
             db.session.add(new_summary)
@@ -209,7 +209,7 @@ def file_upload(filename=None):
 def visual():
 
     options = db.session.execute(
-        db.select(Summary).where(Summary.user_id == current_user.id)
+        db.select(Summary).where(Summary.user_id == current_user.id).order_by(Summary.timestamp.desc())
     ).scalars()
     return render_template('user/visual.html', options=options)    
 

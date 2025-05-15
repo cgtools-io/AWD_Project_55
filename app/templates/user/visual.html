@@ -22,7 +22,7 @@
                 <option selected>Choose file</option>
                 {% for option in options %}
                     {% if option.filename != None %}
-                    <option value="{{ option.id }}">{{ option.filename }}</option>
+                        <option value="{{ option.id }}">{{ option.filename }}, {{ option.timestamp.strftime('%Y-%m-%d %H:%M:%S') }}</option>
                     {% endif %}
                 {% endfor %}
             </select>
