@@ -165,7 +165,7 @@ def file_upload(filename=None):
             session['last_uploaded_file'] = filename
             session.modified = True
 
-            total_cgt = 0.0
+            total_cgt = None
 
             if request.form['broker'] == 'binance':
 
@@ -184,16 +184,20 @@ def file_upload(filename=None):
                 flash("Does nothing yet", "danger")
                 pass
 
-            new_summary = Summary(
-                user_id=current_user.id,
-                filename=filename,
-                total_cgt=total_cgt
-            )
+            logging.debug(f"Total CGT: {total_cgt}")
 
-            db.session.add(new_summary)
-            db.session.commit()
+            if total_cgt is not None:
 
-            logging.debug(f"New summary created: {new_summary.filename}, {new_summary.total_cgt}")
+                new_summary = Summary(
+                    user_id=current_user.id,
+                    filename=filename,
+                    total_cgt=total_cgt,
+                )
+
+                db.session.add(new_summary)
+                db.session.commit()
+
+                logging.debug(f"New summary created: {new_summary.filename}, {new_summary.total_cgt}")
 
         else:
             for field, errors in form.errors.items():
@@ -209,7 +213,7 @@ def file_upload(filename=None):
 def visual():
 
     options = db.session.execute(
-        db.select(Summary).where(Summary.user_id == current_user.id).order_by(Summary.timestamp.desc())
+        db.select(Summary).where(Summary.user_id == current_user.id).order_by(Summary.created_at.desc())
     ).scalars()
     return render_template('user/visual.html', options=options)    
 
