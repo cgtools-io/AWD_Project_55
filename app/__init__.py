@@ -82,7 +82,7 @@ def create_app(config_class=Config):
         from app.models import User, Admin
 
         if user_id == '0':
-            return Admin(0)
+            return Admin(0, 'admin')
         else:
             return db.session.execute(
                 db.select(User).where(User.id == user_id)

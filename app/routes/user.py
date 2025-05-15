@@ -165,15 +165,24 @@ def file_upload(filename=None):
             session['last_uploaded_file'] = filename
             session.modified = True
 
-            if not os.path.exists(file_path):
-                flash(msg.NO_FILE, "danger")
+            total_cgt = 0.0
 
-            df = parse_binance_csv(filename)
-            if isinstance(df, str):
-                flash(f"{df}", "danger")
+            if request.form['broker'] == 'binance':
 
-            total_cgt = calculate_cgt_binance(df)
-            flash(f"Total CGT: ${total_cgt}", "info")
+                if not os.path.exists(file_path):
+                    flash(msg.NO_FILE, "danger")
+
+                df = parse_binance_csv(filename)
+                if isinstance(df, str):
+                    flash(f"{df}", "danger")
+
+                total_cgt = calculate_cgt_binance(df)
+                flash(f"Total CGT: ${total_cgt}", "info")
+
+            elif request.form['broker'] == 'kraken':
+                # TODO: Implement Kraken CSV parsing
+                flash("Does nothing yet", "danger")
+                pass
 
             new_summary = Summary(
                 user_id=current_user.id,
