@@ -218,6 +218,25 @@ def visual():
 def share():
     return render_template('user/share_data.html')
 
+@user.route('/get_summary', methods=['POST']) 
+@login_required
+def get_summary():
+    summary_id = request.json.get('summary_id')
+    summary = db.session.execute(
+        db.select(Summary).where(Summary.id == summary_id)
+    ).scalar()
+
+    if not summary:
+        return jsonify({'error': 'Summary not found'}), 404
+    
+    return jsonify({
+        'id': summary.id,
+        'total_buy': summary.total_buy,
+        'total_sell': summary.total_sell,
+        'total_cgt': summary.total_cgt,
+        'filename': summary.filename,
+    })
+
 @user.errorhandler(CSRFError)
 def handle_csrf_error(e):
     flash(msg.CSRF_FAILED, 'danger')
