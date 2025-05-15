@@ -1,3 +1,6 @@
+# ========================================================================
+#                       SYS PATH + CONSTANTS
+# ========================================================================
 import sys
 import shutil, os, stat
 
@@ -13,18 +16,10 @@ import app.constants as msg
 from config import TestConfig
 from datetime import datetime, timedelta
 
-class UserSession:
-    def __init__(self, client):
-        self._client = client
 
-    def login(self, username="myusername", password="mypassword0!"):
-        return self._client.post("/login", data={
-            "username": username, 
-            "password": password
-            }, follow_redirects=True
-        )
-    def logout(self):
-        return self._client.get("/logout", follow_redirects=True)
+# ========================================================================
+#                   FLASK APP + CLIENT FIXTURES
+# ========================================================================
 
 @pytest.fixture
 def app():
@@ -39,21 +34,35 @@ def app():
         db.drop_all()
 
 @pytest.fixture
-def test_user(app):
-    with app.app_context():
-        user = User(username=msg.TEST_USER, email=msg.TEST_EMAIL)
-        user.set_password(msg.TEST_PASSWORD)
-        db.session.add(user)
-        db.session.commit()
-        return user
+def client(app):
+    return app.test_client()
 
 @pytest.fixture
 def auth(client):
     return UserSession(client)
 
-@pytest.fixture
-def client(app):
-    return app.test_client()
+
+# ========================================================================
+#                   USER SESSION HELPER
+# ========================================================================
+
+class UserSession:
+    def __init__(self, client):
+        self._client = client
+
+    def login(self, username="myusername", password="mypassword0!"):
+        return self._client.post("/login", data={
+            "username": username, 
+            "password": password
+            }, follow_redirects=True
+        )
+    def logout(self):
+        return self._client.get("/logout", follow_redirects=True)
+
+
+# ========================================================================
+#                   ENVIRONMENT CLEANUP (Uploads Folder)
+# ========================================================================
 
 @pytest.fixture(autouse=True)
 def clean_upload_folder():
@@ -62,6 +71,20 @@ def clean_upload_folder():
         shutil.rmtree(UPLOAD_DIR)
     os.makedirs(UPLOAD_DIR, exist_ok=True)
     yield
+
+
+# ========================================================================
+#                   USER + SUMMARY FIXTURES
+# ========================================================================
+
+@pytest.fixture
+def test_user(app):
+    with app.app_context():
+        user = User(username=msg.TEST_USER, email=msg.TEST_EMAIL)
+        user.set_password(msg.TEST_PASSWORD)
+        db.session.add(user)
+        db.session.commit()
+        return user
 
 @pytest.fixture
 def two_users(app):
@@ -89,26 +112,7 @@ def some_summaries(app, two_users):
     return [s1, s2]
 
 @pytest.fixture
-def two_users_and_summary(app):
-
-    # Create two users, one summary for user1
-
-    james = User(username="james", email="james@example.com")
-    james.set_password("pw1")
-    sacha   = User(username="sacha",   email="sacha@example.com")
-    sacha.set_password("pw2")
-    db.session.add_all([james, sacha])
-    db.session.commit()
-
-    summary = Summary(user_id=james.id, total_cgt=100.0, filename="binance.csv")
-    db.session.add(summary)
-    db.session.commit()
-
-    return james, sacha, summary
-
-@pytest.fixture
 def two_users_and_summary(app, two_users):
-    # –––––– Create two users, one summary for user1 ––––––
     james, sacha = two_users
     db.session.add_all([james, sacha])
     db.session.commit()
@@ -118,3 +122,20 @@ def two_users_and_summary(app, two_users):
     db.session.commit()
 
     return james, sacha, summary
+
+
+# ========================================================================
+#                   SELENIUM DRIVER FIXTURE (HEADLESS FIREFOX)
+# ========================================================================
+
+from selenium import webdriver
+from selenium.webdriver.firefox.options import Options
+
+@pytest.fixture
+def selenium_driver():
+    options = Options()
+    options.headless = True
+    options.add_argument("--headless") 
+    driver = webdriver.Firefox(options=options)
+    yield driver
+    driver.quit()
