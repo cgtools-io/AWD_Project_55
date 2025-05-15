@@ -4,62 +4,85 @@
 
 {% block content %}
 <div id="page-body" class="container-fluid mt-0 d-flex flex-column">
-    
-    <div class="row px-4">
-        <div class="col ps-0">
-            <h1 id="upload-header" class="p-0">Upload .csv file:</h1>
+
+    <form method="POST" enctype="multipart/form-data" action="{{ url_for('user.file_upload') }}" id="file-upload-form">
+        {{ form.hidden_tag() }}
+
+        <div id="form-first-part">
+        
+            <div class="row px-4 mb-3">
+                {{ form.broker.label(class="upload-header") }}
+            </div>
+
+            <div class="row px-4 mb-3 justify-content-evenly">
+                {% for subfield in form.broker %}
+                    <div class="col-sm-3 d-flex justify-content-center pt-4 mx-3">
+                        <label class="text-center broker-label d-flex flex-column align-items-center">
+                            <input class="broker-radio" type="radio" name="broker" value="{{ subfield.data }}" autocomplete="off"
+                            {% if subfield.data == session['last_selected_broker'] %} checked {% endif %}>
+                            <img class="broker-img" src='/static/images/{{ subfield.label.text }}.svg' alt="{{ subfield.label.text }}" width="270" height="270">
+                            {{ subfield.label.text }}
+                        </label>
+                    </div>
+                {% endfor %}
+            </div>
         </div>
-    </div>
 
-    <div class="row px-4 mt-3 mb-3 flex-grow-1 d-flex">
+        <div id="form-second-part">
+    
+            <div class="row px-4">
+                {{ form.file.label(class="upload-header") }}
+            </div>
 
-        <div class="col upload-area flex-column" id="uploadfile">
-            {% with messages = get_flashed_messages(with_categories=true) %}
-                {% if messages %}
-                    <div class="w-100 mb-3 justify-content-center d-flex">
-                        {% for category, message in messages %}
-                            <div class="alert alert-{{ category }} alert-dismissible fade show d-inline-block text-nowrap" role="alert">
-                                <span class="me-3">{{ message }}</span>
-                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            <div class="row px-4 mt-3 mb-3 flex-grow-1 d-flex">
+
+                <div class="col upload-area flex-column" id="uploadfile">
+                    {% with messages = get_flashed_messages(with_categories=true) %}
+                        {% if messages %}
+                            <div class="w-100 mb-3 justify-content-center d-flex">
+                                {% for category, message in messages %}
+                                    <div class="alert alert-{{ category }} alert-dismissible fade show d-inline-block text-nowrap" role="alert">
+                                        <span class="me-3">{{ message }}</span>
+                                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                    </div>
+                                {% endfor %}
                             </div>
-                        {% endfor %}
-                    </div>
-                {% endif %}
-            {% endwith %}
+                        {% endif %}
+                    {% endwith %}
+                        
+                    <div class="upload-text mt-0">Upload file here</div>
+                    
+                    <img id="upload-arrow" src="/static/images/upload-icon-white.png" alt="Upload Icon" width="80" height="80">
 
-            <form method="POST" enctype="multipart/form-data">
-                {{ form.hidden_tag() }}
-                
-                <div class="upload-text">Drag and drop file here</div>
-                
-                <img id="upload-arrow" src="/static/images/upload-icon-white.png" alt="Upload Icon" width="80" height="80">
+                    <div class="row d-flex justify-content-center align-items-center">
+                        <div class="upload-text col-sm-8 px-2 pt-2">
+                            {{ form.file(class="form-control form-control-lg border border-3") }}
+                        </div>
 
-                <div class="d-flex gap-3 justify-content-center align-items-center">
-                    <div class="upload-text col-8">
-                        {{ form.file(class="form-control form-control-lg border border-2") }}
-                    </div>
-
-                    <div class="upload-text col-3">
-                        {{ form.submit(class="button-calculate btn w-100 py-1") }}
+                        <div class="upload-text col-sm-4 px-2 pt-2">
+                            {{ form.submit(class="button-calculate btn w-100 py-1") }}
+                        </div>
                     </div>
                 </div>
-            </form>
-        </div>
-    </div>
+            </div>          
 
-    <div class="row px-4 mb-3 mt-auto">
-        <div class="col-sm-3 px-0 ps-sm-0 pb-2 pb-sm-0">
-            <button type='button' class="button-secondary btn w-100" id="cancel">Back</button>
+            <div class="row px-4 mb-3 mt-auto">
+                <div class="col-sm-3 px-0 ps-sm-0 pb-2 pb-sm-0">
+                    <button type='button' class="button-secondary btn w-100" id="back-btn">Back</button>
+                </div>
+                <div class="col-sm-6 px-0 px-sm-3 pb-2 pb-sm-0">
+                        {{ form.calculate(formaction="url_for('user.file_upload')", class="button-calculate btn w-100", id="calculate") }}
+                </div>
+                <div class="col-sm-3 px-0 pe-sm-0">
+                    <button type='button' class="button-secondary btn w-100" id="upload">No file?</button>
+                </div>
+            </div>
         </div>
-        <div class="col-sm-6 px-0 px-sm-3 pb-2 pb-sm-0">
-            <form method="POST" action="{{ url_for('user.process_csv', filename=request.args.get('filename')) }}" enctype="application/x-www-form-urlencoded">
-                {{ form.csrf_token }}
-                <button type="submit" class="button-calculate btn w-100" id="calculate">Calculate</button>
-            </form>
-        </div>
-        <div class="col-sm-3 px-0 pe-sm-0">
-            <button type='button' class="button-secondary btn w-100" id="upload">No file?</button>
-        </div>
-    </div>
+    </form> 
 </div>
+{% endblock %}
+
+{% block extra_js %}
+<div id="form-state" data-form_state="{{ form_state }}"></div>
+<script src="{{ url_for('static', filename='js/file_upload.js') }}"></script>
 {% endblock %}

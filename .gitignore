@@ -181,3 +181,6 @@ app/.DS_Store
 
 # File Uploads
 *.csv
+
+# VS Code Configuration
+.vscode/ 

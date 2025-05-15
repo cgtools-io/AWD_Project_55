@@ -13,19 +13,36 @@
         <p>Real-time snapshot of assets</p>
     </header>
 
+    <input type="hidden" id="csrf_token" value="{{ csrf_token() }}">
+
+    <div class="row d-flex justify-content-center align-items-center my-5">
+        <label for="item" class="form-label col-2 text-end">Choose an option:</label>
+        <div class="col-3">
+            <select class = "form-select" name="item_id" id="summary-select">
+                <option selected>Choose file</option>
+                {% for option in options %}
+                    {% if option.filename != None %}
+                    <option value="{{ option.id }}">{{ option.filename }}</option>
+                    {% endif %}
+                {% endfor %}
+            </select>
+        </div>
+        <button id="visualise" class="btn btn-secondary col-3">Visualise</button>
+    </div>
+
     <section class="stats container-fluid my-4">
         <div class="row g-3 text-center">
             <div class="col-6 col-md-3">
-                <div class="stat-box value">Total Market Value<br><span>$39,728</span></div>
+                <div class="stat-box value">Total Market Value<br><span>$ - </span></div>
             </div>
             <div class="col-6 col-md-3">
-                <div class="stat-box cost">Total Cost<br><span>$31,200</span></div>
+                <div class="stat-box cost">Total Cost<br><span>$ - </span></div>
             </div>
             <div class="col-6 col-md-3">
-                <div class="stat-box pnl">Total P&L (unrealised)<br><span>+$8,528</span></div>
+                <div class="stat-box pnl">Total P&L (unrealised)<br><span>$ - </span></div>
             </div>
             <div class="col-6 col-md-3">
-                <div class="stat-box gain">Capital Gain<br><span>$5,100</span></div>
+                <div class="stat-box gain">Capital Gain<br><span id="cgt_num">$ - </span></div>
             </div>
         </div>
     </section>
@@ -98,6 +115,8 @@
 {% endblock %}
 
 {% block extra_js %}
+<script src="{{ url_for('static', filename='js/visual.js') }}"></script>
+
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.js"></script>
 
 <script>
