@@ -22,7 +22,7 @@ def clean_upload_folder():
 
 def test_file_upload_requires_login(client):
     # unauthed users hitting /file_upload should receive 403 Forbidden
-    resp = client.get('/file_upload')
+    resp = client.get('/file_upload/')
     assert resp.status_code == 403
     assert b'ERROR 403' in resp.data
 
@@ -30,7 +30,7 @@ def test_file_upload_requires_login(client):
 def test_file_upload_page_loads_when_authenticated(client, auth, test_user):
     # Logged-in users should see the upload page
     auth.login(username=msg.TEST_USER, password=msg.TEST_PASSWORD)
-    resp = client.get('/file_upload')
+    resp = client.get('/file_upload/')
     assert resp.status_code == 200
     assert b'Upload .csv file:' in resp.data
 
@@ -43,7 +43,7 @@ def test_upload_no_file_shows_required_error(client, auth, test_user):
     # Submitting without selecting a file triggers a required-field error
     auth.login(username=msg.TEST_USER, password=msg.TEST_PASSWORD)
     resp = client.post(
-        '/file_upload',
+        '/file_upload/',
         data={},  # no file included
         content_type='multipart/form-data',
         follow_redirects=True
@@ -57,7 +57,7 @@ def test_upload_non_csv_shows_csv_only_error(client, auth, test_user):
     auth.login(username=msg.TEST_USER, password=msg.TEST_PASSWORD)
     fake_txt = {'file': (io.BytesIO(b"not,a,csv"), 'notes.txt')}
     resp = client.post(
-        '/file_upload',
+        '/file_upload/',
         data=fake_txt,
         content_type='multipart/form-data',
         follow_redirects=True
@@ -77,14 +77,16 @@ def test_upload_csv_happy_path(client, auth, test_user):
 
     # Create a simple in-memory CSV
     sample = io.BytesIO(b"col1,col2,col3\n1,2,3\n4,5,6")
-    data = {'file': (sample, 'transactions.csv')}
+    data = {'file': (sample, 'transactions.csv'),
+            'broker': 'binance'}
 
     resp = client.post(
-        '/file_upload',
+        '/file_upload/',
         data=data,
         content_type='multipart/form-data',
         follow_redirects=True
     )
+    print(resp.data)
     assert resp.status_code == 200
     # Check for the UPLOAD_SUCCESS flash
     assert msg.UPLOAD_SUCCESS.encode() in resp.data

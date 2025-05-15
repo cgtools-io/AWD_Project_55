@@ -169,7 +169,7 @@ def test_signup_while_logged_in(client, auth, test_user):
 
 def test_protected_route_requires_login(client):
     # file_upload is protected by login_required → 403
-    resp = client.get('/file_upload')
+    resp = client.get('/file_upload/')
     assert resp.status_code == 403
     assert b'ERROR 403' in resp.data
 

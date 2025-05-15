@@ -7,6 +7,10 @@ EMAIL_REGISTERED = 'Email already registered.'
 ALREADY_LOGGED_IN = 'Please logout to create a new account.'
 PASSWORD_MISMATCH = 'Passwords must match'
 
+# -------------------------------
+# Messages for file_upload_form.py
+# -------------------------------
+BROKER_REQUIRED = 'Please select a broker.'
 
 # -------------------------------
 # Messages for user.py (routes)
@@ -30,3 +34,5 @@ TEST_PASSWORD = "password123!"
 # Upload Constraints (File Uploads)
 # -------------------------------
 CSV_ONLY = 'CSV files only!'
+NO_FILE = 'File not found.'
+NO_UPLOAD = 'Please upload a file.'

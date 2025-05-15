@@ -42,6 +42,8 @@ class Summary(db.Model):
 
     total_buy = db.Column(db.Float)
     total_sell = db.Column(db.Float)
+    total_cgt = db.Column(db.Float)
+    filename = db.Column(db.String(150))
 
 class SharedSummary(db.Model):
     __tablename__ = 'shared_summary'

@@ -5,15 +5,17 @@ import logging
 from urllib.parse import urlparse
 import os
 import pandas as pd
+from datetime import datetime
 import csv
 import re
+from werkzeug.utils import secure_filename
 
 import app.constants as msg
 from app.extensions import db
 from app.forms.user_forms import SignupForm, LoginForm
 from app.models import User, Admin, Summary
 from app.forms.file_upload_form import FileUploadForm
-from werkzeug.utils import secure_filename
+from app.utils.cgt_processing import parse_binance_csv, calculate_cgt_binance
 
 def clean_float(value):
     try:
@@ -132,16 +134,23 @@ def logout():
 
     return redirect(url_for('index'))
 
-@user.route('/file_upload', methods=['GET', 'POST'])
+@user.route('/file_upload/', methods=['GET', 'POST'])
+@user.route('/file_upload/<filename>', methods=['GET', 'POST'])
 @login_required
-def file_upload():
+def file_upload(filename=None):
+
+    print(request)
+    print(request.form)
+
     form = FileUploadForm()
 
     if request.method == 'POST':
 
-        filename = None
+        session['last_selected_broker'] = form.broker.data
+        session.modified = True
 
         if form.validate_on_submit():
+
             file = form.file.data
             if isinstance(file, list):
                 file = file[0]
@@ -153,19 +162,56 @@ def file_upload():
             file.save(file_path)
 
             flash(msg.UPLOAD_SUCCESS, 'success')
+            session['last_uploaded_file'] = filename
+            session.modified = True
+
+            total_cgt = 0.0
+
+            if request.form['broker'] == 'binance':
+
+                if not os.path.exists(file_path):
+                    flash(msg.NO_FILE, "danger")
+
+                df = parse_binance_csv(filename)
+                if isinstance(df, str):
+                    flash(f"{df}", "danger")
+                else:
+                    total_cgt = calculate_cgt_binance(df)
+                    flash(f"Total CGT: ${total_cgt}", "info")
+
+            elif request.form['broker'] == 'kraken':
+                # TODO: Implement Kraken CSV parsing
+                flash("Does nothing yet", "danger")
+                pass
+
+            new_summary = Summary(
+                user_id=current_user.id,
+                filename=filename,
+                total_cgt=total_cgt,
+            )
+
+            db.session.add(new_summary)
+            db.session.commit()
+
+            logging.debug(f"New summary created: {new_summary.filename}, {new_summary.total_cgt}")
+
         else:
             for field, errors in form.errors.items():
                 for error in errors:
                     flash(error, 'danger')
-
-        return redirect(url_for('user.file_upload', filename=filename))
-
-    return render_template('user/file_upload.html', form=form)
+        
+        return render_template('user/file_upload.html', form=form, form_state=2)
+    
+    return render_template('user/file_upload.html', form=form, form_state=1)
 
 @user.route('/visual')
 @login_required
 def visual():
-    return render_template('user/visual.html')    
+
+    options = db.session.execute(
+        db.select(Summary).where(Summary.user_id == current_user.id)
+    ).scalars()
+    return render_template('user/visual.html', options=options)    
 
 @user.route('/share')
 @login_required
@@ -176,89 +222,3 @@ def share():
 def handle_csrf_error(e):
     flash(msg.CSRF_FAILED, 'danger')
     return redirect(request.url or url_for('index'))
-
-@user.route("/file_upload/process/<filename>", methods=["POST"])
-@user.route("/file_upload/process/", methods=["POST"])
-@login_required
-
-
-def process_csv(filename=None):
-    from datetime import datetime
-
-    if filename is None:
-        flash("No file uploaded.", "danger")
-        return redirect(url_for('user.file_upload'))
-
-    file_path = os.path.join('app/static/uploads', filename)
-
-    if not os.path.exists(file_path):
-        flash("File not found.", "danger")
-        return redirect(url_for('user.file_upload'))
-
-    try:
-        df = pd.read_csv(file_path, encoding='utf-8')
-        df['datetime'] = pd.to_datetime(df['Date(UTC)'], utc=True)
-        df = df.rename(columns={
-            'Side': 'Side',
-            'Price': 'Price',
-            'Executed': 'executed_amount',
-            'Fee': 'fee_amount',
-            'Pair': 'base_asset'
-        })
-
-        df['fee_amount'] = df['fee_amount'].apply(clean_float)
-        df['executed_amount'] = df['executed_amount'].apply(clean_float)
-        df['Price'] = df['Price'].apply(clean_float)
-
-
-
-        df = df.sort_values(by='datetime')
-        buy_pool = []
-        cgt_results = []
-
-        for _, row in df.iterrows():
-            if row['Side'] == 'BUY':
-                buy_pool.append({
-                    'datetime': row['datetime'],
-                    'asset': row['base_asset'],
-                    'amount': clean_float(row['executed_amount']),
-                    'price': clean_float(row['Price']),
-                    'fee': clean_float(row['fee_amount'])
-                })
-
-            elif row['Side'] == 'SELL':
-                sell_asset = row['base_asset']
-                sell_amount = clean_float(row['executed_amount'])
-                sell_price = clean_float(row['Price'])
-                fee_amount = clean_float(row['fee_amount'])
-                sale_proceeds = sell_amount * sell_price - fee_amount
-                cost_base = 0.0
-
-                while sell_amount > 0 and buy_pool:
-                    earliest = buy_pool[0]
-                    if earliest['asset'] != sell_asset:
-                        buy_pool.pop(0)
-                        continue
-
-                    used = min(sell_amount, earliest['amount'])
-                    cost = used * earliest['price']
-                    cost_base += cost
-
-                    earliest['amount'] -= used
-                    if earliest['amount'] <= 0:
-                        buy_pool.pop(0)
-
-                    sell_amount -= used
-
-                capital_gain = sale_proceeds - cost_base
-                cgt_results.append(capital_gain)
-
-        total_cgt = round(sum(cgt_results), 2)
-        flash("CSV file processed successfully!")
-        flash(f"Total CGT: ${total_cgt}", "info")
-        return redirect(url_for('dashboard'))
-
-    except Exception as e:
-        logging.exception(f"Error processing CSV: {e}")
-        flash("Failed to process CSV. Check format or logs.", "danger")
-        return redirect(url_for('user.file_upload'))

@@ -2,7 +2,7 @@
 App Layout Wrapper
 --------------- */
 .app-root {
-  background-color: #1A122D;
+  background-color: #1A0D2F;
   color: #FFFFFF;
   overflow-x: hidden;
   position: relative;
@@ -393,32 +393,46 @@ File Upload Page
   min-height: calc(100vh - 132px);
 }
 
-#upload-header {
+#form-first-part {
+  display: none;
+  scroll-margin-top: 74px;
+}
+
+#form-second-part {
+  display: none;
+}
+
+.upload-header {
   text-align: left;
-  margin-top: 20px;
+  margin-top: 0px;
   font-size: 45px;
   color: white;
+  font-weight: bold;
 }
+
 .upload-area {
   border: 5px dashed #B084CC;
   border-radius: 10px;
-  padding: 30px;
+  padding: 20px;
   background-color: transparent;
   justify-content: center;
   align-content: center;
 }
+
 .upload-text {
   font-size: 20px;
   color: #B084CC;
   text-align: center;
   display: block;
 }
+
 #upload-arrow {
   display: block;
-  margin: 30px auto;
+  margin: 25px auto;
   align-content: center;
   text-align: center;
 }
+
 .button-secondary {
   background-color: #B084CC;
   color: #1A1333;
@@ -427,6 +441,7 @@ File Upload Page
   font-weight: bold;
   font-size: 25px;
 }
+
 .button-calculate {
   background-color: #FFD700;
   color: #1A1333;
@@ -439,8 +454,30 @@ File Upload Page
   background-color: #1A1333;
   color: #FFD700;
 }
+
 .button-secondary:hover {
   background-color: gray;
+}
+
+.broker-radio { 
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.broker-radio + img {
+  cursor: pointer;
+  border: 10px solid transparent;
+}
+
+.broker-radio:checked + img {
+  border: 10px solid #B084CC;
+  border-radius: 135px;
+}
+
+.broker-label {
+  font-size: 20px;
 }
 
 /* ========== Share Data Page Scoped Styles ========== */
@@ -505,7 +542,7 @@ visual page optimised for cross-platform responsiveness
 --------------- */
 .visual {
     margin: 0;
-    background: #1A1333;
+    background: #1A0D2F;
     color: #FFFFFF;
     font-size: 1rem;
 }
