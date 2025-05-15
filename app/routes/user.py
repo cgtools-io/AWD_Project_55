@@ -293,6 +293,17 @@ def process_csv(filename=None):
                 cgt_results.append(capital_gain)
 
         total_cgt = round(sum(cgt_results), 2)
+        print("Attempting to create Summary with CGT:", total_cgt)
+        new_summary = Summary(
+            user_id    = current_user.id,
+            total_cgt  = total_cgt,
+            filename   = filename
+        )
+        db.session.add(new_summary)
+        db.session.commit()
+
+        print("Summary saved with ID:", summary.id)
+
         flash("CSV file processed successfully!")
         flash(f"Total CGT: ${total_cgt}", "info")
         return redirect(url_for('dashboard'))
