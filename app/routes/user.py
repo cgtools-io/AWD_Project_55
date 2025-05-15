@@ -235,8 +235,6 @@ def get_summary():
     
     return jsonify({
         'id': summary.id,
-        'total_buy': summary.total_buy,
-        'total_sell': summary.total_sell,
         'total_cgt': summary.total_cgt,
         'filename': summary.filename,
     })
