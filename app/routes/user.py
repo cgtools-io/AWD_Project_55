@@ -16,7 +16,7 @@ from app.forms.user_forms import SignupForm, LoginForm
 from app.models import User, Admin, Summary
 from app.forms.file_upload_form import FileUploadForm
 from app.utils.cgt_processing import parse_binance_csv, calculate_cgt_binance
-from app.utils.portfolio_pnl import calculate_total_cost
+from app.utils.portfolio_pnl import calculate_total_cost, calculate_total_mv
 
 def clean_float(value):
     try:
@@ -179,7 +179,7 @@ def file_upload(filename=None):
                 else:
                     total_cgt = calculate_cgt_binance(df)
                     total_cost = calculate_total_cost(df)
-                    total_mv = 0
+                    total_mv = calculate_total_mv(df)
 
             elif request.form['broker'] == 'kraken':
                 # TODO: Implement Kraken CSV parsing

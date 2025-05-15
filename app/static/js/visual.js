@@ -1,3 +1,8 @@
+function roundToDecimal(number, decimalPlaces) {
+    const factor = 10 ** decimalPlaces;
+    return Math.round(number * factor) / factor;
+}
+
 document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('visualise').addEventListener('click', () => {
         const   summaryId = document.getElementById('summary-select').value,
@@ -48,14 +53,14 @@ document.addEventListener('DOMContentLoaded', () => {
                 pnlNum.innerHTML = `${"$ - "}`;
             }
             else {
-                const pnl = data.total_mv - data.total_cost;
+                const pnl = roundToDecimal(data.total_mv - data.total_cost, 2);
                 if (pnl > 0) {
                     pnlNum.style.color = "#4caf50";
-                    pnlNum.innerHTML = `${"$" + (data.total_mv - data.total_cost)}`;
+                    pnlNum.innerHTML = `${"$" + (pnl)}`;
                 }
                 else {
                     pnlNum.style.color = "#ff4081";
-                    pnlNum.innerHTML = `${"-$" + (data.total_cost - data.total_mv)}`;
+                    pnlNum.innerHTML = `${"-$" + (pnl * -1)}`;
                 }
                 
             }
