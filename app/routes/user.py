@@ -39,12 +39,14 @@ logger = logging.getLogger(__name__)
 
 @user.route('/signup/', methods=['GET', 'POST'])
 def signup():
+    # Render and process the user signup form.
     logging.debug("User signup endpoint accessed")
 
     form = SignupForm()
 
     if request.method == 'POST':
         if form.validate_on_submit():
+            # Create and store new user
             new_user = User(
                 username=form.username.data,
                 email=form.email.data
@@ -76,6 +78,7 @@ def signup():
 
 @user.route('/login/', methods=['GET', 'POST'])
 def login():
+    # Handle login logic for users and admins.
     logging.debug("User login endpoint accessed")
 
     if current_user.is_authenticated:
@@ -93,6 +96,7 @@ def login():
                 ).scalar()
 
                 if form.username.data == ADMIN_USERNAME and form.password.data == ADMIN_PASSWORD:
+                    # Check if logging in as admin
                     admin = Admin(0, ADMIN_USERNAME)
                     login_user(admin, remember=form.remember.data)
                     logger.debug(f'Admin {admin.username} logged in successfully')
@@ -115,6 +119,7 @@ def login():
                     next_page = url_for('index')
                 return redirect(next_page)
             else:
+                # Form validation failed
                 for field, errors in form.errors.items():
                     for error in errors:
                         flash(f'Error in {field}: {error}', 'danger')
@@ -131,53 +136,62 @@ def login():
 def logout():
     logging.debug("User logout endpoint accessed")
 
+    # If user is logged in, perform logout and flash success
     if current_user.is_authenticated:
         logout_user()
         flash(msg.LOGOUT_SUCCESS, 'success')
     else:
+        # Shouldn't hit this due to @login_required, but here as fallback
         flash(msg.NOT_LOGGED_IN)
 
+    # Redirect user to home page after logout
     return redirect(url_for('index'))
 
 @user.route('/file_upload/', methods=['GET', 'POST'])
 @user.route('/file_upload/<filename>', methods=['GET', 'POST'])
 @login_required
 def file_upload(filename=None):
-
+    # Load file upload form
     form = FileUploadForm()
 
     if request.method == 'POST':
-
+        # Save broker selection in session to prefill next time
         session['last_selected_broker'] = form.broker.data
         session.modified = True
 
+        # If form passed validation (e.g., file selected, allowed type)
         if form.validate_on_submit():
 
             file = form.file.data
             if isinstance(file, list):
                 file = file[0]
 
+            # Secure filename and save file to server
             filename = secure_filename(file.filename)
             upload_folder = os.path.join('app/static/uploads')
             os.makedirs(upload_folder, exist_ok=True)
             file_path = os.path.join(upload_folder, filename)
             file.save(file_path)
 
+            # Flash success and store filename in session
             flash(msg.UPLOAD_SUCCESS, 'success')
             session['last_uploaded_file'] = filename
             session.modified = True
 
             total_cgt = None
 
+            # Binance CSV parsing
             if request.form['broker'] == 'binance':
 
                 if not os.path.exists(file_path):
                     flash(msg.NO_FILE, "danger")
 
+                # Parse uploaded Binance CSV into DataFrame
                 df = parse_binance_csv(filename)
                 if isinstance(df, str):
                     flash(f"{df}", "danger")
                 else:
+                    # Calculate CGT + portfolio stats
                     total_cgt = calculate_cgt_binance(df)
                     total_cost, total_mv, pnl_graph = calculate_pnl_stats(df)
                     print(json.dumps(pnl_graph))
@@ -189,6 +203,7 @@ def file_upload(filename=None):
 
             logging.debug(f"Total CGT: {total_cgt}")
 
+            # If CGT calculated successfully, save summary to DB
             if total_cgt is not None:
 
                 new_summary = Summary(
@@ -206,32 +221,36 @@ def file_upload(filename=None):
                 logging.debug(f"New summary created: {new_summary.filename}, {new_summary.total_cgt}")
 
         else:
+            # Handle and display form errors
             for field, errors in form.errors.items():
                 for error in errors:
                     flash(error, 'danger')
-        
+        # Render page with form in "after upload" state
         return render_template('user/file_upload.html', form=form, form_state=2)
-    
+    # Render page with form in default state
     return render_template('user/file_upload.html', form=form, form_state=1)
 
 @user.route('/visual/')
 @login_required
 def visual():
-
+    # Fetch all summaries owned by the current user, newest first
     owned = db.session.execute(
         db.select(Summary).where(Summary.user_id == current_user.id).order_by(Summary.created_at.desc())
     ).scalars()
 
+    # Get IDs of summaries that have been shared *with* this user
     shared_ids = db.session.execute(
         db.select(SharedSummary.summary_id).where(SharedSummary.to_user_id == current_user.id).order_by(SharedSummary.timestamp.desc())
     ).scalars().all()
     print(shared_ids)
 
+    # Look up those shared summaries by ID
     shared = db.session.execute(
         db.select(Summary).where(Summary.id.in_(shared_ids)).order_by(Summary.created_at.desc())
     ).scalars()
     print(shared)
     
+    # Render visualisation page with both owned and shared summaries
     return render_template('user/visual.html', owned=owned, shared=shared)    
 
 
@@ -239,16 +258,18 @@ def visual():
 @user.route('/get_summary/', methods=['POST']) 
 @login_required
 def get_summary():
+    # Retrieve the summary ID sent from the frontend
     summary_id = request.json.get('summary_id')
+    # Fetch the matching summary from the database
     summary = db.session.execute(
         db.select(Summary).where(Summary.id == summary_id)
     ).scalar()
-
+    # Handle missing or unselected summaries gracefully
     if not summary and summary_id != "select":
         return jsonify({'error': 'Summary not found'}), 404
     elif not summary and summary_id == "select":
         return jsonify({'error': 'No file selected'}), 404
-    
+    # Return summary data as JSON
     return jsonify({
         'id': summary.id,
         'total_cgt': summary.total_cgt,
@@ -263,18 +284,19 @@ def get_summary():
 def share():
     form = ShareForm()
 
-    # 1) only pull summaries that *I* own
+    # Step 1: Only show summaries owned by current user
     my_summaries = Summary.query.filter_by(user_id=current_user.id).all()
 
-    # 2) all other users
+    # Step 2: List all other users (to share with)
     other_users = User.query.filter(User.id != current_user.id).all()
 
     form.summary_id.choices   = [(s.id, f"{s.filename}, uploaded on: {s.created_at.strftime('%Y-%m-%d')}") for s in my_summaries]
     form.recipient_id.choices = [(u.id, u.username)         for u in other_users]
 
+    # Populate dropdowns in the form
     if form.validate_on_submit():
         
-        # 3) duplicate‐share guard
+        # Prevent duplicate shares
         exists = SharedSummary.query.filter_by(
             summary_id   = form.summary_id.data,
             from_user_id = current_user.id,
@@ -284,7 +306,7 @@ def share():
         if exists:
             flash("You've already shared this summary with that user.", "warning")
             return redirect(url_for('user.share'))
-
+        # Create a new SharedSummary entry
         share = SharedSummary(
             summary_id   = form.summary_id.data,
             from_user_id = current_user.id,
@@ -295,7 +317,7 @@ def share():
         flash("Summary successfully shared!", "success")
         return redirect(url_for('user.share'))
 
-    # 4) history
+    # Step 4: Load share history for display
     shared_by_me   = SharedSummary.query.filter_by(from_user_id=current_user.id).all()
     shared_with_me = SharedSummary.query.filter_by(to_user_id=current_user.id).all()
 
@@ -308,5 +330,6 @@ def share():
 
 @user.errorhandler(CSRFError)
 def handle_csrf_error(e):
+    # Handle CSRF failures gracefully
     flash(msg.CSRF_FAILED, 'danger')
     return redirect(request.url or url_for('index'))
