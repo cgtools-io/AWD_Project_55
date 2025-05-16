@@ -26,9 +26,9 @@
                     {% endif %}
                 {% endfor %}
                 <option disabled>Files shared with you:</option>
-                {% for shared_summary in shared %}
-                    {% if shared_summary.summary_id != None %}
-                        <option value="{{ shared_summary.summary_id }}">{{ shared_summary.summary_id }}, {{ shared_summary.timestamp.strftime('%Y-%m-%d') }}</option>
+                {% for summary in shared %}
+                    {% if summary.filename != None %}
+                        <option value="{{ summary.id }}">{{ summary.filename }}, {{ summary.created_at.strftime('%Y-%m-%d') }}</option>
                     {% endif %}
                 {% endfor %}
             </select>
