@@ -81,20 +81,14 @@ document.addEventListener('DOMContentLoaded', () => {
                 costNum.innerHTML = `${"$ - "}`;
                 mvNum.innerHTML = `${"$ - "}`;
                 pnlNum.innerHTML = `${"$ - "}`;
-                pnlChart.data.labels = [];
-                pnlChart.data.datasets[0] = [];
-                pnlChart.options.scales.y.ticks.display = false;
-                pnlChart.update();
+                pnlNum.style.color = "#ffeb3b";
             } else {
                 pnlGraphData = JSON.parse(data.pnl_graph);
 
                 pnlChart.data.labels = pnlGraphData.map(pair => pair[0]);
                 pnlChart.data.datasets[0].data = pnlGraphData.map(pair => pair[1]);
-                
+
                 pnlChart.options.scales.y.ticks.display = true;
-                const minY = Math.min(pnlGraphData.map(pair => pair[1]));
-                const yMin = Math.floor(minY - Math.abs(minY * 0.1));
-                pnlChart.options.scales.y.min = yMin;
                 
                 pnlChart.update();
             }
@@ -135,9 +129,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
                 
             }
-        }).catch(error => {
-            console.error('Error:', error);
         });
-
     });
 });

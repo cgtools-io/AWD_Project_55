@@ -18,7 +18,7 @@
     <div class="row d-flex justify-content-center align-items-center my-5">
         <div class="col-3">
             <select class = "form-select form-select-md border border-2" name="item_id" id="summary-select">
-                <option selected>Choose file</option>
+                <option value="select" selected>Choose file</option>
                 <option disabled>Uploaded files:</option>
                 {% for summary in owned %}
                     {% if summary.filename != None %}
