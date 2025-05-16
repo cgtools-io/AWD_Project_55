@@ -12,7 +12,7 @@ import pytest
 # Test both 404 (page not found) and 403 (unauthorised access) errors
 @pytest.mark.parametrize("url, expected_code", [
     ("/i-dont-exist", 404),      # Nonexistent route
-    ("/share", 403),             # Protected route without login (should trigger custom unauthorised handler)
+    ("/share/", 403),             # Protected route without login (should trigger custom unauthorised handler)
 ])
 def test_error_status_and_template(client, url, expected_code):
     response = client.get(url, follow_redirects=False)  # Don’t follow redirects so we can check real status code
@@ -29,7 +29,7 @@ def test_error_status_and_template(client, url, expected_code):
 # Test malformed or missing data causing a 400 Bad Request
 def test_400_bad_request(client):
     # We simulate this by submitting an empty signup form
-    response = client.post("/signup", data={})
+    response = client.post("/signup/", data={})
 
     # Depending on form config, Flask may either return 400 or stay on page (200).
     # This test is soft for now — we may refine once error triggering is stricter.
@@ -38,7 +38,7 @@ def test_400_bad_request(client):
 
 # Test that using an unsupported method (e.g. POST on GET-only route) returns 405
 def test_405_method_not_allowed(client):
-    response = client.post("/about")  # Our /about route is GET-only
+    response = client.post("/about/")  # Our /about route is GET-only
     assert response.status_code == 405
     assert b"ERROR 405" in response.data  # Make sure our custom error message renders
 

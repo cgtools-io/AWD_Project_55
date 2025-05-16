@@ -29,6 +29,7 @@ UPLOAD_SUCCESS = 'Upload successful!'
 TEST_USER = "testuser"
 TEST_EMAIL = "test@test.com"
 TEST_PASSWORD = "password123!"
+LH = "http://localhost:5000"
 
 # -------------------------------
 # Upload Constraints (File Uploads)

@@ -76,14 +76,24 @@
   <!-- Big, centered CTAs        -->
   <!-- ========================= -->
   <section class="landing-cta text-center hero-fade">
-    <a href="{{ url_for('user.signup') }}" class="btn cta-primary btn-lg mx-3 my-4">
-      Get Started
-    </a>
-    <a href="{{ url_for('about') }}" class="btn cta-primary btn-lg mx-3 my-4">
+    
+    {% if current_user.is_authenticated %}
+      <a href="{{ url_for('user.file_upload') }}"
+        class="btn cta-primary btn-lg mx-3 my-4">
+        Get Started
+      </a>
+    {% else %}
+      <a href="{{ url_for('user.signup') }}"
+        class="btn cta-primary btn-lg mx-3 my-4">
+        Get Started
+      </a>
+    {% endif %}
+    <a href="{{ url_for('about') }}"
+       class="btn cta-primary btn-lg mx-3 my-4">
       Learn More
     </a>
+    
   </section>
-
 
 </main>
 {% endblock %}

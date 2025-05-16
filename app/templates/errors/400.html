@@ -1,0 +1,12 @@
+{% extends "errors/error_base.html" %}
+
+{% block title %}Page Not Found{% endblock %}
+
+{% block content %}
+  <h1 class="hero-fade" style="animation-delay: 2.5s;">ERROR 400.</h1>
+  <h1 class="hero-fade" style="animation-delay: 0.5s;">Country roads...</h1>
+  <p class="hero-fade" style="animation-delay: 1s;">Take me home...</p>
+  <p class="hero-fade" style="animation-delay: 1.5s;">To the place...</p>
+  <p class="hero-fade" style="animation-delay: 2s;">Where I belong...!</p>
+  <a href="{{ url_for('index') }}" class="cta-button hero-fade" style="animation-delay: 2.5s;">Where You Belong</a>
+{% endblock %}

@@ -3,7 +3,21 @@
 {% block title %}CGTools - Share Data{% endblock %}
 
 {% block content %}
+{% with messages = get_flashed_messages(with_categories=true) %}
+  {% if messages %}
+    <div class="container mt-4 d-flex justify-content-center">
+      {% for category, message in messages %}
+        <div class="alert alert-{{ category }} alert-dismissible fade show shadow d-inline-block" role="alert">
+          <span class="me-3">{{ message }}</span>
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+      {% endfor %}
+    </div>
+  {% endif %}
+{% endwith %}
+
 <main class="container share-data-page">
+
   <h1>Share Data</h1>
   <p>Select the data you want to share and who you want to share it with.</p>
 
