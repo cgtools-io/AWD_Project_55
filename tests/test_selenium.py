@@ -19,10 +19,6 @@ def test_authenticated_pages_flow(selenium_driver, selenium_registered_user):
     # Log in helper
     selenium_login(selenium_driver, selenium_registered_user)
 
-    # Dashboard             TODO: Delete if we're axing /dashboard
-    # selenium_driver.get(msg.LH + "/dashboard")
-    # assert "Your Total CGT" in selenium_driver.page_source
-
     #File Upload
     selenium_driver.get(msg.LH + "/file_upload/")
     assert "Choose broker:" in selenium_driver.page_source
