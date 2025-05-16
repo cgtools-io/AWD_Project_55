@@ -71,7 +71,7 @@ class Summary(db.Model):
 
     created_at = db.Column(
         db.DateTime,
-        default=datetime.now(),
+        default=datetime.now,
         nullable=False
     )
 
@@ -104,6 +104,10 @@ class SharedSummary(db.Model):
     # mostly for debugging, unsure if this will feature in actual sharing
     timestamp = db.Column(
         db.DateTime,
-        default=datetime.now(),
+        default=datetime.now,
         nullable=False
     )
+
+    summary    = db.relationship('Summary', backref='shared_entries')
+    from_user  = db.relationship('User',    foreign_keys=[from_user_id])
+    to_user    = db.relationship('User',    foreign_keys=[to_user_id])

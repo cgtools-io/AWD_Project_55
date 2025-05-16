@@ -14,10 +14,13 @@ import json
 import app.constants as msg
 from app.extensions import db
 from app.forms.user_forms import SignupForm, LoginForm
-from app.models import User, Admin, Summary
+from app.models import User, Admin, Summary, SharedSummary
 from app.forms.file_upload_form import FileUploadForm
+from app.forms.share_form import ShareForm
+from werkzeug.utils import secure_filename
 from app.utils.cgt_processing import parse_binance_csv, calculate_cgt_binance
 from app.utils.portfolio_pnl import calculate_pnl_stats
+
 
 def clean_float(value):
     try:
@@ -220,12 +223,9 @@ def visual():
     ).scalars()
     return render_template('user/visual.html', options=options)    
 
-@user.route('/share')
-@login_required
-def share():
-    return render_template('user/share_data.html')
 
-@user.route('/get_summary', methods=['POST']) 
+
+@user.route('/get_summary/', methods=['POST']) 
 @login_required
 def get_summary():
     summary_id = request.json.get('summary_id')
@@ -245,7 +245,151 @@ def get_summary():
         'filename': summary.filename,
     })
 
-@user.errorhandler(CSRFError)
-def handle_csrf_error(e):
-    flash(msg.CSRF_FAILED, 'danger')
-    return redirect(request.url or url_for('index'))
+@user.route('/share/', methods=['GET', 'POST'])
+@login_required
+def share():
+    form = ShareForm()
+
+    # 1) only pull summaries that *I* own
+    my_summaries = Summary.query.filter_by(user_id=current_user.id).all()
+
+    # 2) all other users
+    other_users = User.query.filter(User.id != current_user.id).all()
+
+    form.summary_id.choices   = [(s.id, f"#{s.id}: {s.filename}") for s in my_summaries]
+    form.recipient_id.choices = [(u.id, u.username)         for u in other_users]
+
+    if form.validate_on_submit():
+        
+        # 3) duplicate‐share guard
+        exists = SharedSummary.query.filter_by(
+            summary_id   = form.summary_id.data,
+            from_user_id = current_user.id,
+            to_user_id   = form.recipient_id.data
+        ).first()
+
+        if exists:
+            flash("You've already shared this summary with that user.", "warning")
+            return redirect(url_for('user.share'))
+
+        share = SharedSummary(
+            summary_id   = form.summary_id.data,
+            from_user_id = current_user.id,
+            to_user_id   = form.recipient_id.data
+        )
+        db.session.add(share)
+        db.session.commit()
+        flash("Summary successfully shared!", "success")
+        return redirect(url_for('user.share'))
+
+    # 4) history
+    shared_by_me   = SharedSummary.query.filter_by(from_user_id=current_user.id).all()
+    shared_with_me = SharedSummary.query.filter_by(to_user_id=current_user.id).all()
+
+    return render_template(
+        'user/share_data.html',
+        form            = form,
+        shared_by_me    = shared_by_me,
+        shared_with_me  = shared_with_me
+    )
+
+@user.route("/file_upload/process/<filename>", methods=["POST"])
+@user.route("/file_upload/process/", methods=["POST"])
+@login_required
+
+def process_csv(filename=None):
+    from datetime import datetime
+
+    if filename is None:
+        flash("No file uploaded.", "danger")
+        return redirect(url_for('user.file_upload'))
+
+    file_path = os.path.join('app/static/uploads', filename)
+
+    if not os.path.exists(file_path):
+        flash("File not found.", "danger")
+        return redirect(url_for('user.file_upload'))
+
+    try:
+        df = pd.read_csv(file_path, encoding='utf-8')
+        df['datetime'] = pd.to_datetime(df['Date(UTC)'], utc=True)
+        df = df.rename(columns={
+            'Side': 'Side',
+            'Price': 'Price',
+            'Executed': 'executed_amount',
+            'Fee': 'fee_amount',
+            'Pair': 'base_asset'
+        })
+
+        df['fee_amount'] = df['fee_amount'].apply(clean_float)
+        df['executed_amount'] = df['executed_amount'].apply(clean_float)
+        df['Price'] = df['Price'].apply(clean_float)
+
+
+
+        df = df.sort_values(by='datetime')
+        buy_pool = []
+        cgt_results = []
+
+        for _, row in df.iterrows():
+            if row['Side'] == 'BUY':
+                buy_pool.append({
+                    'datetime': row['datetime'],
+                    'asset': row['base_asset'],
+                    'amount': clean_float(row['executed_amount']),
+                    'price': clean_float(row['Price']),
+                    'fee': clean_float(row['fee_amount'])
+                })
+
+            elif row['Side'] == 'SELL':
+                sell_asset = row['base_asset']
+                sell_amount = clean_float(row['executed_amount'])
+                sell_price = clean_float(row['Price'])
+                fee_amount = clean_float(row['fee_amount'])
+                sale_proceeds = sell_amount * sell_price - fee_amount
+                cost_base = 0.0
+
+                while sell_amount > 0 and buy_pool:
+                    earliest = buy_pool[0]
+                    if earliest['asset'] != sell_asset:
+                        buy_pool.pop(0)
+                        continue
+
+                    used = min(sell_amount, earliest['amount'])
+                    cost = used * earliest['price']
+                    cost_base += cost
+
+                    earliest['amount'] -= used
+                    if earliest['amount'] <= 0:
+                        buy_pool.pop(0)
+
+                    sell_amount -= used
+
+                capital_gain = sale_proceeds - cost_base
+                cgt_results.append(capital_gain)
+
+        total_cgt = round(sum(cgt_results), 2)
+        print("Attempting to create Summary with CGT:", total_cgt)
+        new_summary = Summary(
+            user_id    = current_user.id,
+            total_cgt  = total_cgt,
+            filename   = filename
+        )
+        db.session.add(new_summary)
+        db.session.commit()
+
+        print("Summary saved with ID:", summary.id)
+
+        flash("CSV file processed successfully!")
+        flash(f"Total CGT: ${total_cgt}", "info")
+        return redirect(url_for('dashboard'))
+
+    except Exception as e:
+        logging.exception(f"Error processing CSV: {e}")
+        flash("Failed to process CSV. Check format or logs.", "danger")
+        return redirect(url_for('user.file_upload'))
+
+    @user.errorhandler(CSRFError)
+    def handle_csrf_error(e):
+        flash(msg.CSRF_FAILED, 'danger')
+        return redirect(request.url or url_for('index'))
