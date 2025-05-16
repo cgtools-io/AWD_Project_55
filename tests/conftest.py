@@ -54,13 +54,13 @@ class UserSession:
         self._client = client
 
     def login(self, username="myusername", password="mypassword0!"):
-        return self._client.post("/login", data={
+        return self._client.post("/login/", data={
             "username": username, 
             "password": password
             }, follow_redirects=True
         )
     def logout(self):
-        return self._client.get("/logout", follow_redirects=True)
+        return self._client.get("/logout/", follow_redirects=True)
 
 
 # ========================================================================
@@ -106,12 +106,11 @@ def two_users(app):
 def some_summaries(app, two_users):
     james, _ = two_users
 
-    s1 = Summary(user_id=james.id, total_cgt=100.00, filename="binance.csv")
-    s2 = Summary(user_id=james.id, total_cgt=200.00, filename="kraken.csv")
+    s1 = Summary(user_id=james.id, total_cgt=100.00, total_cost=0.0, total_mv=0.0, filename="binance.csv")
+    s2 = Summary(user_id=james.id, total_cgt=200.00, total_cost=0.0, total_mv=0.0, filename="kraken.csv")
 
     db.session.add_all([s1, s2])
     db.session.commit()
-
     return [s1, s2]
 
 @pytest.fixture
@@ -120,7 +119,7 @@ def two_users_and_summary(app, two_users):
     db.session.add_all([james, sacha])
     db.session.commit()
 
-    summary = Summary(user_id=james.id, total_cgt=100.0, filename="binance.csv")
+    summary = Summary(user_id=james.id, total_cgt=100.00, total_cost=0.0, total_mv=0.0, filename="binance.csv")
     db.session.add(summary)
     db.session.commit()
 
@@ -142,7 +141,7 @@ def selenium_driver():
 
 @pytest.fixture()
 def selenium_registered_user(selenium_driver):
-    selenium_driver.get(msg.LH + "/signup")
+    selenium_driver.get(msg.LH + "/signup/")
     selenium_driver.find_element(By.NAME, "username").send_keys(msg.TEST_USER)
     selenium_driver.find_element(By.NAME, "email").send_keys(msg.TEST_EMAIL)
     selenium_driver.find_element(By.NAME, "password").send_keys(msg.TEST_PASSWORD)
@@ -153,12 +152,25 @@ def selenium_registered_user(selenium_driver):
         "password": msg.TEST_PASSWORD
     }
 
+@pytest.fixture()
+def selenium_dummy_user(selenium_driver):
+    selenium_driver.get(msg.LH + "/signup/")
+    selenium_driver.find_element(By.NAME, "username").send_keys('bob')
+    selenium_driver.find_element(By.NAME, "email").send_keys('bob@bob.com')
+    selenium_driver.find_element(By.NAME, "password").send_keys("bob123")
+    selenium_driver.find_element(By.NAME, "confirm_password").send_keys("bob123")
+    selenium_driver.find_element(By.NAME, "submit").click()
+    return {
+        "username": "bob", 
+        "password": "bob123"
+    }
+
 # ========================================================================
 #                   SELENIUM HELPER FUNCTIONS (MUST IMPORT)
 # ========================================================================
 
 def selenium_login(driver, user):
-    driver.get(msg.LH + "/login")
+    driver.get(msg.LH + "/login/")
     driver.find_element(By.NAME, "username").send_keys(user["username"])
     driver.find_element(By.NAME, "password").send_keys(user["password"])
     driver.find_element(By.NAME, "submit").click()

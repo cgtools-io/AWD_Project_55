@@ -37,7 +37,7 @@ ADMIN_PASSWORD = os.getenv('ADMIN_PASSWORD')
 
 logger = logging.getLogger(__name__)
 
-@user.route('/signup', methods=['GET', 'POST'])
+@user.route('/signup/', methods=['GET', 'POST'])
 def signup():
     logging.debug("User signup endpoint accessed")
 
@@ -74,7 +74,7 @@ def signup():
                 
     return render_template('auth/signup.html', form=form)
 
-@user.route('/login', methods=['GET', 'POST'])
+@user.route('/login/', methods=['GET', 'POST'])
 def login():
     logging.debug("User login endpoint accessed")
 
@@ -126,7 +126,7 @@ def login():
 
     return render_template('auth/login.html', form=form)
 
-@user.route('/logout')
+@user.route('/logout/')
 @login_required
 def logout():
     logging.debug("User logout endpoint accessed")
@@ -214,7 +214,7 @@ def file_upload(filename=None):
     
     return render_template('user/file_upload.html', form=form, form_state=1)
 
-@user.route('/visual')
+@user.route('/visual/')
 @login_required
 def visual():
 

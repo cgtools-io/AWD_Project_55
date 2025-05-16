@@ -1,4 +1,4 @@
-from flask import Flask, render_template, abort, session
+from flask import Flask, render_template, abort, session, current_app
 from flask_login import current_user
 import logging
 from config import Config
@@ -55,7 +55,7 @@ def create_app(config_class=Config):
     from app.routes.user import user
     app.register_blueprint(user)
 
-    app.config['SECRET_KEY'] = 'password' # CHANGE THIS TO SOMETHING MORE SECURE BEFORE PUSHING APP LIVE  
+    app.config['SECRET_KEY'] = 'password' # TODO: CHANGE THIS TO SOMETHING MORE SECURE BEFORE PUSHING APP LIVE  
     logging.basicConfig(level=logging.DEBUG)
     app.logger.setLevel(logging.DEBUG)
 
@@ -65,15 +65,15 @@ def create_app(config_class=Config):
     def index():
         return render_template('public/index.html')
 
-    @app.route('/about')
+    @app.route('/about/')
     def about():
         return render_template('public/about.html')
 
-    @app.route('/contact')
+    @app.route('/contact/')
     def contact():
         return render_template('public/contact.html')
 
-    @app.route('/dashboard')
+    @app.route('/dashboard/')
     def dashboard():
         return render_template('user/dashboard.html')
     
