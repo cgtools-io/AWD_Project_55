@@ -218,10 +218,15 @@ def file_upload(filename=None):
 @login_required
 def visual():
 
-    options = db.session.execute(
+    owned = db.session.execute(
         db.select(Summary).where(Summary.user_id == current_user.id).order_by(Summary.created_at.desc())
     ).scalars()
-    return render_template('user/visual.html', options=options)    
+
+    shared = db.session.execute(
+        db.select(SharedSummary).where(SharedSummary.to_user_id == current_user.id).order_by(SharedSummary.timestamp.desc())
+    ).scalars()
+    print(shared)
+    return render_template('user/visual.html', owned=owned, shared=shared)    
 
 
 
@@ -293,103 +298,7 @@ def share():
         shared_with_me  = shared_with_me
     )
 
-@user.route("/file_upload/process/<filename>", methods=["POST"])
-@user.route("/file_upload/process/", methods=["POST"])
-@login_required
-
-def process_csv(filename=None):
-    from datetime import datetime
-
-    if filename is None:
-        flash("No file uploaded.", "danger")
-        return redirect(url_for('user.file_upload'))
-
-    file_path = os.path.join('app/static/uploads', filename)
-
-    if not os.path.exists(file_path):
-        flash("File not found.", "danger")
-        return redirect(url_for('user.file_upload'))
-
-    try:
-        df = pd.read_csv(file_path, encoding='utf-8')
-        df['datetime'] = pd.to_datetime(df['Date(UTC)'], utc=True)
-        df = df.rename(columns={
-            'Side': 'Side',
-            'Price': 'Price',
-            'Executed': 'executed_amount',
-            'Fee': 'fee_amount',
-            'Pair': 'base_asset'
-        })
-
-        df['fee_amount'] = df['fee_amount'].apply(clean_float)
-        df['executed_amount'] = df['executed_amount'].apply(clean_float)
-        df['Price'] = df['Price'].apply(clean_float)
-
-
-
-        df = df.sort_values(by='datetime')
-        buy_pool = []
-        cgt_results = []
-
-        for _, row in df.iterrows():
-            if row['Side'] == 'BUY':
-                buy_pool.append({
-                    'datetime': row['datetime'],
-                    'asset': row['base_asset'],
-                    'amount': clean_float(row['executed_amount']),
-                    'price': clean_float(row['Price']),
-                    'fee': clean_float(row['fee_amount'])
-                })
-
-            elif row['Side'] == 'SELL':
-                sell_asset = row['base_asset']
-                sell_amount = clean_float(row['executed_amount'])
-                sell_price = clean_float(row['Price'])
-                fee_amount = clean_float(row['fee_amount'])
-                sale_proceeds = sell_amount * sell_price - fee_amount
-                cost_base = 0.0
-
-                while sell_amount > 0 and buy_pool:
-                    earliest = buy_pool[0]
-                    if earliest['asset'] != sell_asset:
-                        buy_pool.pop(0)
-                        continue
-
-                    used = min(sell_amount, earliest['amount'])
-                    cost = used * earliest['price']
-                    cost_base += cost
-
-                    earliest['amount'] -= used
-                    if earliest['amount'] <= 0:
-                        buy_pool.pop(0)
-
-                    sell_amount -= used
-
-                capital_gain = sale_proceeds - cost_base
-                cgt_results.append(capital_gain)
-
-        total_cgt = round(sum(cgt_results), 2)
-        print("Attempting to create Summary with CGT:", total_cgt)
-        new_summary = Summary(
-            user_id    = current_user.id,
-            total_cgt  = total_cgt,
-            filename   = filename
-        )
-        db.session.add(new_summary)
-        db.session.commit()
-
-        print("Summary saved with ID:", summary.id)
-
-        flash("CSV file processed successfully!")
-        flash(f"Total CGT: ${total_cgt}", "info")
-        return redirect(url_for('dashboard'))
-
-    except Exception as e:
-        logging.exception(f"Error processing CSV: {e}")
-        flash("Failed to process CSV. Check format or logs.", "danger")
-        return redirect(url_for('user.file_upload'))
-
-    @user.errorhandler(CSRFError)
-    def handle_csrf_error(e):
-        flash(msg.CSRF_FAILED, 'danger')
-        return redirect(request.url or url_for('index'))
+@user.errorhandler(CSRFError)
+def handle_csrf_error(e):
+    flash(msg.CSRF_FAILED, 'danger')
+    return redirect(request.url or url_for('index'))

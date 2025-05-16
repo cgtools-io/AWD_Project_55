@@ -19,9 +19,16 @@
         <div class="col-3">
             <select class = "form-select form-select-md border border-2" name="item_id" id="summary-select">
                 <option selected>Choose file</option>
-                {% for option in options %}
-                    {% if option.filename != None %}
-                        <option value="{{ option.id }}">{{ option.filename }}, {{ option.created_at.strftime('%Y-%m-%d') }}</option>
+                <option disabled>Uploaded files:</option>
+                {% for summary in owned %}
+                    {% if summary.filename != None %}
+                        <option value="{{ summary.id }}">{{ summary.filename }}, {{ summary.created_at.strftime('%Y-%m-%d') }}</option>
+                    {% endif %}
+                {% endfor %}
+                <option disabled>Files shared with you:</option>
+                {% for shared_summary in shared %}
+                    {% if shared_summary.summary_id != None %}
+                        <option value="{{ shared_summary.summary_id }}">{{ shared_summary.summary_id }}, {{ shared_summary.timestamp.strftime('%Y-%m-%d') }}</option>
                     {% endif %}
                 {% endfor %}
             </select>
