@@ -1,6 +1,6 @@
 # Agile Web Development Group Project (CITS3403) - CGTools
 
-[ENTER DESCRIPTION HERE]
+CGTools is a website designed to calculate capital gains and other useful stats on cryptocurrency transactions. The process is simple: create an account, choose your crypto broker, upload a csv file and discover the possibilities! Users can visualise their calculated statistics and even share their results with finance-savvy friends! Plus, we promise to not send **any** annoying emails to you after you create an account with us ;)
 
 ## Group Members
 
