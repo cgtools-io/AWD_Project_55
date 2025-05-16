@@ -16,30 +16,29 @@
     <input type="hidden" id="csrf_token" value="{{ csrf_token() }}">
 
     <div class="row d-flex justify-content-center align-items-center my-5">
-        <label for="item" class="form-label col-2 text-end">Choose an option:</label>
         <div class="col-3">
-            <select class = "form-select" name="item_id" id="summary-select">
+            <select class = "form-select form-select-md border border-2" name="item_id" id="summary-select">
                 <option selected>Choose file</option>
                 {% for option in options %}
                     {% if option.filename != None %}
-                    <option value="{{ option.id }}">{{ option.filename }}</option>
+                        <option value="{{ option.id }}">{{ option.filename }}, {{ option.created_at.strftime('%Y-%m-%d') }}</option>
                     {% endif %}
                 {% endfor %}
             </select>
         </div>
-        <button id="visualise" class="btn btn-secondary col-3">Visualise</button>
+        <button id="visualise" class="btn button-visualise col-2 p-0">Visualise</button>
     </div>
 
     <section class="stats container-fluid my-4">
         <div class="row g-3 text-center">
             <div class="col-6 col-md-3">
-                <div class="stat-box value">Total Market Value<br><span>$ - </span></div>
+                <div class="stat-box value">Total Market Value<br><span id="mv_num">$ - </span></div>
             </div>
             <div class="col-6 col-md-3">
-                <div class="stat-box cost">Total Cost<br><span>$ - </span></div>
+                <div class="stat-box cost">Total Cost<br><span id="cost_num">$ - </span></div>
             </div>
             <div class="col-6 col-md-3">
-                <div class="stat-box pnl">Total P&L (unrealised)<br><span>$ - </span></div>
+                <div class="stat-box pnl">Total P&L (unrealised)<br><span id="pnl_num">$ - </span></div>
             </div>
             <div class="col-6 col-md-3">
                 <div class="stat-box gain">Capital Gain<br><span id="cgt_num">$ - </span></div>
@@ -51,8 +50,12 @@
         <div class="row g-3">
             <div class="col-12 col-lg-6">
                 <div class="chart-box">
-                    <h2>Total Value vs Time</h2>
-                    <canvas id="valueChart"></canvas>
+                    <h2>Value Over Transaction Period</h2>
+                    <div class="d-flex justify-content-center align-items-center">
+                        <div class="w-100 h-100 p-2 ps-0 d-flex mt-5">
+                            <canvas id="valueChart"></canvas>
+                        </div>
+                    </div>
                 </div>
             </div>
             <div class="col-12 col-lg-6">
@@ -115,44 +118,6 @@
 {% endblock %}
 
 {% block extra_js %}
-<script src="{{ url_for('static', filename='js/visual.js') }}"></script>
-
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.js"></script>
-
-<script>
-    const ctx = document.getElementById('valueChart').getContext('2d');
-    new Chart(ctx, {
-        type: 'line',
-        data: {
-            labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May'],
-            datasets: [{
-                label: 'Total Portfolio Value ($)',
-                data: [21000, 24800, 31200, 36800, 39728],
-                borderColor: '#f1c40f',
-                backgroundColor: 'rgba(241, 196, 15, 0.1)',
-                tension: 0.4,
-                fill: true,
-                pointBackgroundColor: '#f1c40f',
-                borderWidth: 2
-            }]
-        },
-        options: {
-            scales: {
-                x: {
-                    ticks: { color: '#ccc' },
-                    grid: { color: '#333' }
-                },
-                y: {
-                    ticks: { color: '#ccc' },
-                    grid: { color: '#333' }
-                }
-            },
-            plugins: {
-                legend: {
-                    labels: { color: '#ccc' }
-                }
-            }
-        }
-    });
-</script>
+<script src="{{ url_for('static', filename='js/visual.js') }}"></script>
 {% endblock %}

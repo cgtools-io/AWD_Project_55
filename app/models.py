@@ -49,6 +49,21 @@ class Summary(db.Model):
         nullable=False
         )
     
+    total_cost = db.Column(
+        db.Float,
+        nullable=False
+    )
+
+    total_mv = db.Column(
+        db.Float,
+        nullable=False
+    )
+
+    pnl_graph = db.Column(
+        db.JSON,
+        nullable=True
+    )
+    
     filename = db.Column(
         db.String(255),
         nullable=True

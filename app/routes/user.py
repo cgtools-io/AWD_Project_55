@@ -9,6 +9,7 @@ from datetime import datetime
 import csv
 import re
 from werkzeug.utils import secure_filename
+import json
 
 import app.constants as msg
 from app.extensions import db
@@ -18,6 +19,7 @@ from app.forms.file_upload_form import FileUploadForm
 from app.forms.share_form import ShareForm
 from werkzeug.utils import secure_filename
 from app.utils.cgt_processing import parse_binance_csv, calculate_cgt_binance
+from app.utils.portfolio_pnl import calculate_pnl_stats
 
 
 def clean_float(value):
@@ -142,9 +144,6 @@ def logout():
 @login_required
 def file_upload(filename=None):
 
-    print(request)
-    print(request.form)
-
     form = FileUploadForm()
 
     if request.method == 'POST':
@@ -180,7 +179,8 @@ def file_upload(filename=None):
                     flash(f"{df}", "danger")
                 else:
                     total_cgt = calculate_cgt_binance(df)
-                    flash(f"Total CGT: ${total_cgt}", "info")
+                    total_cost, total_mv, pnl_graph = calculate_pnl_stats(df)
+                    print(json.dumps(pnl_graph))
 
             elif request.form['broker'] == 'kraken':
                 # TODO: Implement Kraken CSV parsing
@@ -195,6 +195,9 @@ def file_upload(filename=None):
                     user_id=current_user.id,
                     filename=filename,
                     total_cgt=total_cgt,
+                    total_cost=total_cost,
+                    total_mv=total_mv,
+                    pnl_graph=json.dumps(pnl_graph)
                 )
 
                 db.session.add(new_summary)
@@ -220,7 +223,29 @@ def visual():
     ).scalars()
     return render_template('user/visual.html', options=options)    
 
-@user.route('/share', methods=['GET', 'POST'])
+
+
+@user.route('/get_summary/', methods=['POST']) 
+@login_required
+def get_summary():
+    summary_id = request.json.get('summary_id')
+    summary = db.session.execute(
+        db.select(Summary).where(Summary.id == summary_id)
+    ).scalar()
+
+    if not summary:
+        return jsonify({'error': 'Summary not found'}), 404
+    
+    return jsonify({
+        'id': summary.id,
+        'total_cgt': summary.total_cgt,
+        'total_cost': summary.total_cost,
+        'total_mv': summary.total_mv,
+        'pnl_graph': summary.pnl_graph,
+        'filename': summary.filename,
+    })
+
+@user.route('/share/', methods=['GET', 'POST'])
 @login_required
 def share():
     form = ShareForm()
@@ -271,7 +296,6 @@ def share():
 @user.route("/file_upload/process/<filename>", methods=["POST"])
 @user.route("/file_upload/process/", methods=["POST"])
 @login_required
-
 
 def process_csv(filename=None):
     from datetime import datetime
