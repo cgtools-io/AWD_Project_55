@@ -14,7 +14,7 @@ class ShareForm(FlaskForm):
 
     # recipient id is the User.id sharing with
     recipient_id = SelectField(
-        "User ID / Recipient",
+        "Select User:",
         coerce=int,
         validators=[DataRequired()]
     )
