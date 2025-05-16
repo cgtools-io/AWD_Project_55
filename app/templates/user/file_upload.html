@@ -16,7 +16,7 @@
 
             <div class="row px-4 mb-3 justify-content-evenly">
                 {% for subfield in form.broker %}
-                    <div class="col-sm-3 d-flex justify-content-center pt-4 mx-3">
+                    <div class="col-md-3 d-flex justify-content-center pt-4 mx-3">
                         <label class="text-center broker-label d-flex flex-column align-items-center">
                             <input id="broker-{{ subfield.data }}" class="broker-radio" type="radio" name="broker" value="{{ subfield.data }}" autocomplete="off"
                             {% if subfield.data == session['last_selected_broker'] %} checked {% endif %}>
@@ -67,10 +67,10 @@
             </div>          
 
             <div class="row px-4">
-                <div class="col-sm-3 pe-2 ps-sm-0 pb-2 pb-sm-0">
+                <div class="col-sm-3 pe-sm-2 ps-sm-0 pb-2 pb-sm-0">
                     <button type='button' class="button-secondary btn w-100" id="back-btn">Back</button>
                 </div>
-                <div class="col-sm-9 ps-2 pe-sm-0 pb-2 pb-sm-0">
+                <div class="col-sm-9 ps-sm-2 pe-sm-0 pb-2 pb-sm-0">
                         <a class="button-calculate btn w-100", id="calculate" href="{{ url_for('user.visual') }}">Calculate</a>
                 </div>
             </div>
