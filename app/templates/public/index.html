@@ -5,37 +5,29 @@
 {% block content %}
 
 
-<div class="background">
-  <div class="coin" style="left: 5%; animation-delay: 0s; animation-duration: 5s;"></div>
-  <div class="coin" style="left: 20%; animation-delay: 0.8s; animation-duration: 6s;"></div>
-  <div class="coin" style="left: 40%; animation-delay: 1.5s; animation-duration: 7s;"></div>
-  <div class="coin" style="left: 60%; animation-delay: 0.3s; animation-duration: 5.5s;"></div>
-  <div class="coin" style="left: 80%; animation-delay: 2s; animation-duration: 6.5s;"></div>
-</div>
+<div id="coin-bg" class="background"></div>
 
 <main class="hero">
   <!-- Flash message just below navbar -->
   <div class="container position-absolute start-50 translate-middle-x" style="top: 4.5rem; z-index: 1050;">
     {% with messages = get_flashed_messages(with_categories=true) %}
-      {% if messages %}
-        <div class="container mt-4">
-          {% for category, message in messages %}
-            <div class="alert alert-{{ category }} alert-dismissible fade show shadow d-inline-block" role="alert">
-              <span class="me-3">{{ message }}</span>
-              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>
-          {% endfor %}
-        </div>
-      {% endif %}
+    {% if messages %}
+    <div class="container mt-4">
+      {% for category, message in messages %}
+      <div class="alert alert-{{ category }} alert-dismissible fade show shadow d-inline-block" role="alert">
+        <span class="me-3">{{ message }}</span>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      </div>
+      {% endfor %}
+    </div>
+    {% endif %}
     {% endwith %}
   </div>
 
   <h1 class="hero-fade">Welcome to CGTools</h1>
   <p class="hero-fade">Capital gains tax tools for cryptocurrency</p>
 
-
-
-  <!-- Feature Cards : Probably better incorporated into landing page -->
+  <!-- Feature Cards -->
   <div class="container-fluid text-white py-2" style="max-width: 1400px; margin: 0 auto;">
     <div class="row row-cols-1 row-cols-lg-3 g-4">
       <div class="col">
@@ -44,15 +36,9 @@
             <h3 class="text-warning">Upload</h3>
             <p>Upload your CSV file to calculate your capital gains.</p>
           </div>
-          <div class="icon-box mt-3 text-center">
-            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none"
-              stroke="#f4c344" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-              class="lucide lucide-file-up">
-              <path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z" />
-              <path d="M14 2v4a2 2 0 0 0 2 2h4" />
-              <path d="M12 12v6" />
-              <path d="m15 15-3-3-3 3" />
-            </svg>
+          <div class="mt-3 text-center">
+            <img src="{{ url_for('static', filename='images/icons/upload.svg') }}" alt="Upload Icon" width="48"
+              height="48">
           </div>
         </div>
       </div>
@@ -63,21 +49,9 @@
             <h3 class="text-warning">Visualise</h3>
             <p>See your trades, totals, and potential gains/losses.</p>
           </div>
-          <div class="icon-box mt-3 text-center">
-            <div>
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                stroke="#f4c344" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                class="lucide lucide-binoculars-icon lucide-binoculars">
-                <path d="M10 10h4" />
-                <path d="M19 7V4a1 1 0 0 0-1-1h-2a1 1 0 0 0-1 1v3" />
-                <path
-                  d="M20 21a2 2 0 0 0 2-2v-3.851c0-1.39-2-2.962-2-4.829V8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v11a2 2 0 0 0 2 2z" />
-                <path d="M 22 16 L 2 16" />
-                <path
-                  d="M4 21a2 2 0 0 1-2-2v-3.851c0-1.39 2-2.962 2-4.829V8a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v11a2 2 0 0 1-2 2z" />
-                <path d="M9 7V4a1 1 0 0 0-1-1H6a1 1 0 0 0-1 1v3" />
-              </svg>
-            </div>
+          <div class="mt-3 text-center">
+            <img src="{{ url_for('static', filename='images/icons/binoculars.svg') }}" alt="Binoculars Icon" width="48"
+              height="48">
           </div>
         </div>
       </div>
@@ -88,18 +62,10 @@
             <h3 class="text-warning">Share</h3>
             <p>Export or share your summary with a tax agent or partner.</p>
           </div>
-          <div class="icon-box mt-3 text-center">
+          <div class="mt-3 text-center">
             <div>
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                stroke="#f4c344" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                class="lucide lucide-handshake-icon lucide-handshake">
-                <path d="m11 17 2 2a1 1 0 1 0 3-3" />
-                <path
-                  d="m14 14 2.5 2.5a1 1 0 1 0 3-3l-3.88-3.88a3 3 0 0 0-4.24 0l-.88.88a1 1 0 1 1-3-3l2.81-2.81a5.79 5.79 0 0 1 7.06-.87l.47.28a2 2 0 0 0 1.42.25L21 4" />
-                <path d="m21 3 1 11h-2" />
-                <path d="M3 3 2 14l6.5 6.5a1 1 0 1 0 3-3" />
-                <path d="M3 4h8" />
-              </svg>
+              <img src="{{ url_for('static', filename='images/icons/handshake.svg') }}" alt="Handshake Icon" width="48"
+                height="48">
             </div>
           </div>
         </div>
@@ -107,26 +73,27 @@
     </div>
   </div>
   <!-- ========================= -->
-  <!-- Big, centered CTAs -->
+  <!-- Big, centered CTAs        -->
   <!-- ========================= -->
   <section class="landing-cta text-center hero-fade">
-  {% if current_user.is_authenticated %}
-    <a href="{{ url_for('user.file_upload') }}"
-      class="btn cta-primary btn-lg mx-3">
-      Get Started
+    
+    {% if current_user.is_authenticated %}
+      <a href="{{ url_for('user.file_upload') }}"
+        class="btn cta-primary btn-lg mx-3 my-4">
+        Get Started
+      </a>
+    {% else %}
+      <a href="{{ url_for('user.signup') }}"
+        class="btn cta-primary btn-lg mx-3 my-4">
+        Get Started
+      </a>
+    {% endif %}
+    <a href="{{ url_for('about') }}"
+       class="btn cta-primary btn-lg mx-3 my-4">
+      Learn More
     </a>
-  {% else %}
-    <a href="{{ url_for('user.signup') }}"
-      class="btn cta-primary btn-lg mx-3">
-      Get Started
-    </a>
-  {% endif %}
-  <a href="{{ url_for('about') }}"
-     class="btn cta-primary btn-lg mx-3">
-    Learn More
-  </a>
-</section>
-
+    
+  </section>
 
 </main>
 {% endblock %}
