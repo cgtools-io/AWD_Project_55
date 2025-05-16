@@ -15,6 +15,9 @@ from app.extensions import db
 import app.constants as msg
 from config import TestConfig
 from datetime import datetime, timedelta
+from selenium import webdriver
+from selenium.webdriver.firefox.options import Options
+from selenium.webdriver.common.by import By
 
 
 # ========================================================================
@@ -123,19 +126,35 @@ def two_users_and_summary(app, two_users):
 
     return james, sacha, summary
 
-
 # ========================================================================
 #                   SELENIUM DRIVER FIXTURE (HEADLESS FIREFOX)
 # ========================================================================
 
-from selenium import webdriver
-from selenium.webdriver.firefox.options import Options
+def selenium_login(driver, user):
+    driver.get(msg.LH + "/login")
+    driver.find_element(By.NAME, "username").send_keys(user["username"])
+    driver.find_element(By.NAME, "password").send_keys(user["password"])
+    driver.find_element(By.NAME, "submit").click()
 
 @pytest.fixture
 def selenium_driver():
     options = Options()
+    # Comment out the next line to see it in the real browser:
     options.headless = True
-    options.add_argument("--headless") 
+    options.add_argument("--headless")  
     driver = webdriver.Firefox(options=options)
     yield driver
     driver.quit()
+
+@pytest.fixture()
+def selenium_registered_user(selenium_driver):
+    selenium_driver.get(msg.LH + "/signup")
+    selenium_driver.find_element(By.NAME, "username").send_keys(msg.TEST_USER)
+    selenium_driver.find_element(By.NAME, "email").send_keys(msg.TEST_EMAIL)
+    selenium_driver.find_element(By.NAME, "password").send_keys(msg.TEST_PASSWORD)
+    selenium_driver.find_element(By.NAME, "confirm_password").send_keys(msg.TEST_PASSWORD)
+    selenium_driver.find_element(By.NAME, "submit").click()
+    return {
+        "username": msg.TEST_USER, 
+        "password": msg.TEST_PASSWORD
+    }
