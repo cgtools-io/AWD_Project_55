@@ -18,7 +18,7 @@
                 {% for subfield in form.broker %}
                     <div class="col-sm-3 d-flex justify-content-center pt-4 mx-3">
                         <label class="text-center broker-label d-flex flex-column align-items-center">
-                            <input class="broker-radio" type="radio" name="broker" value="{{ subfield.data }}" autocomplete="off"
+                            <input id="broker-{{ subfield.data }}" class="broker-radio" type="radio" name="broker" value="{{ subfield.data }}" autocomplete="off"
                             {% if subfield.data == session['last_selected_broker'] %} checked {% endif %}>
                             <img class="broker-img" src='/static/images/{{ subfield.label.text }}.svg' alt="{{ subfield.label.text }}" width="270" height="270">
                             {{ subfield.label.text }}

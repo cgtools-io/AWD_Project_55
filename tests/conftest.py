@@ -130,12 +130,6 @@ def two_users_and_summary(app, two_users):
 #                   SELENIUM DRIVER FIXTURE (HEADLESS FIREFOX)
 # ========================================================================
 
-def selenium_login(driver, user):
-    driver.get(msg.LH + "/login")
-    driver.find_element(By.NAME, "username").send_keys(user["username"])
-    driver.find_element(By.NAME, "password").send_keys(user["password"])
-    driver.find_element(By.NAME, "submit").click()
-
 @pytest.fixture
 def selenium_driver():
     options = Options()
@@ -158,3 +152,13 @@ def selenium_registered_user(selenium_driver):
         "username": msg.TEST_USER, 
         "password": msg.TEST_PASSWORD
     }
+
+# ========================================================================
+#                   SELENIUM HELPER FUNCTIONS (MUST IMPORT)
+# ========================================================================
+
+def selenium_login(driver, user):
+    driver.get(msg.LH + "/login")
+    driver.find_element(By.NAME, "username").send_keys(user["username"])
+    driver.find_element(By.NAME, "password").send_keys(user["password"])
+    driver.find_element(By.NAME, "submit").click()
