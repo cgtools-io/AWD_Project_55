@@ -27,7 +27,7 @@ def test_summary_fields_are_saved(some_summaries):
     assert s2.created_at is not None
 
 def test_summary_gets_an_id(app):
-    sum = Summary(user_id=1, total_cgt=123.45, filename="test.csv")
+    sum = Summary(user_id=1, total_cgt=123.45, total_cost=1.2, total_mv=3.4, filename="test.csv")
     db.session.add(sum)
     db.session.commit()
 
@@ -35,6 +35,8 @@ def test_summary_gets_an_id(app):
     assert isinstance(sum.id, int)
     assert sum.total_cgt == 123.45
     assert sum.filename == "test.csv"
+    assert sum.total_cost == 1.2
+    assert sum.total_mv == 3.4
     assert sum.created_at is not None
 
 def test_summaries_belong_to_jmaes(two_users, some_summaries):
