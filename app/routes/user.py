@@ -245,10 +245,8 @@ def get_summary():
     ).scalar()
 
     if not summary and summary_id != "select":
-        flash("File summary not found.", "error")
         return jsonify({'error': 'Summary not found'}), 404
     elif not summary and summary_id == "select":
-        flash("Please select file to visualise.", "error")
         return jsonify({'error': 'No file selected'}), 404
     
     return jsonify({
