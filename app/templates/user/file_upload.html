@@ -34,7 +34,7 @@
                 {{ form.file.label(class="upload-header") }}
             </div>
 
-            <div class="row px-4 mt-3 mb-3 flex-grow-1 d-flex">
+            <div class="row px-4 mt-3 mb-4 flex-grow-1 d-flex">
 
                 <div class="col upload-area flex-column" id="uploadfile">
                     {% with messages = get_flashed_messages(with_categories=true) %}
@@ -66,15 +66,12 @@
                 </div>
             </div>          
 
-            <div class="row px-4 mb-3 mt-auto">
-                <div class="col-sm-3 px-0 ps-sm-0 pb-2 pb-sm-0">
+            <div class="row px-4">
+                <div class="col-sm-3 pe-2 ps-sm-0 pb-2 pb-sm-0">
                     <button type='button' class="button-secondary btn w-100" id="back-btn">Back</button>
                 </div>
-                <div class="col-sm-6 px-0 px-sm-3 pb-2 pb-sm-0">
-                        {{ form.calculate(formaction="url_for('user.file_upload')", class="button-calculate btn w-100", id="calculate") }}
-                </div>
-                <div class="col-sm-3 px-0 pe-sm-0">
-                    <button type='button' class="button-secondary btn w-100" id="upload">No file?</button>
+                <div class="col-sm-9 ps-2 pe-sm-0 pb-2 pb-sm-0">
+                        <a class="button-calculate btn w-100", id="calculate" href="{{ url_for('user.visual') }}">Calculate</a>
                 </div>
             </div>
         </div>

@@ -352,7 +352,7 @@ Login and Signup Page
   justify-content: flex-start;
   align-items: center;
   flex-grow: 1;
-  min-height: calc(100vh - 132px);
+  min-height: calc(100vh - 134px);
   background-image: url('/static/images/login_bg.jpg');
   background-size: cover;
   background-position: top;
@@ -390,7 +390,7 @@ Login Form
 File Upload Page
 --------------- */
 #page-body {
-  min-height: calc(100vh - 132px);
+  min-height: calc(100vh - 134px);
 }
 
 #form-first-part {
@@ -440,6 +440,7 @@ File Upload Page
   border-radius: 5px;
   font-weight: bold;
   font-size: 25px;
+  height: 50px;
 }
 
 .button-calculate {

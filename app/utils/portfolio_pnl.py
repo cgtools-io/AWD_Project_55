@@ -11,7 +11,7 @@ def calculate_pnl_stats(df):
     total_cost = 0.0
     total_mv = 0.0
     total_pnl = 0.0
-    pnl_graph = []
+    pnl_graph = [(0, 0.0)]
     transaction_counter = 1
 
     for _, row in df.iterrows():

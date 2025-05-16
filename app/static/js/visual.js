@@ -23,19 +23,27 @@ document.addEventListener('DOMContentLoaded', () => {
         options: {
             scales: {
                 x: {
-                    ticks: { color: '#ccc' },
+                    ticks: { display: false },
                     grid: { color: '#333' },
                     border: { color: '#f1c40f', width: 1 },
-                    offset: false,
-                    title: {display: true, text: "Number of Transactions", color: '#f1c40f'}
+                    position: 'center',
+                    axis: { y: 0 },
+                    crossesAt: 0
+                },
+                xTitle: {
+                    position: 'bottom',
+                    display: true,
+                    ticks: { color: "#ccc" },
+                    grid: { display: false, drawTicks: false },
+                    title: {display: true, text: 'Number of Transactions', color: '#f1c40f'}
                 },
                 y: {
                     ticks: { color: '#ccc', display: false },
                     grid: { color: '#333' },
                     border: { color: '#f1c40f', width: 1 },
-                    axis: 'y',
-                    beginAtZero: false,
-                    title: {display: true, text: "$ Profit/Loss (USD)", color: '#f1c40f'}
+                    title: {display: true, text: "$ Profit/Loss (USD)", color: '#f1c40f'},
+                    min: -10, 
+                    max: 10
                 }
             },
             plugins: {
