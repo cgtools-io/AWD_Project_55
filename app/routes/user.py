@@ -267,7 +267,7 @@ def share():
     # 2) all other users
     other_users = User.query.filter(User.id != current_user.id).all()
 
-    form.summary_id.choices   = [(s.id, f"#{s.id}: {s.filename}") for s in my_summaries]
+    form.summary_id.choices   = [(s.id, f"{s.filename}, uploaded on: {s.created_at.strftime('%Y-%m-%d')}") for s in my_summaries]
     form.recipient_id.choices = [(u.id, u.username)         for u in other_users]
 
     if form.validate_on_submit():
