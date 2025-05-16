@@ -222,10 +222,16 @@ def visual():
         db.select(Summary).where(Summary.user_id == current_user.id).order_by(Summary.created_at.desc())
     ).scalars()
 
+    shared_ids = db.session.execute(
+        db.select(SharedSummary.summary_id).where(SharedSummary.to_user_id == current_user.id).order_by(SharedSummary.timestamp.desc())
+    ).scalars().all()
+    print(shared_ids)
+
     shared = db.session.execute(
-        db.select(SharedSummary).where(SharedSummary.to_user_id == current_user.id).order_by(SharedSummary.timestamp.desc())
+        db.select(Summary).where(Summary.id.in_(shared_ids)).order_by(Summary.created_at.desc())
     ).scalars()
     print(shared)
+    
     return render_template('user/visual.html', owned=owned, shared=shared)    
 
 
